@@ -3,6 +3,10 @@ universe:
   min_price: 5.0                  # skip penny stocks
   min_avg_dollar_volume: 10000000 # $10M/day average (price x volume, 20-day)
 
+# Where prices come from. Swap for a paid API later by adding a new source.
+prices:
+  source: yfinance
+
 # Polite SEC access. SEC limit is 10/sec; we stay well under it.
 sec:
   max_requests_per_second: 5

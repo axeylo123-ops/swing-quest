@@ -1,0 +1,2 @@
+# Store text files with Unix line endings so Windows and GitHub Actions agree.
+* text=auto eol=lf
