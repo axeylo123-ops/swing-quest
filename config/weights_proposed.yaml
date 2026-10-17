@@ -2,25 +2,30 @@
 # NOTHING here is used by the scanner. To accept, copy the values you agree
 # with into config/weights.yaml yourself.
 # Recommended: YES - beat the current settings in both halves of the history.
-#   Minimum score for a quest: 60 -> 70  (about 3.7 quests a month (your goal: 4); the weaker half of the history still beat SPY by +1.3%)
+#   Insider cluster weight: 25 -> 30  (strong signals beat weak ones by +1.1%)
+#   Stake increase weight: 15 -> 10  (strong signals did worse than weak ones (-1.2%))
+#   First buy in a year weight: 10 -> 15  (strong signals beat weak ones by +1.1%)
+#   Near 52-week low weight: 15 -> 10  (strong signals did worse than weak ones (-1.2%))
+#   Points for a 10% Owner: 0.3 -> 0.5  (10% Owner buys beat the average signal by +2.8%)
+#   Minimum score for a quest: 65 -> 55  (about 3.6 quests a month (your goal: 4); the weaker half of the history still beat SPY by +1.7%)
 
 weights:
-  cluster: 25
+  cluster: 30
   role: 20
   dollar_size: 15
-  stake_increase: 15
-  first_buy: 10
-  price_context: 15
+  stake_increase: 10
+  first_buy: 15
+  price_context: 10
 role_points:
   CEO: 1.0
   CFO: 1.0
   Director: 0.7
   Officer: 0.5
-  10% Owner: 0.3
+  10% Owner: 0.5
   Other: 0.2
 rules:
   window_days: 30
   trigger_days: 5
-  min_score: 70
+  min_score: 55
   quests_per_month: 4
   ignore_10b5_1_plans: true

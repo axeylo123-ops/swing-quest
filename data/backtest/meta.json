@@ -1,14 +1,14 @@
 {
  "start": "2023-11-05",
- "end": "2026-03-31",
- "events": 11186,
+ "end": "2026-09-17",
+ "events": 13440,
  "skipped": {
-  "too cheap or thinly traded": 4146,
-  "price doesn't match filing (ticker change or split)": 699,
-  "no price data (often delisted)": 3421,
-  "trades OTC": 479,
-  "no trading days after filing": 189,
-  "a fund, not an operating company": 58,
-  "not enough price history": 14
+  "too cheap or thinly traded": 6820,
+  "price doesn't match filing (ticker change or split)": 815,
+  "no price data (often delisted)": 3809,
+  "trades OTC": 584,
+  "no trading days after filing": 212,
+  "a fund, not an operating company": 70,
+  "not enough price history": 13
  }
 }

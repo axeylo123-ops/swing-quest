@@ -64,13 +64,18 @@ The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
   goal of about 4 quests a month, and replays them on the older and newer half
   of history. A change is recommended only if the *weaker* half improves.
 
-### What the data says so far (Nov 2023 – Mar 2026)
-- Current rules (score 60+): about 6.7 quests a month, 57% won, average trade
-  +2.1%, **+0.9% vs the market**, but −0.1% in the older half.
-- **Score 70+:** 3.7 a month, 61% won, +1.5% vs the market, consistent in both halves.
-- **Score 65+ and price ≤ $30:** 2.5 a month, +2.5% vs the market, consistent.
-- Insider buying matters more at cheaper, smaller companies. CEO/CFO and big-
-  investor buys beat director buys. Most quests end at the 15-day limit.
+### What the data says so far (Nov 2023 – Sep 2026)
+Your current rules (option B: score 65+, price $2–$30), replayed on 13,440
+insider-buying events:
+- **97 finished quests, about 2.8 a month. 56% won, average trade +5.0%,
+  +3.9% vs the market** over the same 15 days.
+- But the halves differ a lot: older half +1.1% vs the market, newer half
+  +6.7%. Recent months were unusually good for small stocks. Expect something
+  closer to the older half, and let the live record decide.
+- Higher scores don't keep getting better (80+ did worse than 60–79), so the
+  weekly report keeps re-checking the weights.
+- Insider buying matters more at cheaper, smaller companies. Big-investor and
+  CEO/CFO buys beat director buys. Most quests end at the 15-day limit.
 
 ---
 
