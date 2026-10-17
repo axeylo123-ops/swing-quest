@@ -16,3 +16,6 @@ cache/
 .idea/
 Thumbs.db
 .DS_Store
+
+# local demo data for previewing the dashboard
+docs/data/_demo/
