@@ -1,0 +1,22 @@
+# Runs the test suite on every push, so a broken change is caught early.
+name: Tests
+
+on:
+  push:
+    paths: ["swingquest/**", "tests/**", "config/**", "requirements.txt"]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+        env:
+          SEC_USER_AGENT: "Swing Quest tests tests@example.com"   # dummy: tests never contact the SEC

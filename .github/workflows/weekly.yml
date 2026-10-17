@@ -1,0 +1,37 @@
+# Saturday's System Health report (the Reckoning). It only SUGGESTS changes in
+# config/weights_proposed.yaml; your config/weights.yaml is never touched.
+name: Weekly health
+
+on:
+  schedule:
+    - cron: "0 13 * * 6"       # Saturday 9 am EDT / 8 am EST
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: swing-quest-data
+  cancel-in-progress: false
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m swingquest health
+      - name: Commit report
+        run: |
+          git config user.name "swing-quest-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/health.json config/weights_proposed.yaml
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "Weekly health $(date -u +%Y-%m-%d)"
+          git pull --rebase
+          git push

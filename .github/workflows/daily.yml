@@ -1,0 +1,53 @@
+# Runs the scan on weekdays and commits the results, which updates the dashboard.
+# Times are UTC: 22:30 = 6:30 pm EDT / 5:30 pm EST (after the close);
+# 12:00 = 8:00 am EDT / 7:00 am EST (catches filings made overnight).
+name: Daily scan
+
+on:
+  schedule:
+    - cron: "30 22 * * 1-5"
+    - cron: "0 12 * * 1-5"
+  workflow_dispatch: {}        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write              # needed to commit the new results
+
+concurrency:
+  group: swing-quest-data      # never let two runs write at the same time
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # Company profiles (fund or not) almost never change; keep them between runs.
+      - uses: actions/cache@v4
+        with:
+          path: cache/issuer_profiles.json
+          key: issuer-profiles-${{ github.run_id }}
+          restore-keys: issuer-profiles-
+
+      - name: Fetch filings, scan, log and grade signals
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}   # your name + email, kept secret
+        run: python -m swingquest daily
+
+      - name: Commit results
+        run: |
+          git config user.name "swing-quest-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data docs/data
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "Daily scan $(date -u +%Y-%m-%d)"
+          git pull --rebase
+          git push
