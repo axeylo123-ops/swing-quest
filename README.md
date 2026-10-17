@@ -4,7 +4,7 @@ A swing-trading signal system that looks for stocks where company insiders
 (CEOs, CFOs, directors) are buying shares with their own money, scores each
 setup, and honestly tracks whether the picks work.
 
-> Status: under construction (Phase 2: signals done). Full guide coming in Phase 7.
+> Status: under construction (Phase 3: backtest done). Full guide coming in Phase 7.
 
 ## What works so far
 
@@ -49,5 +49,31 @@ python -m venv .venv
 copy .env.example .env      # then put your name + email in .env
 .venv\Scripts\python -m pytest
 ```
+
+### The backtest (is this actually working?)
+
+```bash
+.venv\Scripts\python -m swingquest backfill --bulk 2022q4:2026q1            # SEC bulk files
+.venv\Scripts\python -m swingquest backfill --days 2026-04-01:2026-10-13    # gap, day by day
+.venv\Scripts\python -m swingquest backtest                                 # -> docs/data/scorecard.json
+```
+
+The backtest replays the live scanner day by day through history, using the
+**same** scoring code and only information that was public at the time:
+
+- a signal is judged after the close; we **buy at the next day's open**
+- if it opens above the entry zone, the trade is **skipped** (no chasing)
+- if stop and target are touched the same day, we assume the **stop** hit first
+- a gap through the stop exits at the (worse) opening price
+- otherwise exit at the target, the stop, or the close of day 15
+
+The scorecard reports, by score bucket, by factor, by role and by timing:
+returns at 5/10/15 days vs SPY, how often signals beat SPY, trade win rate,
+average return, and target-first vs stop-first rates. Any group with fewer
+than 30 finished signals is marked **"not enough data"**. It also compares the
+older and newer half of the period: a big difference suggests luck.
+
+**Known bias:** yfinance has no prices for delisted companies, so failed
+companies drop out and results look somewhat better than reality.
 
 **Not financial advice.** This is an educational project.

@@ -31,7 +31,9 @@ def save_buys(records: list[dict], base: Path = BUYS_DIR) -> int:
             new += r["accession"] not in existing
             existing[r["accession"]] = r
         rows = sorted(existing.values(), key=lambda r: (r["filed_date"], r["ticker"], r["accession"]))
-        path.write_text(json.dumps(rows, indent=1), encoding="utf-8", newline="\n")
+        # one record per line: compact, but git diffs stay readable
+        text = "[\n" + ",\n".join(json.dumps(r, separators=(",", ":")) for r in rows) + "\n]\n"
+        path.write_text(text, encoding="utf-8", newline="\n")
     return new
 
 

@@ -4,6 +4,9 @@
     python -m swingquest fetch --date 2026-10-14   # one full day (nightly index)
     python -m swingquest prices AAPL MSFT      # quick price + universe check
     python -m swingquest scan                  # fetch + score -> docs/data/today.json
+    python -m swingquest backfill --bulk 2022q4:2026q1     # past purchases (bulk files)
+    python -m swingquest backfill --days 2026-04-01:2026-10-13   # gap-fill by day
+    python -m swingquest backtest              # replay history -> docs/data/scorecard.json
 """
 import argparse
 from datetime import date, timedelta
@@ -62,7 +65,49 @@ def cmd_scan(args):
     print("\nSaved docs/data/today.json")
 
 
+def cmd_backfill(args):
+    from swingquest.sec import bulk
+    from swingquest.sec.client import SecClient
+    client = SecClient(max_per_second=args.rate)
+    if args.bulk:
+        first, last = args.bulk.split(":")
+        print(bulk.backfill_bulk(client, first, last))
+    if args.days:
+        first, last = args.days.split(":")
+        print(bulk.backfill_days(client, date.fromisoformat(first), date.fromisoformat(last)))
+    print(f"({client.request_count} SEC requests)")
+
+
+def cmd_backtest(args):
+    from swingquest.backtest import report
+    if args.rebuild:
+        card = report.write_scorecard()
+    else:
+        from swingquest import store
+        from swingquest.backtest.engine import run_backtest
+        from swingquest.prices.yfinance_source import YFinanceSource
+        from swingquest.sec.client import SecClient
+        from swingquest.universe import IssuerProfiles
+        state = store.load_state()
+        # start once a full year of history exists, so "first buy in 12 months" is always known
+        start = args.start or (date.fromisoformat(state["history_start"]) + timedelta(days=400)).isoformat()
+        end = args.end or date.today().isoformat()
+        profiles = IssuerProfiles(SecClient(max_per_second=args.sec_rate))
+        result = run_backtest(start, end, source=YFinanceSource(progress=print), profiles=profiles)
+        rows = result.pop("rows")
+        card = report.save_backtest(rows, result)
+    p = card["backtest"]["picks"]
+    print(f"\nPicks: {p['n']} finished, win rate {p['win_rate']}, avg trade {p['avg_trade_return']}, "
+          f"avg 15-day vs SPY {p['avg_excess_15']}")
+    for b, s in card["backtest"]["by_score_bucket"].items():
+        print(f"  score {b:>6}: n={s['n']:>5}  beat SPY {s['beat_spy_rate']}  avg excess 15d {s['avg_excess_15']}"
+              f"  {s['label'] or ''}")
+    print("Saved docs/data/scorecard.json and data/backtest/rows.json")
+
+
 def main(argv=None):
+    import sys
+    sys.stdout.reconfigure(line_buffering=True)  # show progress lines immediately, even in logs
     p = argparse.ArgumentParser(prog="swingquest")
     sub = p.add_subparsers(dest="command", required=True)
     f = sub.add_parser("fetch", help="download new insider purchases from the SEC")
@@ -74,6 +119,19 @@ def main(argv=None):
     sc = sub.add_parser("scan", help="fetch new filings, score setups, write today.json")
     sc.add_argument("--no-fetch", action="store_true", help="skip downloading new filings")
     sc.set_defaults(func=cmd_scan)
+    bf = sub.add_parser("backfill", help="load past insider purchases")
+    bf.add_argument("--bulk", help="quarters from the SEC bulk datasets, e.g. 2022q4:2026q1")
+    bf.add_argument("--days", help="day range from nightly indexes, e.g. 2026-04-01:2026-10-13")
+    bf.add_argument("--rate", type=float, default=None, help="SEC requests/sec (max 10)")
+    bf.set_defaults(func=cmd_backfill)
+    bt = sub.add_parser("backtest", help="replay the scanner through history -> scorecard.json")
+    bt.add_argument("--start", help="first signal date (default: 400 days after history starts)")
+    bt.add_argument("--end", help="last signal date (default: today)")
+    bt.add_argument("--rebuild", action="store_true",
+                    help="rebuild scorecard.json from saved results without re-running")
+    bt.add_argument("--sec-rate", type=float, default=None,
+                    help="SEC requests/sec for company lookups (lower it if a backfill is running)")
+    bt.set_defaults(func=cmd_backtest)
     args = p.parse_args(argv)
     args.func(args)
 

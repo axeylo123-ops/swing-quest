@@ -79,6 +79,43 @@ def test_normalize_yfinance_frame():
     assert len(df) == 2 and df.index.tz is None
 
 
+def test_throttled_tickers_are_retried_not_marked_missing(tmp_path, monkeypatch):
+    from datetime import date
+    from swingquest.prices import yfinance_source as ys
+    monkeypatch.setattr(ys, "CACHE", tmp_path)
+    monkeypatch.setattr(ys, "META", tmp_path / "_meta.json")
+    monkeypatch.setattr(ys.time, "sleep", lambda s: None)
+    idx = pd.date_range("2026-10-01", periods=3)
+    good = pd.DataFrame({"Open": 1.0, "High": 1.0, "Low": 1.0, "Close": 1.0, "Volume": 1.0}, index=idx)
+    calls = []
+
+    def fake_fetch(tickers, start, end):
+        calls.append(list(tickers))
+        if len(calls) == 1:  # first try: AAA works, BBB throttled, OLD delisted
+            raw = pd.concat({"AAA": good}, axis=1)
+            return raw, {"BBB": "YFRateLimitError('Too Many Requests')", "OLD": "possibly delisted"}
+        return pd.concat({"BBB": good}, axis=1), {}
+
+    monkeypatch.setattr(ys.YFinanceSource, "_fetch", staticmethod(fake_fetch))
+    src = ys.YFinanceSource()
+    got = src.history(["AAA", "BBB", "OLD"], date(2026, 10, 1), date(2026, 10, 3))
+    assert set(got) == {"AAA", "BBB"}
+    assert calls[1] == ["BBB"]                      # only the throttled one was retried
+    assert "missing" in src.meta["OLD"] and "missing" not in src.meta["BBB"]
+
+
+def test_yfinance_error_lines_are_parsed():
+    import logging
+    from swingquest.prices.yfinance_source import _ErrorCatcher, is_throttle_error
+    c = _ErrorCatcher()
+    for msg in ["['ZI', 'SPY']: YFRateLimitError('Too Many Requests. Rate limited.')",
+                "['OLD']: possibly delisted; no timezone found", "\n2 Failed downloads:"]:
+        c.emit(logging.LogRecord("yfinance", logging.ERROR, "", 0, msg, None, None))
+    assert is_throttle_error(c.errors["SPY"]) and is_throttle_error(c.errors["ZI"])
+    assert not is_throttle_error(c.errors["OLD"])
+    assert len(c.errors) == 3
+
+
 def test_store_merges_without_duplicates(tmp_path):
     rec = {"accession": "a1", "filed_date": "2026-10-14", "ticker": "ABCD"}
     assert store.save_buys([rec], base=tmp_path) == 1

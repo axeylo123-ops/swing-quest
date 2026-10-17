@@ -56,7 +56,8 @@ class SecClient:
             except (requests.ConnectionError, requests.Timeout):
                 if attempt == retries:
                     raise
-                self.sleep(2 ** attempt)
+                # internet blips (Wi-Fi drop, DNS hiccup): wait 5, 10, 20, 40 s
+                self.sleep(5 * 2 ** attempt)
                 continue
             if resp.status_code in RETRY_STATUSES and attempt < retries:
                 # 429 means "slow down": wait longer each time (1, 2, 4, 8 s...)
