@@ -19,3 +19,7 @@ Thumbs.db
 
 # local demo data for previewing the dashboard
 docs/data/_demo/
+
+# Private: your holdings list and briefs (never committed)
+data/private/
+docs/data/private/

@@ -22,6 +22,17 @@ game-styled dashboard you can check in 10–15 minutes after work.
 | Whenever curious | **Chronicle** | "Can I trust the quests?" in plain words. Use **Ask the Oracle** to see how any kind of past signal did. |
 | Optional | **Treasury** | Set your account size and risk per quest. Import your Questrade **Positions** export (Excel or CSV) to see your holdings next to the quests. It's read only in your browser and never uploaded; account numbers are dropped immediately. |
 
+**Holding briefs (US and Canadian):** in the Treasury, press **Copy command**,
+paste it into the terminal in the Swing Quest folder, and refresh. Each holding
+gets 1–2 sentences: analyst rating and average price target, trend, 52-week
+position, dividend, and recent insider buying (US only). The briefs are made on
+your PC, stored in git-ignored folders, and never published. After the first run,
+`daily` refreshes them on your PC.
+
+**Canada:** insider *quests* are US-only, because Canada's insider system (SEDI)
+has no free bulk download or API. Canadian holdings still get full briefs from
+free Yahoo data (analysts, targets, trend).
+
 **Changing the rules:** open `config/weights.yaml` (scoring) or
 `config/settings.yaml` (universe and trade rules), edit the numbers, save, commit.
 The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
@@ -85,7 +96,7 @@ insider-buying events:
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
 copy .env.example .env                      # put your name + email in .env
-.venv\Scripts\python -m pytest              # 100 tests
+.venv\Scripts\python -m pytest              # 108 tests
 .venv\Scripts\python -m swingquest daily    # fetch + scan + log + grade (what automation runs)
 .venv\Scripts\python -m swingquest health   # weekly report + suggestions (never applied)
 .venv\Scripts\python -m swingquest backtest # replay history -> scorecard (~10 min)
@@ -104,7 +115,7 @@ swingquest/      sec/ (SEC client, Form 4 reader, bulk + daily backfill), prices
 data/            insider purchases, backtest rows, live signal log, fetch state
 docs/            the dashboard (GitHub Pages) + docs/data/*.json it reads
 .github/         daily scan, weekly health, tests
-tests/           100 tests for parsing, scoring, backtest math, tracking, health
+tests/           108 tests for parsing, scoring, backtest math, tracking, health
 ```
 
 ## Privacy
@@ -124,7 +135,7 @@ tests/           100 tests for parsing, scoring, backtest math, tracking, health
    just starting; until about 30 quests finish, trust the backtest only partly.
 3. **Tuned on the same history it's judged on.** The both-halves check reduces,
    but doesn't remove, the risk of fitting luck.
-4. **US only.** Canadian insiders report to SEDI, which has no free feed.
+4. **Insider quests are US only.** Canadian insiders report to SEDI, which has no free feed.
    Canadian holdings show "no signal coverage".
 5. **yfinance is unofficial.** It can break or throttle. The downloader retries
    and waits, but a bad day can mean a missed scan.
@@ -142,7 +153,7 @@ tests/           100 tests for parsing, scoring, backtest math, tracking, health
 2. **Earnings-date warning** on each quest.
 3. **Trade journal from Questrade activity exports**: check automatically
    whether real trades kept the oath.
-4. **Canadian coverage (SEDI)** if a usable data source appears.
+4. **Canadian insider quests (SEDI)**: no free feed today. Options: a paid provider (e.g. Finnhub or Smart Insider), or the SEDI-to-SEDAR+ move if it adds downloads. Canadian holdings already get analyst briefs.
 5. **Smarter exits to test:** trailing stops, or holding winners past 15 days.
 6. **New quests:** e.g. "follow 10 quests without breaking a vow". Badges are
    one list in `docs/js/game.js`.

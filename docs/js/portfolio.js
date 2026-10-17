@@ -198,7 +198,21 @@ function signalFor(h, today, live) {
   return { cls: "", text: "No current signal" };
 }
 
-export function renderPortfolio(view, today, live) {
+// Briefs come from a command you run on your PC (they stay private, never published).
+function briefPanel(holdings, briefs) {
+  const cmd = `.venv\\Scripts\\python -m swingquest briefs ${holdings.map((h) => h.symbol).join(" ")}`;
+  const missing = holdings.filter((h) => !briefs?.briefs?.[h.symbol]).length;
+  return `<div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
+    <h3>Holding briefs: analysts, trend, insiders</h3>
+    <p class="small muted" style="margin:4px 0 8px">${briefs ? `Updated ${esc(new Date(briefs.generated_at).toLocaleString())}. ` : ""}${missing
+      ? `${missing} holding${missing === 1 ? " has" : "s have"} no brief yet. ` : ""}To protect your privacy, briefs are made on your PC and never published.
+      Copy this command, paste it into the terminal in the Swing Quest folder, then refresh this page:</p>
+    <div class="row"><code id="brief-cmd" style="flex:1 1 220px;max-width:100%;overflow-x:auto;white-space:nowrap;padding:8px;display:block">${esc(cmd)}</code>
+      <button class="btn" id="copy-cmd">Copy command</button></div>
+    <p class="small muted" style="margin:6px 0 0">After the first run, the daily job on your PC refreshes them automatically.</p></div>`;
+}
+
+export function renderPortfolio(view, today, live, briefs = null) {
   const saved = storage.get(KEY, null);
   const rules = getRules();
   const holdings = saved?.holdings || [];
@@ -261,7 +275,9 @@ export function renderPortfolio(view, today, live) {
           <td class="num">${h.qty}</td><td class="num">${price(h.avgCost)}</td><td class="num">${dollars(h.value ?? h.bookCost)}</td>
           <td>${s.cls ? `<span class="chip ${s.cls} dark">${esc(s.text)}</span>` : `<span class="muted small">${esc(s.text)}</span>`}
             ${s.plan ? `<div class="small muted">retreat ${price(s.plan.stop)} · treasure ${price(s.plan.target)}${h.price ? ` · now ${pct(h.price / s.plan.stop - 1)} above the retreat` : ""}</div>` : ""}</td>
-        </tr>`).join("")}</tbody></table></div>
+        </tr>${briefs?.briefs?.[h.symbol] ? `<tr><td colspan="5" class="small" style="color:var(--text-2);padding-top:0">
+          <em>${esc(briefs.briefs[h.symbol].text)}</em></td></tr>` : ""}`).join("")}</tbody></table></div>
+      ${briefPanel(holdings, briefs)}
     </div>
     ${notOwned.length ? `<div class="panel on-dark"><h3>Tonight's quests you don't hold</h3>
       <p class="small" style="margin:6px 0 0">${notOwned.map((p) => `<strong>${esc(p.ticker)}</strong> <span class="muted">(${p.score})</span>`).join(" · ")}</p></div>` : ""}
@@ -277,7 +293,7 @@ export function renderPortfolio(view, today, live) {
       if (!parsed.length) throw new Error("No positions found in that file.");
       storage.set(KEY, { importedAt: new Date().toISOString(), holdings: parsed, meta: parsed.meta || null });
       game.setFlag("portfolio");
-      renderPortfolio(view, today, live);
+      renderPortfolio(view, today, live, briefs);
       game.toast("Portfolio imported", `${parsed.length} holdings, saved only in this browser`);
     } catch (e) { msg.textContent = e.message; }
   };
@@ -285,7 +301,12 @@ export function renderPortfolio(view, today, live) {
   drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("drag"); });
   drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
   drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("drag"); load(e.dataTransfer.files[0]); });
-  view.querySelector("#clear")?.addEventListener("click", () => { storage.remove(KEY); renderPortfolio(view, today, live); });
+  view.querySelector("#clear")?.addEventListener("click", () => { storage.remove(KEY); renderPortfolio(view, today, live, briefs); });
+  view.querySelector("#copy-cmd")?.addEventListener("click", async () => {
+    const text = view.querySelector("#brief-cmd").textContent;
+    try { await navigator.clipboard.writeText(text); game.toast("Command copied", "Paste it into the terminal in the Swing Quest folder"); }
+    catch { game.toast("Couldn't copy", "Select the command and copy it by hand"); }
+  });
   view.querySelector("#save-rules").addEventListener("click", () => {
     const account = parseFloat(view.querySelector("#acct").value), riskPct = parseFloat(view.querySelector("#riskpct").value);
     if (!(account > 0) || !(riskPct > 0) || riskPct > 5) { game.toast("Check your rules", "Account above $0, risk between 0.25% and 5%"); return; }

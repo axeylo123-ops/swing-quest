@@ -122,6 +122,26 @@ def cmd_daily(args):
     report.write_scorecard(live_rows=rows)
     print(f"Scan {result['as_of']}: {result['message']} | {added} new signals logged | "
           f"{len(view['open'])} open quests | {len(rows)} signals tracked in total")
+    from swingquest import briefs   # on your PC only: the private holdings list never reaches GitHub
+    if briefs.load_holdings():
+        briefs.write_briefs(briefs.build_briefs(briefs.load_holdings()))
+        print("Refreshed your private holding briefs.")
+
+
+def cmd_briefs(args):
+    """Briefs on your holdings. Symbols are remembered privately (git-ignored)."""
+    from swingquest import briefs
+    symbols = [s.upper() for s in args.symbols] or briefs.load_holdings()
+    if not symbols:
+        print("Give your symbols, e.g.:  python -m swingquest briefs AAPL SHOP.TO  "
+              "(the Treasury's 'Copy command' button builds this for you)")
+        return
+    briefs.save_holdings(symbols)
+    result = briefs.build_briefs(symbols)
+    briefs.write_briefs(result)
+    for sym, b in result["briefs"].items():
+        print(f"\n{sym}: {b['text']}")
+    print(f"\nSaved privately to {briefs.BRIEFS_FILE} (git-ignored). Refresh the Treasury to see them.")
 
 
 def cmd_health(args):
@@ -163,6 +183,9 @@ def main(argv=None):
     dl = sub.add_parser("daily", help="fetch, scan, log and grade signals, update the dashboard")
     dl.add_argument("--no-fetch", action="store_true", help="skip downloading new filings")
     dl.set_defaults(func=cmd_daily)
+    br = sub.add_parser("briefs", help="analyst + trend briefs on your holdings (private, git-ignored)")
+    br.add_argument("symbols", nargs="*", help="your symbols, e.g. AAPL SHOP.TO (remembered for next time)")
+    br.set_defaults(func=cmd_briefs)
     hl = sub.add_parser("health", help="weekly System Health report -> health.json + weights_proposed.yaml")
     hl.set_defaults(func=cmd_health)
     bt = sub.add_parser("backtest", help="replay the scanner through history -> scorecard.json")

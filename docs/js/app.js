@@ -19,7 +19,7 @@ function render() {
   if (tab === "today") renderToday(view, data.today, data.hist, data.live);
   else if (tab === "scorecard") renderScorecard(view, data.scorecard, data.hist);
   else if (tab === "health") renderHealth(view, data.health, data.scorecard, data.today);
-  else if (tab === "portfolio") renderPortfolio(view, data.today, data.live);
+  else if (tab === "portfolio") renderPortfolio(view, data.today, data.live, data.briefs);
   else game.renderHero(view);
 }
 
@@ -27,11 +27,12 @@ async function start() {
   $("#banner").innerHTML = banner();
   fx.embers();
   view.innerHTML = '<div class="panel hero-panel"><div class="big">Unrolling the scrolls…</div></div>';
-  const [today, scorecard, health, live, history] = await Promise.all([
+  const [today, scorecard, health, live, history, briefs] = await Promise.all([
     loadJSON("data/today.json"), loadJSON("data/scorecard.json"), loadJSON("data/health.json"),
     loadJSON("data/live.json"), loadJSON("data/history.json"),
+    loadJSON("data/private/briefs.json"),   // only exists on your PC
   ]);
-  Object.assign(data, { today, scorecard, health, live, hist: historyRows(history) });
+  Object.assign(data, { today, scorecard, health, live, briefs, hist: historyRows(history) });
   game.onChange(() => game.renderPlayer($("#player")));
   game.renderPlayer($("#player"));
   render();
