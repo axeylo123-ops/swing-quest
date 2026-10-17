@@ -16,7 +16,7 @@ const TABS = ["today", "scorecard", "health", "portfolio", "quests"];
 function render() {
   const tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "today";
   $$(".tabs a").forEach((a) => a.classList.toggle("active", a.dataset.tab === tab));
-  if (tab === "today") renderToday(view, data.today, data.hist);
+  if (tab === "today") renderToday(view, data.today, data.hist, data.live);
   else if (tab === "scorecard") renderScorecard(view, data.scorecard, data.hist);
   else if (tab === "health") renderHealth(view, data.health, data.scorecard, data.today);
   else if (tab === "portfolio") renderPortfolio(view, data.today, data.live);

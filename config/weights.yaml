@@ -26,4 +26,5 @@ rules:
   window_days: 30            # look-back window for insider buys
   trigger_days: 5            # a NEW buy must be filed within this many calendar days
   min_score: 60              # minimum score to be a pick
+  quests_per_month: 4        # your goal: a few high-quality trades a month (the weekly report tunes toward this)
   ignore_10b5_1_plans: true  # pre-scheduled plan buys say little about conviction

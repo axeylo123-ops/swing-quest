@@ -108,7 +108,47 @@ function rumor(p, i) {
   </div>`;
 }
 
-export function renderToday(view, data, hist = []) {
+const OUTCOME = {
+  target: { cls: "open", text: "Treasure claimed" }, stop: { cls: "fled", text: "Retreated" },
+  time: { cls: "blocked", text: "Returned home" }, skipped: { cls: "blocked", text: "Skipped (opened above the zone)" },
+};
+
+// Quests from earlier scans that are still running, with their progress.
+function activeQuests(live, asOf) {
+  const running = (live?.open || []).filter((q) => q.signal_date !== asOf);  // tonight's are shown below
+  if (!running.length && !live?.closed?.length) return "";
+  const open = running.map((q) => {
+    const pl = q.plan || {};
+    if (!q.entry_date) {
+      return `<div class="note" style="--r:0deg"><div class="spread"><div class="ticker">${esc(q.ticker)}</div><span class="chip blocked">Starts next open</span></div>
+        <div class="small" style="margin-top:6px">Posted ${esc(shortDate(q.signal_date))}. Enter only between <strong>${price(pl.entry_low)}</strong> and
+        <strong>${price(pl.entry_high)}</strong> at the next market open; skip it if it opens higher.</div></div>`;
+    }
+    const day = Math.min(q.days_held || 0, pl.time_stop_days || 15), total = pl.time_stop_days || 15;
+    const toStop = q.last_close && q.stop ? q.last_close / q.stop - 1 : null;
+    const toTarget = q.last_close && q.target ? q.target / q.last_close - 1 : null;
+    return `<div class="note" style="--r:0deg">
+      <div class="spread"><div><div class="ticker">${esc(q.ticker)}</div><div class="company small">${esc(q.company || "")}</div></div>
+        <div class="center"><div class="display ${signClass(q.return_now)}" style="font-size:22px">${pct(q.return_now)}</div><div class="small muted">since entry</div></div></div>
+      <div class="small" style="margin:6px 0 2px">Day ${day} of ${total} · bought ${price(q.entry)} on ${esc(shortDate(q.entry_date))}</div>
+      <div class="meter" style="background:#d9c794;border-color:#b89a5c"><i style="width:${(day / total) * 100}%"></i></div>
+      <div class="small" style="margin-top:6px">Retreat ${price(q.stop)} (${pct(toStop, 1, false)} below) · Treasure ${price(q.target)} (${pct(toTarget, 1, false)} above)</div>
+    </div>`;
+  }).join("");
+  const closed = (live.closed || []).slice(0, 5).map((q) => {
+    const o = OUTCOME[q.exit_reason] || OUTCOME.time;
+    return `<tr><td><strong>${esc(q.ticker)}</strong></td><td>${esc(shortDate(q.signal_date))}</td>
+      <td><span class="chip ${o.cls} dark">${o.text}</span></td>
+      <td class="num ${signClass(q.trade_return)}">${q.taken ? pct(q.trade_return) : "–"}</td></tr>`;
+  }).join("");
+  return `<div class="section-title"><h2>Your Active Quests</h2>${flourish()}
+      <p>Quests from earlier nights, graded automatically with the same rules as the Chronicle.</p></div>
+    ${open ? `<div class="notes">${open}</div>` : '<p class="center muted">No quests in progress.</p>'}
+    ${closed ? `<div class="panel on-dark" style="margin-top:14px"><h3>Recently finished</h3>
+      <div class="table-wrap"><table><thead><tr><th>Quest</th><th>Posted</th><th>Outcome</th><th class="num">Result</th></tr></thead><tbody>${closed}</tbody></table></div></div>` : ""}`;
+}
+
+export function renderToday(view, data, hist = [], live = null) {
   if (!data) {
     view.innerHTML = `<div class="panel framed hero-panel">${noticeBoard()}<div class="big">No scan yet</div>
       <p>Run <code>python -m swingquest scan</code> to post tonight's quests.</p></div>`;
@@ -130,6 +170,8 @@ export function renderToday(view, data, hist = []) {
         <div class="tally"><div class="v">${s.skipped}</div><div class="k">Rejected</div><div class="s">failed a rule</div></div>
       </div>
     </div>
+
+    ${activeQuests(live, data.as_of)}
 
     ${data.picks.length ? `<div class="section-title"><h2>Tonight's Quests</h2>${flourish()}</div>
       <div class="stack">${data.picks.map((p) => questScroll(p, data.as_of, hist)).join("")}</div>` : ""}

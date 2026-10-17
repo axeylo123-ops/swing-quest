@@ -1,0 +1,136 @@
+{
+ "generated_at": "2026-10-17T19:05:37+00:00",
+ "week": "2026-10-12",
+ "factors": [
+  {
+   "name": "cluster",
+   "label": "Insider cluster",
+   "weight": 25,
+   "edge": 0.00514,
+   "with_n": 421,
+   "without_n": 1759,
+   "verdict": "helping"
+  },
+  {
+   "name": "role",
+   "label": "Buyer's rank",
+   "weight": 20,
+   "edge": -0.02937,
+   "with_n": 2065,
+   "without_n": 115,
+   "verdict": "hurting"
+  },
+  {
+   "name": "dollar_size",
+   "label": "Gold committed ($)",
+   "weight": 15,
+   "edge": 0.00425,
+   "with_n": 1028,
+   "without_n": 1152,
+   "verdict": "unclear"
+  },
+  {
+   "name": "stake_increase",
+   "label": "Stake increase",
+   "weight": 15,
+   "edge": -0.00351,
+   "with_n": 1215,
+   "without_n": 965,
+   "verdict": "unclear"
+  },
+  {
+   "name": "first_buy",
+   "label": "First buy in a year",
+   "weight": 10,
+   "edge": 0.00926,
+   "with_n": 1470,
+   "without_n": 710,
+   "verdict": "helping"
+  },
+  {
+   "name": "price_context",
+   "label": "Near 52-week low",
+   "weight": 15,
+   "edge": -0.00521,
+   "with_n": 863,
+   "without_n": 1317,
+   "verdict": "hurting"
+  }
+ ],
+ "suggestions": [
+  {
+   "factor": "rules.min_score",
+   "label": "Minimum score for a quest",
+   "current": 60,
+   "suggested": 70,
+   "why": "about 3.7 quests a month (your goal: 4); the weaker half of the history still beat SPY by +1.3%"
+  }
+ ],
+ "recommended": true,
+ "whatif": {
+  "current": {
+   "all": {
+    "n": 192,
+    "win_rate": 0.5687,
+    "avg_trade_return": 0.02063,
+    "avg_excess_15": 0.00926,
+    "enough_data": true
+   },
+   "older": {
+    "n": 87,
+    "win_rate": 0.5429,
+    "avg_trade_return": 0.00106,
+    "avg_excess_15": -0.00246,
+    "enough_data": true
+   },
+   "newer": {
+    "n": 105,
+    "win_rate": 0.5889,
+    "avg_trade_return": 0.03586,
+    "avg_excess_15": 0.01896,
+    "enough_data": true
+   },
+   "per_month": 6.7,
+   "worst_half": -0.00246
+  },
+  "proposed": {
+   "all": {
+    "n": 106,
+    "win_rate": 0.6071,
+    "avg_trade_return": 0.0278,
+    "avg_excess_15": 0.01465,
+    "enough_data": true
+   },
+   "older": {
+    "n": 49,
+    "win_rate": 0.6111,
+    "avg_trade_return": 0.02005,
+    "avg_excess_15": 0.01311,
+    "enough_data": true
+   },
+   "newer": {
+    "n": 57,
+    "win_rate": 0.6042,
+    "avg_trade_return": 0.03361,
+    "avg_excess_15": 0.01597,
+    "enough_data": true
+   },
+   "per_month": 3.7,
+   "worst_half": 0.01311
+  }
+ },
+ "observations": [
+  "Today's settings give about 6.7 quests a month; your goal is 4.",
+  "Quest exits: target first 9%, stop first 28%, 15-day time limit 63%.",
+  "By share price, under $5: +5.9% vs SPY (76 signals); $5-$30: +1.3% vs SPY (791 signals); over $30: +0.2% vs SPY (1313 signals).",
+  "Live tracking: 10 signals logged, 2 quests, 0 finished."
+ ],
+ "improvements": [
+  "Most quests end at the 15-day limit before reaching the target. Worth testing a closer target (e.g. a 1.5 x ATR stop instead of 2 x, which keeps the 2:1 ratio) in settings.yaml.",
+  "Live results are still building (0/30 finished quests). Until then, judgments lean on the backtest, which flatters results (delisted stocks are missing)."
+ ],
+ "sources": {
+  "backtest_signals": 2180,
+  "live_signals": 10
+ }
+}

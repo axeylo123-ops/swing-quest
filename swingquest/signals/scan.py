@@ -91,7 +91,7 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
     price_data = source.history(triggered + ["SPY"], today - timedelta(days=PRICE_LOOKBACK_DAYS), today)
     as_of = price_data["SPY"].index[-1] if "SPY" in price_data else pd.Timestamp(today)
 
-    picks, watch, skipped = [], [], []
+    picks, watch, skipped, evaluated = [], [], [], []
     for t in triggered:
         df = price_data.get(t)
         if df is None:
@@ -114,6 +114,7 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
             skipped.append({"ticker": t, "reason": "not enough price history"})
             continue
         setup["id"] = f"{t}-{as_of:%Y-%m-%d}"
+        evaluated.append(setup)  # every scored stock is logged for learning (see tracker.py)
         if setup["status"] == "below":
             skipped.append({"ticker": t, "reason": f"score {setup['score']} is below {rules['min_score']}"})
             continue
@@ -142,4 +143,5 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "today.json").write_text(json.dumps(result, indent=1, allow_nan=False),
                                         encoding="utf-8", newline="\n")
+    result["evaluated"] = evaluated  # not in today.json; the tracker logs these
     return result

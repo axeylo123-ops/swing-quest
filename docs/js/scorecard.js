@@ -106,6 +106,7 @@ export function renderScorecard(view, card, all = []) {
 
     <div class="section-title"><h2>Recent Form</h2>${flourish()}<p>Is it working lately? Results of finished quests, by when they were posted.</p></div>
     <div class="seasons">
+      ${seasonBox("Live record (real time)", summarize(quests.filter((r) => r.source === "live")))}
       ${seasonBox("Last 3 months", summarize(since(quests, 3, last)))}
       ${seasonBox("Last 6 months", summarize(since(quests, 6, last)))}
       ${seasonBox("All time", s)}

@@ -38,6 +38,18 @@ function fromScorecard(card, weights) {
   };
 }
 
+// Current settings vs the suggestion, replayed on the older and newer half of history.
+function whatIf(w) {
+  if (!w?.current || !w?.proposed) return "";
+  const cell = (s) => (s ? `${pct(s.avg_excess_15)} <span class="muted small">(${s.n})</span>` : "–");
+  const row = (name, x) => `<tr><td>${name}</td><td class="num">${x.per_month ?? "–"}</td><td class="num">${cell(x.all)}</td>
+    <td class="num">${cell(x.older)}</td><td class="num">${cell(x.newer)}</td><td class="num">${x.all?.win_rate == null ? "–" : `${Math.round(x.all.win_rate * 100)}%`}</td></tr>`;
+  return `<h3 style="margin-top:14px">What if? Quests replayed on past signals</h3>
+    <div class="table-wrap"><table><thead><tr><th></th><th class="num">Quests / month</th><th class="num">vs market</th>
+      <th class="num">Older half</th><th class="num">Newer half</th><th class="num">Won</th></tr></thead>
+      <tbody>${row("Your settings now", w.current)}${row("With the suggestion", w.proposed)}</tbody></table></div>`;
+}
+
 export function renderHealth(view, health, scorecard, today) {
   if (!health && scorecard?.backtest) health = fromScorecard(scorecard.backtest, today?.rules?.weights);
   if (!health) {
@@ -88,12 +100,17 @@ export function renderHealth(view, health, scorecard, today) {
     <div id="spoils" ${won ? "" : "hidden"}>
       <div class="section-title"><h2>The Spoils</h2>${flourish()}<p>What the Reckoning suggests. Nothing changes unless you change it.</p></div>
       <div class="panel framed on-dark spoils">
-        ${health.suggestions?.length ? `<div class="table-wrap"><table>
-          <thead><tr><th>Factor</th><th class="num">Now</th><th class="num">Suggested</th><th>Why</th></tr></thead>
-          <tbody>${health.suggestions.map((s) => `<tr><td>${esc(FACTORS[s.factor]?.label || s.factor)}</td><td class="num">${s.current}</td>
+        ${health.suggestions?.length ? `
+          <div class="row" style="margin-bottom:10px"><span class="chip ${health.recommended ? "open" : "blocked"} dark">${health.recommended ? "Recommended" : "For interest only"}</span>
+            <span class="small muted">${health.recommended ? "Tested on the past: better in the weaker half of history, not just a lucky streak." : "Did not improve the weaker half of history. Keep your settings."}</span></div>
+          <div class="table-wrap"><table>
+          <thead><tr><th>Setting</th><th class="num">Now</th><th class="num">Suggested</th><th>Why</th></tr></thead>
+          <tbody>${health.suggestions.map((s) => `<tr><td>${esc(s.label || FACTORS[s.factor]?.label || s.factor)}</td><td class="num">${s.current}</td>
             <td class="num"><strong style="color:var(--gold-bright)">${s.suggested}</strong></td><td class="muted">${esc(s.why)}</td></tr>`).join("")}</tbody></table></div>
-          <p class="small muted">To accept, copy the numbers from <code>config/weights_proposed.yaml</code> into <code>config/weights.yaml</code>.</p>`
-          : `<p class="muted" style="margin:0">${health.preview ? "Suggested weight changes arrive with the first weekly report (Phase 4)." : "No changes suggested this week. The weights hold."}</p>`}
+          ${whatIf(health.whatif)}
+          <p class="small" style="margin-top:10px"><strong>To accept:</strong> open <code>config/weights.yaml</code>, change the numbers you agree with
+            to the "Suggested" values (they're also in <code>config/weights_proposed.yaml</code>), save, and commit. The next scan uses them.</p>`
+          : `<p class="muted" style="margin:0">${health.preview ? "Suggested changes arrive with the first weekly report." : "No changes suggested this week. Your settings hold."}</p>`}
         ${health.observations?.length ? `<h3 style="margin-top:14px">What the Reckoning noticed</h3><ul class="lore">${health.observations.map((o) => `<li>${esc(o)}</li>`).join("")}</ul>` : ""}
         ${health.improvements?.length ? `<h3 style="margin-top:14px">Where to improve</h3><ul class="lore warn">${health.improvements.map((o) => `<li>${esc(o)}</li>`).join("")}</ul>` : ""}
       </div>

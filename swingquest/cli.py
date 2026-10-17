@@ -4,6 +4,8 @@
     python -m swingquest fetch --date 2026-10-14   # one full day (nightly index)
     python -m swingquest prices AAPL MSFT      # quick price + universe check
     python -m swingquest scan                  # fetch + score -> docs/data/today.json
+    python -m swingquest daily                 # fetch + scan + log + grade (what automation runs)
+    python -m swingquest health                # weekly report + suggested weights (never applied)
     python -m swingquest backfill --bulk 2022q4:2026q1     # past purchases (bulk files)
     python -m swingquest backfill --days 2026-04-01:2026-10-13   # gap-fill by day
     python -m swingquest backtest              # replay history -> docs/data/scorecard.json
@@ -105,6 +107,40 @@ def cmd_backtest(args):
     print("Saved docs/data/scorecard.json and data/backtest/rows.json")
 
 
+def cmd_daily(args):
+    """The evening/morning job: fetch -> scan -> log -> grade -> scorecard."""
+    from swingquest import tracker
+    from swingquest.backtest import report
+    from swingquest.signals.scan import run_scan
+    if not args.no_fetch:
+        cmd_fetch(argparse.Namespace(date=None))
+    result = run_scan()
+    rows, added = tracker.log_signals(result["evaluated"], result["as_of"])
+    rows = tracker.update_outcomes(rows)
+    tracker.save_log(rows)
+    view = tracker.write_dashboard(rows)
+    report.write_scorecard(live_rows=rows)
+    print(f"Scan {result['as_of']}: {result['message']} | {added} new signals logged | "
+          f"{len(view['open'])} open quests | {len(rows)} signals tracked in total")
+
+
+def cmd_health(args):
+    from swingquest import health
+    r = health.run()
+    print(f"System Health for week of {r['week']}:")
+    for f in r["factors"]:
+        edge = "  n/a " if f["edge"] is None else f"{f['edge'] * 100:+5.1f}%"
+        print(f"  {f['label']:22} {edge}  {f['verdict']}")
+    print("Suggestions:" if r["suggestions"] else "No changes suggested.")
+    for s in r["suggestions"]:
+        print(f"  {s['label']}: {s['current']} -> {s['suggested']}  ({s['why']})")
+    w = r["whatif"]
+    for name in ("current", "proposed"):
+        print(f"  {name:9} quests: " + " | ".join(
+            f"{h} n={w[name][h]['n']} vsSPY={(w[name][h]['avg_excess_15'] or 0) * 100:+.1f}%" for h in ("all", "older", "newer")))
+    print("Recommended: " + ("YES" if r["recommended"] else "no") + "  -> see config/weights_proposed.yaml")
+
+
 def main(argv=None):
     import sys
     sys.stdout.reconfigure(line_buffering=True)  # show progress lines immediately, even in logs
@@ -124,6 +160,11 @@ def main(argv=None):
     bf.add_argument("--days", help="day range from nightly indexes, e.g. 2026-04-01:2026-10-13")
     bf.add_argument("--rate", type=float, default=None, help="SEC requests/sec (max 10)")
     bf.set_defaults(func=cmd_backfill)
+    dl = sub.add_parser("daily", help="fetch, scan, log and grade signals, update the dashboard")
+    dl.add_argument("--no-fetch", action="store_true", help="skip downloading new filings")
+    dl.set_defaults(func=cmd_daily)
+    hl = sub.add_parser("health", help="weekly System Health report -> health.json + weights_proposed.yaml")
+    hl.set_defaults(func=cmd_health)
     bt = sub.add_parser("backtest", help="replay the scanner through history -> scorecard.json")
     bt.add_argument("--start", help="first signal date (default: 400 days after history starts)")
     bt.add_argument("--end", help="last signal date (default: today)")
