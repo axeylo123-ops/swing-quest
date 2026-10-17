@@ -4,12 +4,24 @@ from datetime import date
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from swingquest import store
 from swingquest.prices.base import PriceSource
 from swingquest.signals import scan
 
 TODAY = date(2026, 10, 16)
+
+
+@pytest.fixture(autouse=True)
+def fixed_rules(monkeypatch):
+    """Tests use their own rules, so changing your config never breaks them."""
+    from swingquest import universe
+    from swingquest.signals import scoring
+    real_settings, real_weights = universe.settings(), scoring.load_weights()
+    monkeypatch.setattr(universe, "settings", lambda: {**real_settings, "universe": {
+        "min_price": 5.0, "max_price": None, "min_avg_dollar_volume": 10_000_000}})
+    monkeypatch.setattr(scan.scoring, "load_weights", lambda: {**real_weights, "rules": {**real_weights["rules"], "min_score": 60}})
 
 
 def bars(noisy=True):

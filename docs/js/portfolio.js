@@ -50,10 +50,85 @@ const FIELDS = {
   currency: /currency/i,
 };
 
-// Activity / trade-history exports list every buy and sell, not what you hold now.
+// Activity / trade-history exports list every buy and sell. We rebuild holdings from them.
 const ACTIVITY = /transaction date|settlement date|trade date|activity type|^action$/i;
-export const WRONG_EXPORT = "This looks like your trade history (activities), not your current holdings. "
-  + "In Questrade, open your account's Positions (holdings) page and use its export button, then bring that file here.";
+const ACT_FIELDS = {
+  date: /transaction date|trade date|^date$/i, action: /^action$/i, type: /activity type/i,
+  symbol: /symbol/i, name: /description/i, qty: /quantity/i, price: /^price$/i,
+  commission: /commission/i, gross: /gross amount/i, currency: /currency/i,
+};
+const SYMBOL_OK = /^[A-Z][A-Z0-9.\-]{0,9}$/;
+
+// Excel stores dates as day counts since 1899-12-30; text dates come in many shapes.
+function dayValue(v) {
+  const s = String(v ?? "").trim();
+  if (/^\d{4,6}(\.\d+)?$/.test(s)) return parseFloat(s);
+  const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const t = iso ? Date.UTC(+iso[1], +iso[2] - 1, +iso[3]) : Date.parse(s);
+  return Number.isFinite(t) ? t / 86400000 + 25569 : null;
+}
+const dayLabel = (d) => (d == null ? null : new Date((d - 25569) * 86400000).toISOString().slice(0, 10));
+
+/* Rebuild what you hold from a trade-history file: buys add shares, sells
+   remove them, and average cost follows Canada's adjusted cost base method
+   (commissions included). Only correct if the file covers every trade since
+   you bought what you still own. */
+function holdingsFromActivity(rows, headerAt, header, keep) {
+  const cols = {};
+  for (const [field, re] of Object.entries(ACT_FIELDS)) {
+    const i = keep.find((k) => re.test(header[k]) && !Object.values(cols).includes(k));
+    if (i !== undefined) cols[field] = i;
+  }
+  if (cols.symbol === undefined || cols.qty === undefined) throw new Error("This trade history has no Symbol or Quantity column.");
+  const cell = (r, f) => (cols[f] === undefined ? "" : String(r[cols[f]] ?? "").trim());
+
+  const trades = [];
+  rows.slice(headerAt + 1).forEach((r, order) => {
+    const raw = cell(r, "symbol").toUpperCase(), action = cell(r, "action"), type = cell(r, "type");
+    const qty = num(cell(r, "qty"));
+    if (!raw || !qty || !SYMBOL_OK.test(raw)) return;
+    const isTrade = /trade/i.test(type) || (!type && /^(buy|sell)/i.test(action));
+    const isTransfer = /transfer/i.test(type);
+    if (!isTrade && !isTransfer) return;              // dividends, deposits, fees, interest...
+    let shares = Math.abs(qty);
+    if (/^sell/i.test(action)) shares = -shares;
+    else if (!/^buy/i.test(action)) shares = qty;     // transfers etc.: trust the sign in the file
+    let px = num(cell(r, "price"));
+    const gross = num(cell(r, "gross"));
+    if (!px && gross) px = Math.abs(gross / qty);
+    trades.push({ raw, shares, price: px || 0, fee: Math.abs(num(cell(r, "commission")) || 0),
+      day: dayValue(cell(r, "date")), order, name: cell(r, "name"), currency: cell(r, "currency") });
+  });
+  // Oldest first (exports are often newest first); keep file order for same-day trades.
+  trades.sort((a, b) => (a.day ?? 0) - (b.day ?? 0) || b.order - a.order);
+
+  const book = new Map(), oversold = new Set();
+  for (const t of trades) {
+    const canadian = CANADIAN.test(t.raw);
+    const symbol = canadian ? t.raw : t.raw.replace(/\.US$/, "").replace(".", "-");
+    const h = book.get(symbol) || { symbol, name: t.name, qty: 0, cost: 0, currency: t.currency, market: canadian ? "CA" : "US" };
+    if (t.shares > 0) { h.cost += t.shares * t.price + t.fee; h.qty += t.shares; }
+    else {
+      const sell = -t.shares;
+      if (sell > h.qty + 1e-9) oversold.add(symbol);
+      const avg = h.qty > 0 ? h.cost / h.qty : 0;
+      h.qty = Math.max(0, h.qty - sell);
+      h.cost = h.qty > 1e-9 ? Math.max(0, h.cost - avg * sell) : 0;
+    }
+    book.set(symbol, h);
+  }
+  const holdings = [...book.values()].filter((h) => h.qty > 1e-6).map((h) => ({
+    symbol: h.symbol, name: h.name, qty: +h.qty.toFixed(6), avgCost: h.cost / h.qty, price: null, value: null,
+    bookCost: h.cost, currency: h.currency, market: h.market,
+  }));
+  const days = trades.map((t) => t.day).filter((d) => d != null);
+  holdings.meta = {
+    source: "activity",
+    from: dayLabel(days.length ? Math.min(...days) : null), to: dayLabel(days.length ? Math.max(...days) : null),
+    trades: trades.length, oversold: [...oversold],
+  };
+  return holdings;
+}
 
 export const holdingsFromCSV = (text) => holdingsFromRows(parseCSV(text));
 
@@ -74,8 +149,8 @@ export function holdingsFromRows(rawRows) {
   if (headerAt < 0) throw new Error("Couldn't find a Symbol column. Export your Positions from Questrade (CSV or Excel).");
   // Drop account columns FIRST, by position, so no later code can read them.
   const header = rows[headerAt].map((h) => h.trim());
-  if (header.some((h) => ACTIVITY.test(h))) throw new Error(WRONG_EXPORT);
   const keep = header.map((h, i) => (/account/i.test(h) ? -1 : i)).filter((i) => i >= 0);
+  if (header.some((h) => ACTIVITY.test(h))) return holdingsFromActivity(rows, headerAt, header, keep);
   const cols = {};
   for (const [field, re] of Object.entries(FIELDS)) {
     const i = keep.find((k) => re.test(header[k]) && !Object.values(cols).includes(k));
@@ -131,6 +206,8 @@ export function renderPortfolio(view, today, live) {
   const withSignal = rows.filter((r) => r.s.cls).length;
   const notOwned = (today?.picks || []).filter((p) => !holdings.some((h) => h.symbol === p.ticker));
   const total = holdings.reduce((a, h) => a + (h.value || 0), 0);
+  const bookTotal = holdings.reduce((a, h) => a + (h.bookCost || 0), 0);
+  const meta = saved?.meta;
 
   view.innerHTML = `<div class="stack">
     <div class="panel framed hero-panel">
@@ -159,22 +236,29 @@ export function renderPortfolio(view, today, live) {
       <input type="file" id="csv" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
       ${emblem("key", 46)}
       <div class="display" style="color:var(--gold-bright);font-size:17px;margin-top:6px">${holdings.length ? "Bring a newer ledger" : "Open the vault: choose your Questrade positions file"}</div>
-      <div class="muted small">Excel (.xlsx) or CSV · or drag and drop it here · use the export on your account's Positions page, not History</div>
+      <div class="muted small">Excel (.xlsx) or CSV · or drag and drop it here · a positions export or your trade history (activities) both work</div>
     </label>
     <p id="csv-msg" class="small" style="color:var(--amber)" role="status"></p>
 
     ${holdings.length ? `
+    ${meta?.source === "activity" ? `<div class="panel on-dark" style="border-color:var(--gold-deep)">
+      <h3>Rebuilt from your trade history</h3>
+      <p class="small" style="margin:6px 0 0">${meta.trades} trades from ${esc(meta.from || "?")} to ${esc(meta.to || "?")}: buys add shares, sells remove them,
+        and average cost follows Canada's adjusted cost base (fees included). This is only right if the file covers <strong>every trade since you
+        bought</strong> what you still own. Check the share counts against Questrade.</p>
+      ${meta.oversold?.length ? `<p class="small" style="margin:6px 0 0;color:var(--amber)">Sold more than bought in this file, so left out:
+        ${meta.oversold.map(esc).join(", ")}. Export a longer date range to include them.</p>` : ""}</div>` : ""}
     <div class="panel framed on-dark">
       <div class="tallies" style="margin-top:0">
         <div class="tally"><div class="v">${holdings.length}</div><div class="k">Holdings</div><div class="s">imported ${esc(new Date(saved.importedAt).toLocaleDateString())}</div></div>
-        <div class="tally"><div class="v">${dollars(total)}</div><div class="k">Market value</div><div class="s">from your file</div></div>
+        <div class="tally"><div class="v">${dollars(total || bookTotal)}</div><div class="k">${total ? "Market value" : "Book cost"}</div><div class="s">${total ? "from your file" : "what you paid, incl. fees"}</div></div>
         <div class="tally"><div class="v">${withSignal}</div><div class="k">On the board</div><div class="s">quest or rumor</div></div>
       </div>
       <div class="table-wrap" style="margin-top:14px"><table>
-        <thead><tr><th>Holding</th><th class="num">Shares</th><th class="num">Avg cost</th><th class="num">Value</th><th>On the board?</th></tr></thead>
+        <thead><tr><th>Holding</th><th class="num">Shares</th><th class="num">Avg cost</th><th class="num">${total ? "Value" : "Book cost"}</th><th>On the board?</th></tr></thead>
         <tbody>${rows.map(({ h, s }) => `<tr>
           <td><strong>${esc(h.symbol)}</strong><div class="muted small">${esc(h.name)}</div></td>
-          <td class="num">${h.qty}</td><td class="num">${price(h.avgCost)}</td><td class="num">${dollars(h.value)}</td>
+          <td class="num">${h.qty}</td><td class="num">${price(h.avgCost)}</td><td class="num">${dollars(h.value ?? h.bookCost)}</td>
           <td>${s.cls ? `<span class="chip ${s.cls} dark">${esc(s.text)}</span>` : `<span class="muted small">${esc(s.text)}</span>`}
             ${s.plan ? `<div class="small muted">retreat ${price(s.plan.stop)} · treasure ${price(s.plan.target)}${h.price ? ` · now ${pct(h.price / s.plan.stop - 1)} above the retreat` : ""}</div>` : ""}</td>
         </tr>`).join("")}</tbody></table></div>
@@ -191,7 +275,7 @@ export function renderPortfolio(view, today, live) {
     try {
       const parsed = await holdingsFromFile(file);
       if (!parsed.length) throw new Error("No positions found in that file.");
-      storage.set(KEY, { importedAt: new Date().toISOString(), holdings: parsed });
+      storage.set(KEY, { importedAt: new Date().toISOString(), holdings: parsed, meta: parsed.meta || null });
       game.setFlag("portfolio");
       renderPortfolio(view, today, live);
       game.toast("Portfolio imported", `${parsed.length} holdings, saved only in this browser`);

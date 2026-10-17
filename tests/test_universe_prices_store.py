@@ -57,6 +57,13 @@ def test_short_history_fails():
     assert not liquidity_check(bars(n=10), "2026-12-31", 5, 10e6)["ok"]
 
 
+def test_max_price_ceiling(monkeypatch):
+    from swingquest import universe
+    monkeypatch.setattr(universe, "settings", lambda: {"universe": {"min_price": 2, "max_price": 30, "min_avg_dollar_volume": 1}})
+    assert not liquidity_check(bars(close=40), "2026-12-31")["ok"]
+    assert liquidity_check(bars(close=25), "2026-12-31")["ok"]
+
+
 def test_otc_is_excluded_unknown_is_allowed():
     ex = {"AAA": "Nasdaq", "BBB": "OTC"}
     assert is_us_listed("AAA", ex) and not is_us_listed("BBB", ex) and is_us_listed("ZZZ", ex)
