@@ -4,6 +4,7 @@
 // looks at the data, and only symbol/quantity/cost/value are kept.
 import { esc, price, dollars, pct, storage } from "./util.js";
 import * as game from "./game.js";
+import { emblem } from "./art.js";
 
 const KEY = "sq.portfolio.v1";
 const CANADIAN = /\.(TO|V|CN|NE|TSX|TSXV)$/i;
@@ -92,11 +93,11 @@ export function holdingsFromCSV(text) {
 function signalFor(h, today, live) {
   if (h.market === "CA") return { cls: "", text: "No signal coverage (Canadian listing)" };
   const pick = today?.picks?.find((p) => p.ticker === h.symbol);
-  if (pick) return { cls: "ready", text: `Today's pick · score ${pick.score}`, plan: pick.plan };
+  if (pick) return { cls: "open", text: `Tonight's quest · ${pick.score}`, plan: pick.plan };
   const open = live?.open?.find((s) => s.ticker === h.symbol);
-  if (open) return { cls: "ready", text: `Open signal from ${open.signal_date}`, plan: open.plan };
+  if (open) return { cls: "open", text: `Open quest since ${open.signal_date}`, plan: open.plan };
   const watch = today?.watchlist?.find((p) => p.ticker === h.symbol);
-  if (watch) return { cls: "wait", text: `Watchlist · score ${watch.score} (${watch.timing})` };
+  if (watch) return { cls: "blocked", text: `Rumor · ${watch.score} (path ${watch.timing === "Wait" ? "blocked" : "fled"})` };
   const skip = today?.skipped?.find((s) => s.ticker === h.symbol);
   if (skip) return { cls: "", text: `Insiders bought recently, but ${skip.reason}` };
   return { cls: "", text: "No current signal" };
@@ -111,36 +112,40 @@ export function renderPortfolio(view, today, live) {
   const total = holdings.reduce((a, h) => a + (h.value || 0), 0);
 
   view.innerHTML = `<div class="stack">
-    <div class="panel hero">
-      <div class="big">Your portfolio vs signals</div>
-      <p>Import a Questrade positions CSV. It is read <strong>only in this browser</strong>, never uploaded,
-        and account numbers are thrown away the moment the file is read.</p>
+    <div class="panel framed hero-panel">
+      <div class="kicker">The Treasury</div>
+      <div class="big">Your holdings vs the quests</div>
+      <p>Bring a Questrade positions CSV. It is read <strong>only in this browser</strong>, never uploaded,
+        and account numbers are burned the moment the file is opened.</p>
     </div>
 
     <label class="panel dropzone" id="drop">
       <input type="file" id="csv" accept=".csv,text/csv" hidden>
-      <strong>${holdings.length ? "Import a newer CSV" : "Choose your Questrade CSV"}</strong>
+      ${emblem("key", 46)}
+      <div class="display" style="color:var(--gold-bright);font-size:17px;margin-top:6px">${holdings.length ? "Bring a newer ledger" : "Open the vault: choose your Questrade CSV"}</div>
       <div class="muted small">or drag and drop it here · Questrade → Accounts → Positions → Export to CSV</div>
     </label>
-    <p id="csv-msg" class="small muted" role="status"></p>
+    <p id="csv-msg" class="small" style="color:var(--amber)" role="status"></p>
 
     ${holdings.length ? `
-    <div class="tiles">
-      <div class="tile"><div class="label">Holdings</div><div class="value">${holdings.length}</div><div class="sub">imported ${esc(new Date(saved.importedAt).toLocaleDateString())}</div></div>
-      <div class="tile"><div class="label">Market value</div><div class="value">${dollars(total)}</div><div class="sub">from your CSV</div></div>
-      <div class="tile"><div class="label">With a signal</div><div class="value">${withSignal}</div><div class="sub">pick or watchlist</div></div>
+    <div class="panel framed on-dark">
+      <div class="tallies" style="margin-top:0">
+        <div class="tally"><div class="v">${holdings.length}</div><div class="k">Holdings</div><div class="s">imported ${esc(new Date(saved.importedAt).toLocaleDateString())}</div></div>
+        <div class="tally"><div class="v">${dollars(total)}</div><div class="k">Market value</div><div class="s">from your CSV</div></div>
+        <div class="tally"><div class="v">${withSignal}</div><div class="k">On the board</div><div class="s">quest or rumor</div></div>
+      </div>
+      <div class="table-wrap" style="margin-top:14px"><table>
+        <thead><tr><th>Holding</th><th class="num">Shares</th><th class="num">Avg cost</th><th class="num">Value</th><th>On the board?</th></tr></thead>
+        <tbody>${rows.map(({ h, s }) => `<tr>
+          <td><strong>${esc(h.symbol)}</strong><div class="muted small">${esc(h.name)}</div></td>
+          <td class="num">${h.qty}</td><td class="num">${price(h.avgCost)}</td><td class="num">${dollars(h.value)}</td>
+          <td>${s.cls ? `<span class="chip ${s.cls} dark">${esc(s.text)}</span>` : `<span class="muted small">${esc(s.text)}</span>`}
+            ${s.plan ? `<div class="small muted">retreat ${price(s.plan.stop)} · treasure ${price(s.plan.target)}${h.price ? ` · now ${pct(h.price / s.plan.stop - 1)} above the retreat` : ""}</div>` : ""}</td>
+        </tr>`).join("")}</tbody></table></div>
     </div>
-    <div class="panel table-wrap"><table>
-      <thead><tr><th>Symbol</th><th class="num">Shares</th><th class="num">Avg cost</th><th class="num">Value</th><th>Signal</th></tr></thead>
-      <tbody>${rows.map(({ h, s }) => `<tr>
-        <td><strong>${esc(h.symbol)}</strong><div class="muted small">${esc(h.name)}</div></td>
-        <td class="num">${h.qty}</td><td class="num">${price(h.avgCost)}</td><td class="num">${dollars(h.value)}</td>
-        <td>${s.cls ? `<span class="chip ${s.cls}">${esc(s.text)}</span>` : `<span class="muted small">${esc(s.text)}</span>`}
-          ${s.plan ? `<div class="small muted">stop ${price(s.plan.stop)} · target ${price(s.plan.target)}${h.price ? ` · now ${pct(h.price / s.plan.stop - 1)} above stop` : ""}</div>` : ""}</td>
-      </tr>`).join("")}</tbody></table></div>
-    ${notOwned.length ? `<div class="panel"><h3>Today's picks you don't own</h3>
-      <p class="muted small" style="margin:4px 0 0">${notOwned.map((p) => `<strong>${esc(p.ticker)}</strong> (score ${p.score})`).join(" · ")}</p></div>` : ""}
-    <button class="btn" id="clear">Remove portfolio from this browser</button>` : ""}
+    ${notOwned.length ? `<div class="panel on-dark"><h3>Tonight's quests you don't hold</h3>
+      <p class="small" style="margin:6px 0 0">${notOwned.map((p) => `<strong>${esc(p.ticker)}</strong> <span class="muted">(${p.score})</span>`).join(" · ")}</p></div>` : ""}
+    <div class="center"><button class="btn" id="clear">Remove portfolio from this browser</button></div>` : ""}
   </div>`;
 
   const input = view.querySelector("#csv"), drop = view.querySelector("#drop"), msg = view.querySelector("#csv-msg");

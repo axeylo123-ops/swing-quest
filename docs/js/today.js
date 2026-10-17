@@ -1,168 +1,181 @@
-// The Today tab: pick cards, watchlist, and why other stocks didn't qualify.
-import { esc, price, pct, money, niceDate, shortDate, addTradingDays, ICONS, $$ } from "./util.js";
+// The Quest Board (Today): quest scrolls for picks, pinned rumors for the
+// watchlist, and a ledger of rejected leads.
+import { esc, price, pct, money, rate, niceDate, shortDate, addTradingDays, $$, signClass } from "./util.js";
+import { gem, tierOf, noticeBoard, flourish } from "./art.js";
 import { priceChart } from "./charts.js";
+import { similar, MIN_SAMPLES } from "./history.js";
+import * as fx from "./fx.js";
 import * as game from "./game.js";
 
-const TIMING = {
-  Ready: { cls: "ready", icon: ICONS.check, text: "Ready" },
-  Wait: { cls: "wait", icon: ICONS.pause, text: "Wait" },
-  Extended: { cls: "extended", icon: ICONS.up, text: "Extended" },
+const PATH = {
+  Ready: { cls: "open", text: "Path open", plain: "Ready" },
+  Wait: { cls: "blocked", text: "Path blocked", plain: "Wait" },
+  Extended: { cls: "fled", text: "Don't chase", plain: "Extended" },
 };
 const FACTOR_NAMES = {
-  cluster: "Insider cluster", role: "Role", dollar_size: "$ size",
-  stake_increase: "Stake increase", first_buy: "First buy in 12 mo", price_context: "Near 52-wk low",
+  cluster: "Insider cluster", role: "Buyer's rank", dollar_size: "Gold committed ($)",
+  stake_increase: "Stake increase", first_buy: "First buy in 12 months", price_context: "Near 52-week low",
 };
-const RULES = [
-  "I only buy inside the buy zone, or I skip it",
-  "I set my stop order right away",
-  "I'll sell at the target, the stop, or after 15 trading days",
+const VOWS = [
+  "I enter only inside the buy zone, or not at all",
+  "I place my retreat (stop-loss) order right away",
+  "I leave at the treasure, the retreat, or the return-by date",
 ];
 
-function scoreRing(score) {
-  const r = 24, c = 2 * Math.PI * r, f = Math.max(0, Math.min(100, score)) / 100;
-  return `<div class="score-ring" title="Score ${score} of 100">
-    <svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="${r}" fill="none" stroke="var(--panel-2)" stroke-width="6"/>
-    <circle cx="29" cy="29" r="${r}" fill="none" stroke="url(#ring)" stroke-width="6" stroke-linecap="round"
-      stroke-dasharray="${c * f} ${c}"/>
-    <defs><linearGradient id="ring"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2)"/></linearGradient></defs></svg>
-    <div class="num"><span>${score}<small>score</small></span></div></div>`;
-}
+const pathChip = (label) => { const p = PATH[label] || PATH.Wait; return `<span class="chip ${p.cls}">${p.text} · ${p.plain}</span>`; };
 
-function timingChip(label) {
-  const t = TIMING[label] || TIMING.Wait;
-  return `<span class="chip ${t.cls}">${t.icon}${t.text}</span>`;
+function omen(p, hist) {
+  if (!hist.length) return "";
+  const s = similar(hist, p.score, topRole(p));
+  return `<div class="omen">
+    <div class="verdict">Quests like this in the Chronicle</div>
+    <div class="small">${esc(s.tier)} quests where the top buyer was ${esc(s.group)}:
+      <strong>${s.n}</strong> past cases${s.n ? ` · won <strong>${rate(s.win)}</strong> of trades · average trade
+      <strong class="${signClass(s.avgTrade)}">${pct(s.avgTrade)}</strong> · vs the market <strong class="${signClass(s.vsMarket)}">${pct(s.vsMarket)}</strong>` : ""}
+      ${s.enough ? "" : `<br><em>Fewer than ${MIN_SAMPLES} past cases: not enough history to lean on.</em>`}</div>
+  </div>`;
 }
+const RANK = ["CEO", "CFO", "Director", "Officer", "10% Owner", "Other"];
+const topRole = (p) => p.insiders.map((b) => b.role).sort((a, b) => RANK.indexOf(a) - RANK.indexOf(b))[0];
 
-function card(p, asOf, compact = false) {
+function questScroll(p, asOf, hist) {
   const g = game.get();
-  const reviewed = !!g.reviewed[p.id], ruled = !!g.ruleChecks[p.id];
-  const pl = p.plan;
-  const entryDay = addTradingDays(asOf, 1);
-  const sellBy = addTradingDays(entryDay, pl.time_stop_days - 1);
+  const reviewed = !!g.reviewed[p.id], sworn = !!g.ruleChecks[p.id];
+  const pl = p.plan, tier = tierOf(p.score);
+  const sellBy = addTradingDays(addTradingDays(asOf, 1), pl.time_stop_days - 1);
   return `
-  <article class="panel card" data-id="${esc(p.id)}">
-    <div class="card-head">
-      ${scoreRing(p.score)}
-      <div style="flex:1;min-width:0">
-        <div class="row"><span class="ticker">${esc(p.ticker)}</span>${timingChip(p.timing)}</div>
+  <article class="scroll" data-id="${esc(p.id)}">
+    ${reviewed ? '<div class="stamped" data-static></div>' : ""}
+    <div class="quest-head">
+      <div class="name">
+        <div class="ticker">${esc(p.ticker)}</div>
         <div class="company">${esc(p.company || "")}</div>
+        <div class="rarity ${tier.name.toLowerCase()}">${tier.name} quest</div>
       </div>
+      ${gem(p.score, 70)}
     </div>
 
-    <div class="plan">
-      <div><div class="k">Buy zone</div><div class="v">${price(pl.entry_low)}–${pl.entry_high.toFixed(2)}</div></div>
-      <div class="stop"><div class="k">Stop</div><div class="v">${price(pl.stop)}</div></div>
-      <div class="target"><div class="k">Target</div><div class="v">${price(pl.target)}</div></div>
-      <div><div class="k">Sell by</div><div class="v">${esc(shortDate(sellBy))}</div></div>
+    <div class="terms">
+      <div><div class="k">Enter at</div><div class="plain">buy zone</div><div class="v">${pl.entry_low.toFixed(2)}–${pl.entry_high.toFixed(2)}</div></div>
+      <div class="retreat"><div class="k">Retreat</div><div class="plain">stop-loss</div><div class="v">${pl.stop.toFixed(2)}</div></div>
+      <div class="treasure"><div class="k">Treasure</div><div class="plain">target</div><div class="v">${pl.target.toFixed(2)}</div></div>
+      <div><div class="k">Return by</div><div class="plain">time limit</div><div class="v">${esc(shortDate(sellBy))}</div></div>
     </div>
-    <div class="muted small">Risk ${pct(pl.risk_pct, 1, false)} to the stop · reward-to-risk ${pl.reward_risk}:1
-      (at least ${pl.reward_risk_worst}:1 even at the top of the zone)</div>
+    <div class="muted small">Risk ${pct(pl.risk_pct, 1, false)} down to the retreat · treasure is ${pl.reward_risk}× that risk
+      (at least ${pl.reward_risk_worst}× even if you enter at the top of the zone)</div>
 
-    <div>
-      <h3 style="margin-bottom:6px">Why it scored ${p.score}</h3>
-      <ul class="reasons">${p.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
-      ${p.cautions.length ? `<ul class="reasons cautions" style="margin-top:6px">${p.cautions.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
-    </div>
-    <div>
-      <h3 style="margin-bottom:6px">Chart timing</h3>
-      <ul class="reasons notes">${p.timing_notes.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+    <div class="two-col">
+      <div><h3>Why this quest</h3>
+        <ul class="lore">${p.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+        ${p.cautions.length ? `<ul class="lore warn" style="margin-top:4px">${p.cautions.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}</div>
+      <div><h3>The path</h3>${pathChip(p.timing)}
+        <ul class="lore path" style="margin-top:6px">${p.timing_notes.map((r) => `<li>${esc(r)}</li>`).join("")}</ul></div>
     </div>
 
-    ${compact ? "" : `<div class="chart" data-chart="${esc(p.id)}"></div>`}
+    <div class="chart" data-chart="${esc(p.id)}"></div>
+    ${omen(p, hist)}
 
     <details>
-      <summary>Insider purchases (${p.insiders.length}) and score breakdown</summary>
+      <summary>The insiders (${p.insiders.length}) and how the score was earned</summary>
       <div class="table-wrap"><table>
-        <thead><tr><th>Insider</th><th>Role</th><th class="num">Bought</th><th class="num">Avg price</th><th>Filed</th></tr></thead>
-        <tbody>${p.insiders.map((b) => `<tr><td>${esc(b.name)}</td><td>${esc(b.role)}</td>
-          <td class="num">${money(b.value)}</td><td class="num">${price(b.avg_price)}</td><td>${esc(shortDate(b.filed_date))}</td></tr>`).join("")}</tbody>
-      </table></div>
-      <div class="table-wrap" style="margin-top:10px"><table>
-        <thead><tr><th>Factor</th><th class="num">Points</th></tr></thead>
-        <tbody>${Object.entries(p.factors).map(([k, f]) => `<tr><td>${esc(FACTOR_NAMES[k] || k)}</td><td class="num">${f.points}</td></tr>`).join("")}</tbody>
-      </table></div>
+        <thead><tr><th>Insider</th><th>Rank</th><th class="num">Bought</th><th class="num">Avg price</th><th>Filed</th></tr></thead>
+        <tbody>${p.insiders.map((b) => `<tr><td>${esc(b.name)}</td><td>${esc(b.role)}</td><td class="num">${money(b.value)}</td>
+          <td class="num">${price(b.avg_price)}</td><td>${esc(shortDate(b.filed_date))}</td></tr>`).join("")}</tbody></table></div>
+      <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Factor</th><th class="num">Points</th></tr></thead>
+        <tbody>${Object.entries(p.factors).map(([k, f]) => `<tr><td>${esc(FACTOR_NAMES[k] || k)}</td><td class="num">${f.points}</td></tr>`).join("")}</tbody></table></div>
     </details>
 
-    <div class="row">
-      <button class="btn ${reviewed ? "done" : "primary"}" data-review="${esc(p.id)}" data-ticker="${esc(p.ticker)}" ${reviewed ? "disabled" : ""}>
-        ${reviewed ? `${ICONS.check.replace("<svg", '<svg width="16" height="16" fill="currentColor"')} Reviewed` : `Mark reviewed · +${game.XP.review} XP`}</button>
-      ${compact ? "" : `<button class="btn ${ruled ? "done" : ""}" data-rules="${esc(p.id)}" ${ruled ? "disabled" : ""}>
-        ${ruled ? "Rule check done" : `Rule check · +${game.XP.rules} XP`}</button>`}
+    <div class="actions">
+      <button class="btn ${reviewed ? "done" : "seal"}" data-review ${reviewed ? "disabled" : ""}>${reviewed ? "Reviewed" : `Seal as reviewed · +${game.XP.review} XP`}</button>
+      <button class="btn ${sworn ? "done" : ""}" data-oath-open ${sworn ? "disabled" : ""}>${sworn ? "Oath sworn" : `Swear the oath · +${game.XP.rules} XP`}</button>
     </div>
-    <div class="rulebox" data-rulebox="${esc(p.id)}" hidden>
-      <div class="checklist">
-        ${RULES.map((r, i) => `<label><input type="checkbox" data-rule="${i}"> ${esc(r)}</label>`).join("")}
-        <label><input type="checkbox" data-pass> I'm passing on this one on purpose (that counts too)</label>
-      </div>
-      <button class="btn primary" data-rules-save="${esc(p.id)}" data-ticker="${esc(p.ticker)}">Save rule check</button>
+    <div class="oath" hidden>
+      <h3 style="margin-bottom:4px">The Trader's Oath</h3>
+      <div class="muted small" style="margin-bottom:6px">XP is for keeping your rules, never for trading more. Passing on a quest counts.</div>
+      ${VOWS.map((v, i) => `<label class="vow"><input type="checkbox" data-vow="${i}"><span>${esc(v)}</span></label>`).join("")}
+      <label class="vow"><input type="checkbox" data-pass><span><em>Or:</em> I'm passing on this quest on purpose</span></label>
+      <button class="btn seal" data-oath-seal style="margin-top:8px">Seal the oath</button>
     </div>
   </article>`;
 }
 
-export function renderToday(view, data) {
+function rumor(p, i) {
+  return `<div class="note" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">
+    <div class="spread"><div><div class="ticker">${esc(p.ticker)}</div><div class="company small">${esc(p.company || "")}</div></div>${gem(p.score, 46)}</div>
+    <div style="margin:8px 0 4px">${pathChip(p.timing)}</div>
+    <ul class="lore small">${p.reasons.slice(0, 3).map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+    <div class="small" style="margin-top:6px;color:var(--ink-2)"><em>${esc(p.timing_notes[0] || "")}</em></div>
+  </div>`;
+}
+
+export function renderToday(view, data, hist = []) {
   if (!data) {
-    view.innerHTML = `<div class="panel empty"><div class="big">No scan data yet</div><p>Run <code>python -m swingquest scan</code> to create today's results.</p></div>`;
+    view.innerHTML = `<div class="panel framed hero-panel">${noticeBoard()}<div class="big">No scan yet</div>
+      <p>Run <code>python -m swingquest scan</code> to post tonight's quests.</p></div>`;
     return;
   }
-  const s = data.summary;
-  const none = data.status === "none";
+  const s = data.summary, none = data.status === "none";
   view.innerHTML = `
   <div class="stack">
-    <div class="panel hero">
-      <div class="muted small">Scan for ${esc(niceDate(data.as_of))}</div>
-      <div class="big">${none ? "No setups today." : `${data.picks.length} setup${data.picks.length > 1 ? "s" : ""} today`}</div>
-      <p>${none ? "Nothing passed every rule. Patience is a position: no trade is a fine trade."
-                : "Each one passed the universe rules, scored at least " + data.rules.min_score + ", and the chart says Ready."}</p>
-      <div class="tiles" style="margin-top:14px">
-        <div class="tile"><div class="label">Insider buys</div><div class="value">${s.insider_buys_in_window}</div><div class="sub">last 30 days</div></div>
-        <div class="tile"><div class="label">New this week</div><div class="value">${s.stocks_with_new_buys}</div><div class="sub">stocks checked</div></div>
-        <div class="tile"><div class="label">Watchlist</div><div class="value">${s.watchlist}</div><div class="sub">good score, wait for timing</div></div>
-        <div class="tile"><div class="label">Skipped</div><div class="value">${s.skipped}</div><div class="sub">failed a rule</div></div>
+    <div class="panel framed hero-panel">
+      <div class="kicker">The Quest Board · ${esc(niceDate(data.as_of))}</div>
+      ${none ? `<div class="empty-board">${noticeBoard()}</div>` : ""}
+      <div class="big">${none ? "The board is empty tonight" : `${data.picks.length} quest${data.picks.length > 1 ? "s" : ""} posted`}</div>
+      <p>${none ? "No stock passed every rule. Patience is a weapon: a hero who waits beats one who forces a fight."
+               : `Each passed the rules, scored ${data.rules.min_score}+ and has an open path. Read the scroll, then decide.`}</p>
+      <div class="tallies">
+        <div class="tally"><div class="v">${s.insider_buys_in_window}</div><div class="k">Insider buys</div><div class="s">last 30 days</div></div>
+        <div class="tally"><div class="v">${s.stocks_with_new_buys}</div><div class="k">Leads examined</div><div class="s">new this week</div></div>
+        <div class="tally"><div class="v">${s.watchlist}</div><div class="k">Rumors</div><div class="s">good, not ready yet</div></div>
+        <div class="tally"><div class="v">${s.skipped}</div><div class="k">Rejected</div><div class="s">failed a rule</div></div>
       </div>
     </div>
 
-    ${data.picks.length ? `<div class="section-title"><h2>Today's setups</h2></div>
-      <div class="stack">${data.picks.map((p) => card(p, data.as_of)).join("")}</div>` : ""}
+    ${data.picks.length ? `<div class="section-title"><h2>Tonight's Quests</h2>${flourish()}</div>
+      <div class="stack">${data.picks.map((p) => questScroll(p, data.as_of, hist)).join("")}</div>` : ""}
 
-    ${data.watchlist.length ? `<div class="section-title"><h2>Watchlist</h2>
-      <p class="muted small">Strong insider buying, but the chart says wait. Not a buy yet.</p></div>
-      <div class="grid">${data.watchlist.map((p) => card(p, data.as_of, true)).join("")}</div>` : ""}
+    ${data.watchlist.length ? `<div class="section-title"><h2>Rumors</h2>${flourish()}
+      <p>Strong insider buying, but the path isn't open yet. Not a buy, just one to watch.</p></div>
+      <div class="notes">${data.watchlist.map(rumor).join("")}</div>` : ""}
 
-    <div class="panel">
+    <div class="panel on-dark">
       <details ${none && !data.watchlist.length ? "open" : ""}>
-        <summary>Why the other ${data.skipped.length} stocks didn't qualify</summary>
-        <div class="table-wrap"><table><thead><tr><th>Stock</th><th>Reason</th></tr></thead>
+        <summary>Rejected leads: why ${data.skipped.length} other stocks didn't make the board</summary>
+        <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Stock</th><th>Reason</th></tr></thead>
         <tbody>${data.skipped.map((k) => `<tr><td><strong>${esc(k.ticker)}</strong></td><td class="muted">${esc(k.reason)}</td></tr>`).join("")}</tbody></table></div>
       </details>
     </div>
-    <p class="muted small">Updated ${esc(new Date(data.generated_at).toLocaleString())}. Scores use weights from config/weights.yaml (min score ${data.rules.min_score}).</p>
+    <p class="muted small center">Posted ${esc(new Date(data.generated_at).toLocaleString())} · minimum score ${data.rules.min_score} · weights live in config/weights.yaml</p>
   </div>`;
 
   for (const p of data.picks) {
-    const el = view.querySelector(`[data-chart="${CSS.escape(p.id)}"]`);
-    if (el) priceChart(el, p.chart, p.plan);
+    const card = view.querySelector(`[data-id="${CSS.escape(p.id)}"]`);
+    priceChart(card.querySelector("[data-chart]"), p.chart, p.plan);
+    const st = card.querySelector("[data-static]");
+    if (st) { st.remove(); fx.stamp(card); }
+    fx.tilt(card, 2.5);
+    wireCard(card, p);
   }
-  wire(view, data);
 }
 
-function wire(view, data) {
-  $$("[data-review]", view).forEach((b) => b.addEventListener("click", () => {
-    game.reviewPick(b.dataset.review, b.dataset.ticker);
-    renderToday(view, data);
-  }));
-  $$("[data-rules]", view).forEach((b) => b.addEventListener("click", () => {
-    const box = view.querySelector(`[data-rulebox="${CSS.escape(b.dataset.rules)}"]`);
-    box.hidden = !box.hidden;
-  }));
-  $$("[data-rules-save]", view).forEach((b) => b.addEventListener("click", () => {
-    const box = b.closest(".rulebox");
-    const ticks = $$("[data-rule]", box).map((c) => c.checked);
-    const passed = box.querySelector("[data-pass]").checked;
-    if (!passed && !ticks.every(Boolean)) {
-      game.toast("Not yet", "Tick every rule, or mark that you're passing on purpose");
+function wireCard(card, p) {
+  const review = card.querySelector("[data-review]");
+  review.addEventListener("click", () => {
+    if (review.disabled) return;
+    fx.stamp(card);
+    game.reviewPick(p.id, p.ticker, review);
+    review.disabled = true; review.className = "btn done"; review.textContent = "Reviewed";
+  });
+  const open = card.querySelector("[data-oath-open]"), oath = card.querySelector(".oath");
+  open.addEventListener("click", () => { if (!open.disabled) oath.hidden = !oath.hidden; });
+  card.querySelector("[data-oath-seal]").addEventListener("click", (e) => {
+    const vows = $$("[data-vow]", oath).map((c) => c.checked), passed = oath.querySelector("[data-pass]").checked;
+    if (!passed && !vows.every(Boolean)) {
+      fx.shake(oath);
+      game.toast("The oath is incomplete", "Keep every vow, or mark that you're passing on purpose");
       return;
     }
-    game.ruleCheck(b.dataset.rulesSave, b.dataset.ticker, { rules: ticks, passed });
-    renderToday(view, data);
-  }));
+    game.ruleCheck(p.id, p.ticker, { vows, passed }, e.currentTarget);
+    oath.hidden = true; open.disabled = true; open.className = "btn done"; open.textContent = "Oath sworn";
+  });
 }

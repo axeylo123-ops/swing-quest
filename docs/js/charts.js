@@ -48,7 +48,7 @@ function tooltip(el) {
 export function priceChart(el, rows, plan) {
   if (!rows?.length) { el.innerHTML = '<p class="muted small">No chart data.</p>'; return; }
   const W = Math.max(280, el.clientWidth), H = 210;
-  const m = { t: 12, r: 78, b: 22, l: 42 };
+  const m = { t: 12, r: 108, b: 22, l: 42 };  // right margin holds "Treasure 00.00" labels
   const iw = W - m.l - m.r, ih = H - m.t - m.b;
   const closes = rows.map((r) => r[4]);
   const lo = Math.min(...rows.map((r) => r[3]), plan?.stop ?? Infinity);
@@ -58,7 +58,7 @@ export function priceChart(el, rows, plan) {
   const x = (i) => m.l + (i * iw) / (rows.length - 1);
   const y = (v) => m.t + ih - ((v - y0) / (y1 - y0)) * ih;
 
-  const s1 = css("--series-1"), muted = css("--muted"), good = css("--good"), crit = css("--critical");
+  const s1 = css("--price-ink"), muted = css("--sma-ink"), good = css("--treasure"), crit = css("--retreat");
   // SVG path through the values; a missing value (null) lifts the pen.
   const path = (vals) => {
     let d = "", pen = false;
@@ -81,16 +81,16 @@ export function priceChart(el, rows, plan) {
   if (plan) {
     const zt = y(plan.entry_high), zb = y(plan.entry_low);
     svg += `<rect x="${m.l}" y="${zt}" width="${iw}" height="${Math.max(2, zb - zt)}" fill="var(--zone)"/>`;
-    svg += `<text x="${m.l + 6}" y="${zt - 4}" style="fill:var(--text-2)">Buy zone</text>`;
+    svg += `<text x="${m.l + 6}" y="${zt - 4}" style="fill:var(--price-ink)">Enter here</text>`;
     svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(plan.target)}" y2="${y(plan.target)}" stroke="${good}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
     svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(plan.stop)}" y2="${y(plan.stop)}" stroke="${crit}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
-    svg += `<text x="${W - m.r + 6}" y="${y(plan.target) + 4}" style="fill:var(--good-text)">Target ${plan.target.toFixed(2)}</text>`;
-    svg += `<text x="${W - m.r + 6}" y="${y(plan.stop) + 4}" style="fill:var(--critical-text)">Stop ${plan.stop.toFixed(2)}</text>`;
+    svg += `<text x="${W - m.r + 6}" y="${y(plan.target) + 4}" style="fill:var(--treasure);font-weight:600">Treasure ${plan.target.toFixed(2)}</text>`;
+    svg += `<text x="${W - m.r + 6}" y="${y(plan.stop) + 4}" style="fill:var(--retreat);font-weight:600">Retreat ${plan.stop.toFixed(2)}</text>`;
   }
   svg += `<path d="${path(rows.map((r) => r[5]))}" fill="none" stroke="${muted}" stroke-width="1.5" stroke-dasharray="3 3"/>`;
   svg += `<path d="${path(closes)}" fill="none" stroke="${s1}" stroke-width="2" stroke-linejoin="round"/>`;
   svg += `<g class="hover" style="display:none"><line y1="${m.t}" y2="${m.t + ih}" stroke="${muted}" stroke-width="1"/>`
-       + `<circle r="4.5" fill="${s1}" stroke="var(--panel)" stroke-width="2"/></g>`;
+       + `<circle r="4.5" fill="${s1}" stroke="var(--parchment)" stroke-width="2"/></g>`;
   svg += `<rect class="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/></svg>`;
 
   el.innerHTML = `<div class="legend"><span><i style="background:${s1}"></i>Price (close)</span>`
@@ -129,7 +129,7 @@ export function barChart(el, items, { format = (v) => pct(v), height = 200, labe
   const y0 = lo < 0 ? lo - pad : 0, y1 = hi + pad;
   const y = (v) => m.t + ih - ((v - y0) / (y1 - y0)) * ih;
   const band = iw / items.length, bw = Math.max(3, Math.min(56, band * 0.62));
-  const pos = css("--series-1"), neg = css("--series-neg");
+  const pos = css("--sapphire"), neg = css("--crimson");
   const yt = ticks(y0, y1, 4);
 
   let svg = `<svg ${NS} viewBox="0 0 ${W} ${H}" height="${H}" role="img">`;
@@ -174,7 +174,7 @@ export function hbarChart(el, items, { format = (v) => pct(v) } = {}) {
   const vals = items.map((d) => d.value ?? 0);
   const ext = Math.max(0.005, ...vals.map(Math.abs)) * 1.1;
   const x = (v) => m.l + ((v + ext) / (2 * ext)) * iw;
-  const pos = css("--series-1"), neg = css("--series-neg");
+  const pos = css("--sapphire"), neg = css("--crimson");
   let svg = `<svg ${NS} viewBox="0 0 ${W} ${H}" height="${H}" role="img">`;
   svg += `<line x1="${x(0)}" x2="${x(0)}" y1="${m.t}" y2="${H - m.b}" stroke="var(--text-2)"/>`;
   items.forEach((d, i) => {
