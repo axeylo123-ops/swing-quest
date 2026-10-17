@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-17T19:02:29+00:00",
+ "generated_at": "2026-10-17T20:02:01+00:00",
  "as_of": "2026-10-16",
  "status": "setups",
  "message": "2 setup(s) today",
@@ -1662,7 +1662,7 @@
   },
   {
    "ticker": "DGXX",
-   "reason": "score 39 is below 60"
+   "reason": "score 29 is below 60"
   },
   {
    "ticker": "DOLE",
@@ -1819,5 +1819,10 @@
    "first_buy": 10,
    "price_context": 15
   }
+ },
+ "market": {
+  "trend": "up",
+  "spy_close": 763.25,
+  "spy_sma200": 721.88
  }
 }

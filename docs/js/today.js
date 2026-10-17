@@ -1,6 +1,6 @@
 // The Quest Board (Today): quest scrolls for picks, pinned rumors for the
 // watchlist, and a ledger of rejected leads.
-import { esc, price, pct, money, rate, niceDate, shortDate, addTradingDays, $$, signClass } from "./util.js";
+import { esc, price, pct, money, rate, niceDate, shortDate, addTradingDays, $$, signClass, dollars, shareCount, getRules } from "./util.js";
 import { gem, tierOf, noticeBoard, flourish } from "./art.js";
 import { priceChart } from "./charts.js";
 import { similar, MIN_SAMPLES } from "./history.js";
@@ -21,6 +21,18 @@ const VOWS = [
   "I place my retreat (stop-loss) order right away",
   "I leave at the treasure, the retreat, or the return-by date",
 ];
+
+// "How many shares?" from your account size and risk per quest (set in the Treasury).
+function sizing(pl) {
+  const s = shareCount(pl.reference, pl.stop);
+  if (!s) return `<div class="omen small"><strong>How many shares?</strong> Set your account size in the Treasury and each quest will tell you.</div>`;
+  const rules = getRules();
+  if (!s.shares) return `<div class="omen small"><strong>How many shares?</strong> None: one share risks more than ${dollars(s.riskDollars)} (${rules.riskPct}% of your account).</div>`;
+  return `<div class="omen"><div class="verdict">How many shares?</div>
+    <div class="small">Buy about <strong>${s.shares} shares</strong> (≈ ${dollars(s.cost)}). If the retreat is hit you lose about
+      <strong>${dollars(s.risk)}</strong>, which is ${rules.riskPct}% of your ${dollars(rules.account)} account. If the treasure is reached you gain about
+      <strong>${dollars(s.shares * (pl.target - pl.reference))}</strong>.</div></div>`;
+}
 
 const pathChip = (label) => { const p = PATH[label] || PATH.Wait; return `<span class="chip ${p.cls}">${p.text} · ${p.plain}</span>`; };
 
@@ -63,6 +75,7 @@ function questScroll(p, asOf, hist) {
     </div>
     <div class="muted small">Risk ${pct(pl.risk_pct, 1, false)} down to the retreat · treasure is ${pl.reward_risk}× that risk
       (at least ${pl.reward_risk_worst}× even if you enter at the top of the zone)</div>
+    ${sizing(pl)}
 
     <div class="two-col">
       <div><h3>Why this quest</h3>
@@ -170,6 +183,11 @@ export function renderToday(view, data, hist = [], live = null) {
         <div class="tally"><div class="v">${s.skipped}</div><div class="k">Rejected</div><div class="s">failed a rule</div></div>
       </div>
     </div>
+
+    ${data.market?.trend === "down" ? `<div class="panel framed on-dark" style="border-color:#9a6408">
+      <h3 style="color:var(--amber)">Storm warning: the overall market is in a downtrend</h3>
+      <p class="small" style="margin:6px 0 0">SPY (${data.market.spy_close}) is below its 200-day average (${data.market.spy_sma200}).
+        Past quests in downtrends were too few to judge, but they did no better than the market. Consider smaller positions.</p></div>` : ""}
 
     ${activeQuests(live, data.as_of)}
 

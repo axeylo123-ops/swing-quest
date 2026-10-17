@@ -47,9 +47,11 @@ def price_matches_filing(df: pd.DataFrame, buy: dict) -> bool:
 
 
 def run_backtest(start: str, end: str, source=None, profiles=None, exchanges=None,
-                 progress=print) -> dict:
+                 progress=print, trade_cfg: dict | None = None) -> dict:
+    """`trade_cfg` lets an experiment try different stop/target rules
+    without touching settings.yaml."""
     cfg = scoring.load_weights()
-    rules, trade_cfg = cfg["rules"], settings()["trade"]
+    rules, trade_cfg = cfg["rules"], {**settings()["trade"], **(trade_cfg or {})}
     hist_start = store.load_state().get("history_start")
 
     all_buys = store.load_buys((date.fromisoformat(start) - timedelta(days=440)).isoformat(), end)

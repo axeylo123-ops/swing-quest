@@ -24,6 +24,10 @@ def liquidity_check(prices: pd.DataFrame, as_of, min_price: float | None = None,
     if price <= min_price:
         return {"ok": False, "reason": f"price ${price:.2f} is under ${min_price:.0f}",
                 "price": price, "avg_dollar_volume": adv}
+    max_price = u.get("max_price")
+    if max_price and price > max_price:
+        return {"ok": False, "reason": f"price ${price:.2f} is above your ${max_price:.0f} limit",
+                "price": price, "avg_dollar_volume": adv}
     if adv <= min_dollar_volume:
         return {"ok": False, "reason": f"only ${adv / 1e6:.1f}M traded per day",
                 "price": price, "avg_dollar_volume": adv}

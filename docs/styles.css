@@ -370,3 +370,7 @@ details > summary { cursor: pointer; font: 700 13px var(--font-display); letter-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.field { margin-top: 4px; width: 150px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--gold-deep);
+  background: rgba(18, 14, 28, 0.7); color: var(--text); font: 600 16px var(--font); }
+.field:focus { outline: 2px solid var(--gold-bright); outline-offset: 1px; }

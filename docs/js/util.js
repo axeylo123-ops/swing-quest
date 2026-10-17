@@ -52,6 +52,20 @@ export const storage = {
   remove(key) { try { localStorage.removeItem(key); } catch { /* ignore */ } },
 };
 
+// Your personal trade rules (account size, risk per quest). Browser-only.
+const RULES_KEY = "sq.rules.v1";
+export const getRules = () => storage.get(RULES_KEY, { account: null, riskPct: 1 });
+export const setRules = (r) => storage.set(RULES_KEY, r);
+
+// Position size: risk a fixed % of the account between entry and the stop.
+export function shareCount(entry, stop, rules = getRules()) {
+  if (!rules.account || !(entry > stop)) return null;
+  const riskDollars = rules.account * (rules.riskPct / 100);
+  let shares = Math.floor(riskDollars / (entry - stop));
+  shares = Math.min(shares, Math.floor(rules.account / entry));  // can't spend more than the account
+  return shares > 0 ? { shares, cost: shares * entry, risk: shares * (entry - stop), riskDollars } : { shares: 0, riskDollars };
+}
+
 export async function loadJSON(path) {
   try {
     const r = await fetch(path, { cache: "no-store" });

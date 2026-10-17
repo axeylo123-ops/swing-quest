@@ -2,7 +2,7 @@
 // IN THE BROWSER ONLY. The file is read locally; nothing is uploaded or sent anywhere.
 // Any column whose header mentions "account" is dropped before anything else
 // looks at the data, and only symbol/quantity/cost/value are kept.
-import { esc, price, dollars, pct, storage } from "./util.js";
+import { esc, price, dollars, pct, storage, getRules, setRules } from "./util.js";
 import * as game from "./game.js";
 import { emblem } from "./art.js";
 import { readXlsx } from "./xlsx.js";
@@ -125,6 +125,7 @@ function signalFor(h, today, live) {
 
 export function renderPortfolio(view, today, live) {
   const saved = storage.get(KEY, null);
+  const rules = getRules();
   const holdings = saved?.holdings || [];
   const rows = holdings.map((h) => ({ h, s: signalFor(h, today, live) }));
   const withSignal = rows.filter((r) => r.s.cls).length;
@@ -137,6 +138,21 @@ export function renderPortfolio(view, today, live) {
       <div class="big">Your holdings vs the quests</div>
       <p>Bring your Questrade positions file (Excel or CSV). It is read <strong>only in this browser</strong>, never uploaded,
         and account numbers are burned the moment the file is opened.</p>
+    </div>
+
+    <div class="panel framed on-dark">
+      <h3>Your trading rules</h3>
+      <p class="small muted" style="margin:4px 0 10px">Used to tell you how many shares to buy on each quest, so a hit retreat (stop-loss)
+        only costs a small, fixed slice of your account. Saved only in this browser.</p>
+      <div class="row">
+        <label class="small">Account size ($)<br><input id="acct" type="number" min="0" step="100" inputmode="decimal"
+          value="${rules.account ?? ""}" placeholder="e.g. 10000" class="field"></label>
+        <label class="small">Risk per quest (%)<br><input id="riskpct" type="number" min="0.25" max="5" step="0.25" inputmode="decimal"
+          value="${rules.riskPct}" class="field"></label>
+        <button class="btn gold" id="save-rules" style="align-self:flex-end">Save rules</button>
+      </div>
+      <p class="small muted" style="margin:8px 0 0">Common practice is to risk 0.5–2% per trade. With 1% on a $10,000 account, a stopped-out quest costs about $100.
+        Use the currency you'll trade in (for US stocks in a CAD account, convert first).</p>
     </div>
 
     <label class="panel dropzone" id="drop">
@@ -186,4 +202,10 @@ export function renderPortfolio(view, today, live) {
   drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
   drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("drag"); load(e.dataTransfer.files[0]); });
   view.querySelector("#clear")?.addEventListener("click", () => { storage.remove(KEY); renderPortfolio(view, today, live); });
+  view.querySelector("#save-rules").addEventListener("click", () => {
+    const account = parseFloat(view.querySelector("#acct").value), riskPct = parseFloat(view.querySelector("#riskpct").value);
+    if (!(account > 0) || !(riskPct > 0) || riskPct > 5) { game.toast("Check your rules", "Account above $0, risk between 0.25% and 5%"); return; }
+    setRules({ account, riskPct });
+    game.toast("Rules saved", `Risking ${riskPct}% (${dollars(account * riskPct / 100)}) per quest`);
+  });
 }

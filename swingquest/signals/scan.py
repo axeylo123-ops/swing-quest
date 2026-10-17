@@ -61,6 +61,18 @@ def chart_data(prices: pd.DataFrame) -> list[list]:
             for d, r in tail.iterrows()]
 
 
+def market_weather(spy: pd.DataFrame | None, as_of) -> dict | None:
+    """Is the overall market (SPY) above its 200-day average? Shown as a
+    caution only: past quests in downtrends were too few to make it a rule."""
+    if spy is None:
+        return None
+    past = spy.loc[:as_of]
+    if len(past) < 200:
+        return None
+    close, sma200 = float(past["close"].iloc[-1]), float(past["close"].tail(200).mean())
+    return {"trend": "up" if close > sma200 else "down", "spy_close": round(close, 2), "spy_sma200": round(sma200, 2)}
+
+
 def history_start() -> str | None:
     """Earliest date our insider data reliably covers (set by the backfill)."""
     state = store.load_state()
@@ -123,6 +135,7 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
 
     picks.sort(key=lambda s: -s["score"])
     watch.sort(key=lambda s: -s["score"])
+    market = market_weather(price_data.get("SPY"), as_of)
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "as_of": f"{as_of:%Y-%m-%d}",
@@ -139,6 +152,7 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
         },
         "skipped": skipped,
         "rules": {"min_score": rules["min_score"], "weights": cfg["weights"]},
+        "market": market,
     }
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "today.json").write_text(json.dumps(result, indent=1, allow_nan=False),
