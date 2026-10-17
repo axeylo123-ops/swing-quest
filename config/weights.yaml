@@ -1,0 +1,29 @@
+# Swing Quest scoring weights. YOU own this file.
+# The weekly System Health report may suggest changes in
+# weights_proposed.yaml, but nothing here changes unless you edit it.
+#
+# Each factor earns between 0% and 100% of its weight.
+# Weights must add up to 100, so the score runs from 0 to 100.
+
+weights:
+  cluster: 25          # several different insiders buying within 30 days
+  role: 20             # CEO/CFO > Director > other officers > 10% owners
+  dollar_size: 15      # total $ bought in the 30-day window
+  stake_increase: 15   # how much the buy grew their existing holding
+  first_buy: 10        # first purchase by that insider in 12+ months
+  price_context: 15    # near the 52-week low = more points
+
+# How much of the weight each role earns.
+role_points:
+  CEO: 1.0
+  CFO: 1.0
+  Director: 0.7
+  Officer: 0.5
+  "10% Owner": 0.3
+  Other: 0.2
+
+rules:
+  window_days: 30            # look-back window for insider buys
+  trigger_days: 5            # a NEW buy must be filed within this many calendar days
+  min_score: 60              # minimum score to be a pick
+  ignore_10b5_1_plans: true  # pre-scheduled plan buys say little about conviction

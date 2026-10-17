@@ -46,6 +46,44 @@ def exchange_map(client=None, refresh: bool = False) -> dict[str, str | None]:
     return result
 
 
+PROFILE_URL = "https://data.sec.gov/submissions/CIK{cik:010d}.json"
+PROFILE_CACHE = CACHE_DIR / "issuer_profiles.json"
+FUND_FORMS = {"N-CSR", "N-CSRS", "N-2", "N-PORT"}
+
+
+class IssuerProfiles:
+    """Looks up what kind of company an issuer is (SEC industry code).
+
+    Closed-end funds, interval funds and similar file Form 4s too, but they
+    are not operating companies. They have no industry (SIC) code and file
+    fund reports (N-CSR), which is how we spot them. Answers are cached on
+    disk because they almost never change.
+    """
+
+    def __init__(self, client=None, cache_path=PROFILE_CACHE):
+        self.client = client
+        self.cache_path = cache_path
+        self.cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
+
+    def get(self, cik: str) -> dict:
+        key = str(int(cik))
+        if key not in self.cache:
+            if self.client is None:
+                from swingquest.sec.client import SecClient
+                self.client = SecClient()
+            j = self.client.get_json(PROFILE_URL.format(cik=int(cik)))
+            forms = set(j.get("filings", {}).get("recent", {}).get("form", [])[:300])
+            sic = (j.get("sic") or "").strip()
+            self.cache[key] = {
+                "sic": sic,
+                "industry": j.get("sicDescription") or "",
+                "is_fund": sic in ("", "0000") or bool(forms & FUND_FORMS),
+            }
+            self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+            self.cache_path.write_text(json.dumps(self.cache))
+        return self.cache[key]
+
+
 def is_us_listed(ticker: str, exchanges: dict) -> bool:
     """False only when the SEC says it trades OTC (or elsewhere). Unknown
     tickers (e.g. later delisted, in old backtest data) are allowed and must

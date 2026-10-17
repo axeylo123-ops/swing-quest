@@ -5,7 +5,30 @@ import pytest
 from swingquest import store
 from swingquest.prices.yfinance_source import normalize
 from swingquest.tickers import clean_ticker
-from swingquest.universe import is_us_listed, liquidity_check
+from swingquest.universe import IssuerProfiles, is_us_listed, liquidity_check
+
+
+class FakeClient:
+    def __init__(self, responses):
+        self.responses, self.calls = responses, 0
+
+    def get_json(self, url):
+        self.calls += 1
+        cik = int(url.split("CIK")[1].split(".")[0])
+        return self.responses[cik]
+
+
+def test_issuer_profiles_spot_funds_and_cache(tmp_path):
+    client = FakeClient({
+        1: {"sic": "2080", "sicDescription": "Beverages", "filings": {"recent": {"form": ["10-K"]}}},
+        2: {"sic": "", "filings": {"recent": {"form": ["N-CSR"]}}},
+    })
+    p = IssuerProfiles(client, cache_path=tmp_path / "p.json")
+    assert p.get("0000000001")["is_fund"] is False
+    assert p.get("2")["is_fund"] is True
+    p.get("1")
+    assert client.calls == 2  # second lookup came from the cache
+    assert IssuerProfiles(client, cache_path=tmp_path / "p.json").get("2")["is_fund"]
 
 
 def bars(n=30, close=20.0, volume=1_000_000, start="2026-09-01"):

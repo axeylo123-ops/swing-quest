@@ -1,0 +1,204 @@
+{
+ "generated_at": "2026-10-17T13:06:07+00:00",
+ "as_of": "2026-10-16",
+ "status": "none",
+ "message": "No setups today.",
+ "picks": [],
+ "watchlist": [],
+ "summary": {
+  "insider_buys_in_window": 60,
+  "stocks_with_new_buys": 44,
+  "skipped": 44,
+  "watchlist": 0,
+  "picks": 0
+ },
+ "skipped": [
+  {
+   "ticker": "BORR",
+   "reason": "price $4.54 is under $5"
+  },
+  {
+   "ticker": "BPRE",
+   "reason": "a fund, not an operating company"
+  },
+  {
+   "ticker": "BYRN",
+   "reason": "price $4.84 is under $5"
+  },
+  {
+   "ticker": "BZUN",
+   "reason": "price $3.72 is under $5"
+  },
+  {
+   "ticker": "CRESY",
+   "reason": "only $2.9M traded per day"
+  },
+  {
+   "ticker": "CXM",
+   "reason": "score 46 is below 60"
+  },
+  {
+   "ticker": "DGXX",
+   "reason": "price $2.62 is under $5"
+  },
+  {
+   "ticker": "DOLE",
+   "reason": "score 10 is below 60"
+  },
+  {
+   "ticker": "ECF",
+   "reason": "only $0.7M traded per day"
+  },
+  {
+   "ticker": "EDRY",
+   "reason": "only $8.8M traded per day"
+  },
+  {
+   "ticker": "FLSC",
+   "reason": "not enough price history"
+  },
+  {
+   "ticker": "GABC",
+   "reason": "only $7.2M traded per day"
+  },
+  {
+   "ticker": "GF",
+   "reason": "only $0.2M traded per day"
+  },
+  {
+   "ticker": "GOLD",
+   "reason": "score 32 is below 60"
+  },
+  {
+   "ticker": "GRCE",
+   "reason": "price $1.89 is under $5"
+  },
+  {
+   "ticker": "IMSR",
+   "reason": "price $3.05 is under $5"
+  },
+  {
+   "ticker": "INBX",
+   "reason": "score 32 is below 60"
+  },
+  {
+   "ticker": "INM",
+   "reason": "price $1.32 is under $5"
+  },
+  {
+   "ticker": "JCTC",
+   "reason": "price $2.90 is under $5"
+  },
+  {
+   "ticker": "JOF",
+   "reason": "only $0.5M traded per day"
+  },
+  {
+   "ticker": "KIO",
+   "reason": "only $2.8M traded per day"
+  },
+  {
+   "ticker": "KWY",
+   "reason": "only $0.4M traded per day"
+  },
+  {
+   "ticker": "LCU",
+   "reason": "no price data"
+  },
+  {
+   "ticker": "MDBH",
+   "reason": "price $1.77 is under $5"
+  },
+  {
+   "ticker": "MXF",
+   "reason": "only $0.7M traded per day"
+  },
+  {
+   "ticker": "NAD",
+   "reason": "a fund, not an operating company"
+  },
+  {
+   "ticker": "NEOV",
+   "reason": "price $2.18 is under $5"
+  },
+  {
+   "ticker": "NUAI",
+   "reason": "price $3.11 is under $5"
+  },
+  {
+   "ticker": "PAM",
+   "reason": "score 33 is below 60"
+  },
+  {
+   "ticker": "PCQ",
+   "reason": "only $2.6M traded per day"
+  },
+  {
+   "ticker": "PEP",
+   "reason": "score 53 is below 60"
+  },
+  {
+   "ticker": "PRIM",
+   "reason": "score 29 is below 60"
+  },
+  {
+   "ticker": "PRTA",
+   "reason": "only $4.7M traded per day"
+  },
+  {
+   "ticker": "QTEX",
+   "reason": "price $1.50 is under $5"
+  },
+  {
+   "ticker": "QVCG",
+   "reason": "only $3.7M traded per day"
+  },
+  {
+   "ticker": "SAFX",
+   "reason": "price $0.14 is under $5"
+  },
+  {
+   "ticker": "SAH",
+   "reason": "score 27 is below 60"
+  },
+  {
+   "ticker": "TDIC",
+   "reason": "price $1.94 is under $5"
+  },
+  {
+   "ticker": "TRXB",
+   "reason": "not enough price history"
+  },
+  {
+   "ticker": "UMH",
+   "reason": "only $8.9M traded per day"
+  },
+  {
+   "ticker": "UNB",
+   "reason": "only $0.1M traded per day"
+  },
+  {
+   "ticker": "VMO",
+   "reason": "only $4.0M traded per day"
+  },
+  {
+   "ticker": "XAIR",
+   "reason": "price $2.16 is under $5"
+  },
+  {
+   "ticker": "ZONE",
+   "reason": "price $0.09 is under $5"
+  }
+ ],
+ "rules": {
+  "min_score": 60,
+  "weights": {
+   "cluster": 25,
+   "role": 20,
+   "dollar_size": 15,
+   "stake_increase": 15,
+   "first_buy": 10,
+   "price_context": 15
+  }
+ }
+}
