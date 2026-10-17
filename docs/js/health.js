@@ -64,6 +64,7 @@ export function renderHealth(view, health, scorecard, today) {
           <div class="spread"><h3>Shadow of Doubt</h3><span class="muted small" id="hp-text"></span></div>
           <div class="hp"><i id="hp" style="width:100%"></i></div>
           <p class="muted" id="boss-line" style="margin:4px 0 0"></p>
+          ${won ? '<button class="btn" id="replay" style="margin-top:10px">Replay the fight</button><span class="muted small" style="margin-left:8px">already won this week · no extra XP</span>' : ""}
         </div>
       </div>
     </div>
@@ -120,7 +121,15 @@ export function renderHealth(view, health, scorecard, today) {
     if (revealed === total) {
       bossEl.classList.add("defeated");
       view.querySelector("#spoils").hidden = false;
-      game.healthRead(week, r);
+      game.healthRead(week, r);   // only pays XP the first time each week
     }
   }));
+  view.querySelector("#replay")?.addEventListener("click", (e) => {
+    view.querySelectorAll(".rune").forEach((r) => r.classList.remove("revealed"));
+    bossEl.classList.remove("defeated");
+    view.querySelector("#spoils").hidden = true;
+    revealed = 0;
+    update();
+    e.currentTarget.remove();
+  });
 }

@@ -28,6 +28,7 @@ const FILTERS = {
   rarity: { label: "Rarity (score)", opts: { Any: () => true, "Common <60": (r) => r.score < 60, "Rare 60–69": (r) => tierOf(r.score).name === "Rare",
     "Epic 70–79": (r) => tierOf(r.score).name === "Epic", "Legendary 80+": (r) => r.score >= 80 } },
   buyer: { label: "Top buyer", opts: { Any: () => true, ...Object.fromEntries(Object.entries(ROLE_GROUPS).map(([k, f]) => [k, (r) => f(r.role)])) } },
+  price: { label: "Share price", opts: { Any: () => true, "Under $5": (r) => r.entry < 5, "$5–$30": (r) => r.entry >= 5 && r.entry <= 30, "Over $30": (r) => r.entry > 30 } },
   cluster: { label: "Insider cluster", opts: { Any: () => true, "2+ insiders": (r) => r.cluster_points > 0, "Lone buyer": (r) => !r.cluster_points } },
   path: { label: "Path (timing)", opts: { Any: () => true, "Open (Ready)": (r) => r.timing === "Ready", "Blocked (Wait)": (r) => r.timing === "Wait", "Don't chase": (r) => r.timing === "Extended" } },
 };

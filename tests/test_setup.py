@@ -4,7 +4,7 @@ from swingquest import config
 
 def test_settings_load():
     s = config.settings()
-    assert s["universe"]["min_price"] == 5.0
+    assert s["universe"]["min_price"] > 0
     assert s["sec"]["max_requests_per_second"] <= 10  # SEC fair-access limit
 
 

@@ -17,7 +17,7 @@ setup, and honestly tracks whether the picks work.
 
 ### How a stock becomes a pick
 1. **Trigger:** an insider files a new open-market purchase (last 5 days).
-2. **Universe:** not OTC, not a fund, price > $5, > $10M traded per day.
+2. **Universe:** not OTC, not a fund, price > $2, > $10M traded per day.
 3. **Score 0-100** from insider facts only (weights in `config/weights.yaml`,
    which only you change): cluster of buyers 25, role 20, $ size 15,
    stake increase 15, first buy in 12 months 10, near 52-week low 15.
@@ -39,7 +39,7 @@ setup, and honestly tracks whether the picks work.
   and how much the buy grew their existing stake.
 - **Saved data**: `data/insider_buys/YYYY-MM.json`, one record per filing.
 - **Prices** (`prices/`): a swappable "plug"; yfinance today.
-- **Universe** (`universe.py`): not OTC, price > $5, > $10M traded per day.
+- **Universe** (`universe.py`): not OTC, price > $2, > $10M traded per day.
 
 ## Quick start (Windows)
 

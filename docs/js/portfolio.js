@@ -1,10 +1,11 @@
-// The Portfolio tab: import a Questrade CSV IN THE BROWSER ONLY.
-// The file is read locally with FileReader; nothing is uploaded or sent anywhere.
+// The Treasury (Portfolio) tab: import a Questrade positions file (Excel or CSV)
+// IN THE BROWSER ONLY. The file is read locally; nothing is uploaded or sent anywhere.
 // Any column whose header mentions "account" is dropped before anything else
 // looks at the data, and only symbol/quantity/cost/value are kept.
 import { esc, price, dollars, pct, storage } from "./util.js";
 import * as game from "./game.js";
 import { emblem } from "./art.js";
+import { readXlsx } from "./xlsx.js";
 
 const KEY = "sq.portfolio.v1";
 const CANADIAN = /\.(TO|V|CN|NE|TSX|TSXV)$/i;
@@ -49,12 +50,31 @@ const FIELDS = {
   currency: /currency/i,
 };
 
-export function holdingsFromCSV(text) {
-  const rows = parseCSV(text);
+// Activity / trade-history exports list every buy and sell, not what you hold now.
+const ACTIVITY = /transaction date|settlement date|trade date|activity type|^action$/i;
+export const WRONG_EXPORT = "This looks like your trade history (activities), not your current holdings. "
+  + "In Questrade, open your account's Positions (holdings) page and use its export button, then bring that file here.";
+
+export const holdingsFromCSV = (text) => holdingsFromRows(parseCSV(text));
+
+// Excel (.xlsx) or CSV, decided by the file's first bytes ("PK" = zip = xlsx).
+export async function holdingsFromFile(file) {
+  const buf = await file.arrayBuffer();
+  const head = new Uint8Array(buf.slice(0, 8));
+  if (head[0] === 0x50 && head[1] === 0x4b) return holdingsFromRows(await readXlsx(buf));
+  if (head[0] === 0xd0 && head[1] === 0xcf) {
+    throw new Error("That's an old-style Excel file (.xls). Open it in Excel and use Save As → Excel Workbook (.xlsx) or CSV.");
+  }
+  return holdingsFromCSV(new TextDecoder().decode(buf));
+}
+
+export function holdingsFromRows(rawRows) {
+  const rows = rawRows.map((r) => r.map((c) => String(c ?? "")));
   const headerAt = rows.findIndex((r) => r.some((c) => FIELDS.symbol.test(c.trim())));
-  if (headerAt < 0) throw new Error("Couldn't find a Symbol column. Export your Positions from Questrade as CSV.");
+  if (headerAt < 0) throw new Error("Couldn't find a Symbol column. Export your Positions from Questrade (CSV or Excel).");
   // Drop account columns FIRST, by position, so no later code can read them.
   const header = rows[headerAt].map((h) => h.trim());
+  if (header.some((h) => ACTIVITY.test(h))) throw new Error(WRONG_EXPORT);
   const keep = header.map((h, i) => (/account/i.test(h) ? -1 : i)).filter((i) => i >= 0);
   const cols = {};
   for (const [field, re] of Object.entries(FIELDS)) {
@@ -75,12 +95,12 @@ export function holdingsFromCSV(text) {
     const avg = cols.avgCost !== undefined ? num(r[cols.avgCost]) : null;
     const px = cols.price !== undefined ? num(r[cols.price]) : null;
     const val = cols.value !== undefined ? num(r[cols.value]) : (px != null ? px * qty : null);
-    h.name = h.name || (cols.name !== undefined ? r[cols.name].trim() : "");
+    h.name = h.name || (cols.name !== undefined ? (r[cols.name] || "").trim() : "");
     h.qty += qty;
     if (avg != null) h.cost += avg * qty;  // same symbol in two accounts: combine
     if (val != null) h.value += val;
     if (px != null) h.price = px;
-    if (cols.currency !== undefined) h.currency = r[cols.currency].trim();
+    if (cols.currency !== undefined) h.currency = (r[cols.currency] || "").trim();
     merged.set(symbol, h);
   }
   return [...merged.values()].map((h) => ({
@@ -115,15 +135,15 @@ export function renderPortfolio(view, today, live) {
     <div class="panel framed hero-panel">
       <div class="kicker">The Treasury</div>
       <div class="big">Your holdings vs the quests</div>
-      <p>Bring a Questrade positions CSV. It is read <strong>only in this browser</strong>, never uploaded,
+      <p>Bring your Questrade positions file (Excel or CSV). It is read <strong>only in this browser</strong>, never uploaded,
         and account numbers are burned the moment the file is opened.</p>
     </div>
 
     <label class="panel dropzone" id="drop">
-      <input type="file" id="csv" accept=".csv,text/csv" hidden>
+      <input type="file" id="csv" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
       ${emblem("key", 46)}
-      <div class="display" style="color:var(--gold-bright);font-size:17px;margin-top:6px">${holdings.length ? "Bring a newer ledger" : "Open the vault: choose your Questrade CSV"}</div>
-      <div class="muted small">or drag and drop it here · Questrade → Accounts → Positions → Export to CSV</div>
+      <div class="display" style="color:var(--gold-bright);font-size:17px;margin-top:6px">${holdings.length ? "Bring a newer ledger" : "Open the vault: choose your Questrade positions file"}</div>
+      <div class="muted small">Excel (.xlsx) or CSV · or drag and drop it here · use the export on your account's Positions page, not History</div>
     </label>
     <p id="csv-msg" class="small" style="color:var(--amber)" role="status"></p>
 
@@ -131,7 +151,7 @@ export function renderPortfolio(view, today, live) {
     <div class="panel framed on-dark">
       <div class="tallies" style="margin-top:0">
         <div class="tally"><div class="v">${holdings.length}</div><div class="k">Holdings</div><div class="s">imported ${esc(new Date(saved.importedAt).toLocaleDateString())}</div></div>
-        <div class="tally"><div class="v">${dollars(total)}</div><div class="k">Market value</div><div class="s">from your CSV</div></div>
+        <div class="tally"><div class="v">${dollars(total)}</div><div class="k">Market value</div><div class="s">from your file</div></div>
         <div class="tally"><div class="v">${withSignal}</div><div class="k">On the board</div><div class="s">quest or rumor</div></div>
       </div>
       <div class="table-wrap" style="margin-top:14px"><table>
@@ -149,20 +169,17 @@ export function renderPortfolio(view, today, live) {
   </div>`;
 
   const input = view.querySelector("#csv"), drop = view.querySelector("#drop"), msg = view.querySelector("#csv-msg");
-  const load = (file) => {
+  const load = async (file) => {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = holdingsFromCSV(String(reader.result));
-        if (!parsed.length) throw new Error("No positions found in that file.");
-        storage.set(KEY, { importedAt: new Date().toISOString(), holdings: parsed });
-        game.setFlag("portfolio");
-        renderPortfolio(view, today, live);
-        game.toast("Portfolio imported", `${parsed.length} holdings, saved only in this browser`);
-      } catch (e) { msg.textContent = e.message; }
-    };
-    reader.readAsText(file);
+    msg.textContent = "";
+    try {
+      const parsed = await holdingsFromFile(file);
+      if (!parsed.length) throw new Error("No positions found in that file.");
+      storage.set(KEY, { importedAt: new Date().toISOString(), holdings: parsed });
+      game.setFlag("portfolio");
+      renderPortfolio(view, today, live);
+      game.toast("Portfolio imported", `${parsed.length} holdings, saved only in this browser`);
+    } catch (e) { msg.textContent = e.message; }
   };
   input.addEventListener("change", () => load(input.files[0]));
   drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("drag"); });
