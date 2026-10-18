@@ -26,7 +26,8 @@ EDGE = 0.005          # 0.5% difference in 15-day return vs SPY counts as real
 STEP = 5              # weight change per suggestion
 ROLE_STEP = 0.2
 LABELS = {"cluster": "Insider cluster", "role": "Buyer's rank", "dollar_size": "Gold committed ($)",
-          "stake_increase": "Stake increase", "first_buy": "First buy in a year", "price_context": "Near 52-week low"}
+          "stake_increase": "Stake increase", "first_buy": "First buy in a year", "price_context": "Near 52-week low",
+          "relative_strength": "Beating the market", "sector_strength": "Sector leading"}
 
 
 def verdict(f: dict) -> str:
@@ -48,9 +49,11 @@ def rescore(row: dict, cfg_now: dict, cfg_new: dict) -> dict:
     for f in FACTORS:
         if f == "role":
             frac = cfg_new["role_points"].get(row["role"], 0)
+        elif row.get(f"{f}_frac") is not None:
+            frac = row[f"{f}_frac"]
         else:
-            frac = (row.get(f"{f}_points") or 0) / w_now[f] if w_now[f] else 0
-        total += w_new[f] * frac
+            frac = (row.get(f"{f}_points") or 0) / w_now[f] if w_now.get(f) else 0
+        total += w_new.get(f, 0) * frac
     score = max(0, min(100, round(total)))
     min_score = cfg_new["rules"]["min_score"]
     status = ("pick" if score >= min_score and row["timing"] == "Ready"
@@ -195,6 +198,15 @@ def observations(rows: list[dict], live_rows: list[dict]) -> tuple[list[str], li
             parts.append(f"{name}: {s['avg_excess_15'] * 100:+.1f}% vs SPY ({s['n']} signals)")
     if parts:
         obs.append("By share price, " + "; ".join(parts) + ".")
+    flagged = [r for r in rows if r["status"] == "pick" and r.get("earnings_in_window") is not None]
+    if flagged:
+        yes = scorecard.stats([r for r in flagged if r["earnings_in_window"]])
+        no = scorecard.stats([r for r in flagged if not r["earnings_in_window"]])
+        if yes["n"] and no["n"]:
+            obs.append(f"Quests with earnings inside the window: {yes['avg_excess_15'] * 100:+.1f}% vs SPY ({yes['n']}), "
+                       f"without: {no['avg_excess_15'] * 100:+.1f}% ({no['n']}).")
+            if yes["enough_data"] and no["enough_data"] and yes["avg_excess_15"] < no["avg_excess_15"] - 0.01:
+                todo.append("Quests that ran into earnings did clearly worse. Consider skipping quests flagged with an earnings warning.")
     live_q = [r for r in live_rows if r["status"] == "pick"]
     done = scorecard.finished(live_q)
     obs.append(f"Live tracking: {len(live_rows)} signals logged, {len(live_q)} quests, {len(done)} finished.")

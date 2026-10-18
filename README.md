@@ -53,6 +53,11 @@ The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
 4. **Score 0–100** from six insider facts: several insiders buying (cluster),
    the buyer's rank, dollars spent, how much it grew their stake, first buy in
    12 months, and nearness to the 52-week low.
+   Two more factors are **observed only** (weight 0 until you choose otherwise):
+   the stock beating the market over 3 months, and its sector beating the market.
+   They show as "Also worth knowing" on each quest, and the Reckoning judges them weekly.
+   **Earnings warning:** if the company reports earnings inside the quest's 15-day
+   window, the scroll warns you, because earnings can gap a stock past your stop.
 5. **Timing ("the path")** from the chart: *Open* (back above the 20-day
    average), *Blocked* (still falling), *Don't chase* (ran up too fast).
 6. **A quest** = score at or above the minimum **and** an open path. Good score
@@ -96,7 +101,7 @@ insider-buying events:
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt
 copy .env.example .env                      # put your name + email in .env
-.venv\Scripts\python -m pytest              # 108 tests
+.venv\Scripts\python -m pytest              # 126 tests
 .venv\Scripts\python -m swingquest daily    # fetch + scan + log + grade (what automation runs)
 .venv\Scripts\python -m swingquest health   # weekly report + suggestions (never applied)
 .venv\Scripts\python -m swingquest backtest # replay history -> scorecard (~10 min)
@@ -115,7 +120,7 @@ swingquest/      sec/ (SEC client, Form 4 reader, bulk + daily backfill), prices
 data/            insider purchases, backtest rows, live signal log, fetch state
 docs/            the dashboard (GitHub Pages) + docs/data/*.json it reads
 .github/         daily scan, weekly health, tests
-tests/           108 tests for parsing, scoring, backtest math, tracking, health
+tests/           126 tests for parsing, scoring, backtest math, tracking, health
 ```
 
 ## Privacy
@@ -139,8 +144,8 @@ tests/           108 tests for parsing, scoring, backtest math, tracking, health
    Canadian holdings show "no signal coverage".
 5. **yfinance is unofficial.** It can break or throttle. The downloader retries
    and waits, but a bad day can mean a missed scan.
-6. **No earnings-date check.** A quest can run straight into an earnings report,
-   which can cause a big overnight jump either way.
+6. **Earnings dates come from Yahoo** and can be missing or shift. The warning is a
+   heads-up, not a guarantee.
 7. **Prices are split-adjusted**, so a few old trades fail the price sanity check
    and are skipped (about 700 events, mostly ticker changes).
 8. **Exits are simple:** a fixed 2 × ATR stop, a 2:1 target and 15 days. Most
@@ -150,7 +155,7 @@ tests/           108 tests for parsing, scoring, backtest math, tracking, health
 1. **A paid price source with delisted stocks** (e.g. EODHD or Polygon, about
    US$20–30/month) to remove survivorship bias. The price "plug" makes this a
    one-file change. *(Costs money: your call.)*
-2. **Earnings-date warning** on each quest.
+2. **Short interest and analyst revisions** as observed factors (US).
 3. **Trade journal from Questrade activity exports**: check automatically
    whether real trades kept the oath.
 4. **Canadian insider quests (SEDI)**: no free feed today. Options: a paid provider (e.g. Finnhub or Smart Insider), or the SEDI-to-SEDAR+ move if it adds downloads. Canadian holdings already get analyst briefs.

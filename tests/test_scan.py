@@ -22,6 +22,13 @@ def fixed_rules(monkeypatch):
     monkeypatch.setattr(universe, "settings", lambda: {**real_settings, "universe": {
         "min_price": 5.0, "max_price": None, "min_avg_dollar_volume": 10_000_000}})
     monkeypatch.setattr(scan.scoring, "load_weights", lambda: {**real_weights, "rules": {**real_weights["rules"], "min_score": 60}})
+    monkeypatch.setattr(scan.events, "earnings_dates", lambda ticker, fetch=None: ["2026-10-27"])  # no internet in tests
+
+
+def test_earnings_inside_window_adds_warning(monkeypatch, tmp_path):
+    r = run(monkeypatch, tmp_path, strong_cluster(), {"SPY": bars(), "ABCD": bars()})
+    p = r["picks"][0]
+    assert p["earnings"]["in_window"] and p["cautions"][0].startswith("Earnings expected 2026-10-27")
 
 
 def bars(noisy=True):

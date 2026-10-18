@@ -68,6 +68,18 @@ def group(rows, key) -> dict:
     return {k: stats(v) for k, v in sorted(groups.items())}
 
 
+def is_strong(row: dict, factor: str, weight: float) -> bool | None:
+    """Did this factor earn at least half of its possible points? Uses the
+    stored fraction when present (works even for weight-0 'observed' factors);
+    None = can't tell (older rows without that factor)."""
+    frac = row.get(f"{factor}_frac")
+    if frac is not None:
+        return frac >= 0.5
+    if weight <= 0 or f"{factor}_points" not in row:
+        return None
+    return (row.get(f"{factor}_points") or 0) >= weight / 2
+
+
 def factor_table(rows: list[dict], weights: dict) -> dict:
     """For each factor: signals where it was STRONG (earned at least half its
     weight) vs WEAK. 'edge' = difference in average 15-day return vs SPY
@@ -75,9 +87,9 @@ def factor_table(rows: list[dict], weights: dict) -> dict:
     where everyone earns at least a few points."""
     out = {}
     for f in FACTORS:
-        cut = weights[f] / 2
-        with_f = stats([r for r in rows if (r.get(f"{f}_points") or 0) >= cut])
-        without = stats([r for r in rows if (r.get(f"{f}_points") or 0) < cut])
+        flags = [(r, is_strong(r, f, weights.get(f, 0))) for r in rows]
+        with_f = stats([r for r, s in flags if s is True])
+        without = stats([r for r, s in flags if s is False])
         edge = None
         if with_f["avg_excess_15"] is not None and without["avg_excess_15"] is not None:
             edge = round(with_f["avg_excess_15"] - without["avg_excess_15"], 5)

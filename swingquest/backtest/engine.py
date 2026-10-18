@@ -18,6 +18,7 @@ from swingquest.prices.base import get_price_source
 from swingquest.signals import scoring
 from swingquest.signals.scan import evaluate
 from swingquest.backtest.outcomes import measure
+from swingquest.sectors import SECTOR_ETFS, etf_of, sector_of
 from swingquest.universe import IssuerProfiles, exchange_map, is_us_listed, liquidity_check
 
 EVENT_GAP_DAYS = 21
@@ -68,7 +69,7 @@ def run_backtest(start: str, end: str, source=None, profiles=None, exchanges=Non
     profiles = profiles or IssuerProfiles()
     tickers = sorted({t for t, _ in events})
     price_start = date.fromisoformat(start) - timedelta(days=420)
-    prices = source.history(tickers + ["SPY"], price_start, date.today())
+    prices = source.history(tickers + ["SPY"] + list(SECTOR_ETFS.values()), price_start, date.today())
     spy = prices["SPY"]
 
     rows, skipped = [], {}
@@ -99,10 +100,13 @@ def run_backtest(start: str, end: str, source=None, profiles=None, exchanges=Non
         if not liq["ok"]:
             skip("too cheap or thinly traded")
             continue
-        if profiles.get(first["issuer_cik"])["is_fund"]:
+        profile = profiles.get(first["issuer_cik"])
+        if profile["is_fund"]:
             skip("a fund, not an operating company")
             continue
 
+        sector = sector_of(profile.get("sic"))
+        market = {"spy": spy, "etf": prices.get(etf_of(sector)), "sector": sector}  # cut at each day inside evaluate
         chosen = None
         for e in days:  # give timing up to trigger_days to turn Ready, like the live scan
             e_str = f"{e:%Y-%m-%d}"
@@ -110,7 +114,7 @@ def run_backtest(start: str, end: str, source=None, profiles=None, exchanges=Non
             window = [b for b in by_ticker[t] if w_start <= b["filed_date"] <= e_str]
             prior_start = (e - pd.Timedelta(days=rules["window_days"] + 400)).strftime("%Y-%m-%d")
             prior = [b for b in by_ticker[t] if prior_start <= b["filed_date"] < w_start]
-            setup = evaluate(t, window, prior, hist_start, df.loc[:e].tail(HISTORY_BARS), cfg, trade_cfg)
+            setup = evaluate(t, window, prior, hist_start, df.loc[:e].tail(HISTORY_BARS), cfg, trade_cfg, market)
             if setup is None:
                 break
             if chosen is None or setup["status"] == "pick":
@@ -141,5 +145,9 @@ def _row(ticker, filed, signal_day, setup, outcome) -> dict:
     }
     for name, f in setup["factors"].items():
         row[f"{name}_points"] = f["points"]
+        row[f"{name}_frac"] = f.get("fraction")
+    row["rs_3m"] = setup["factors"].get("relative_strength", {}).get("value")
+    row["sector_rs"] = setup["factors"].get("sector_strength", {}).get("value")
+    row["sector"] = setup.get("sector")
     row.update(outcome)
     return row

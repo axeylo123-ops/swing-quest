@@ -13,21 +13,54 @@ import pandas as pd
 from swingquest import store
 from swingquest.config import DATA_OUT_DIR, settings
 from swingquest.prices.base import get_price_source
+from swingquest import events
 from swingquest.signals import plan, scoring, technicals
+from swingquest.sectors import SECTOR_ETFS, etf_of, sector_of
 from swingquest.universe import IssuerProfiles, exchange_map, is_us_listed, liquidity_check
 
 PRICE_LOOKBACK_DAYS = 400   # enough for a 52-week range plus moving averages
 CHART_BARS = 90
 
 
+RS_DAYS = 63   # about 3 months of trading days
+
+
+def ret_over(df: pd.DataFrame | None, day, n: int = RS_DAYS) -> float | None:
+    """Return over the last n trading days up to `day` (None if too little data)."""
+    if df is None:
+        return None
+    past = df["close"].loc[:day]
+    if len(past) <= n:
+        return None
+    return float(past.iloc[-1] / past.iloc[-1 - n] - 1)
+
+
+def strength(prices: pd.DataFrame, market: dict | None) -> dict:
+    """3-month return vs SPY for the stock and for its sector fund."""
+    if not market:
+        return {}
+    day = prices.index[-1]
+    spy = ret_over(market.get("spy"), day)
+    stock = ret_over(prices, day)
+    etf = ret_over(market.get("etf"), day)
+    return {
+        "rs_3m": None if stock is None or spy is None else stock - spy,
+        "sector": market.get("sector"),
+        "sector_rs": None if etf is None or spy is None else etf - spy,
+    }
+
+
 def evaluate(ticker: str, window_buys: list[dict], prior_buys: list[dict],
              history_start: str | None, prices: pd.DataFrame, cfg: dict,
-             trade_cfg: dict) -> dict | None:
-    """Score one stock. `prices` must end on the decision day (no future bars)."""
+             trade_cfg: dict, market: dict | None = None) -> dict | None:
+    """Score one stock. `prices` must end on the decision day (no future bars).
+    `market` = {"spy": df, "etf": sector fund df, "sector": name} for the
+    relative-strength factors (also cut off at the decision day)."""
     snap = technicals.snapshot(prices, trade_cfg["atr_period"])
     if snap is None or not window_buys:
         return None
-    result = scoring.score(window_buys, prior_buys, history_start, snap, cfg)
+    ctx = strength(prices, market)
+    result = scoring.score(window_buys, prior_buys, history_start, {**snap, **ctx}, cfg)
     trade = plan.trade_plan(snap["close"], snap["atr"], trade_cfg)
     if trade is None:
         return None
@@ -43,10 +76,13 @@ def evaluate(ticker: str, window_buys: list[dict], prior_buys: list[dict],
         "timing": t["label"],
         "timing_notes": t["notes"],
         "reasons": result["reasons"],
+        "context": result["context"],
         "cautions": result["cautions"],
-        "factors": {k: {"points": f["points"], "value": f["value"]} for k, f in result["factors"].items()},
+        "factors": {k: {"points": f["points"], "value": f["value"], "fraction": f["fraction"]}
+                    for k, f in result["factors"].items()},
         "plan": trade,
         "indicators": {k: round(v, 4) for k, v in snap.items()},
+        "sector": ctx.get("sector"),
         "insiders": [{"name": b["owner_name"], "role": b["role"], "value": b["value"],
                       "avg_price": b["avg_price"], "trade_date": b["trade_date"],
                       "filed_date": b["filed_date"]} for b in window_buys],
@@ -59,6 +95,17 @@ def chart_data(prices: pd.DataFrame) -> list[list]:
     return [[d.strftime("%Y-%m-%d"), round(r.open, 2), round(r.high, 2), round(r.low, 2),
              round(r.close, 2), None if math.isnan(r.sma20) else round(r.sma20, 2)]
             for d, r in tail.iterrows()]
+
+
+def add_earnings(setup: dict, as_of: str, fetch=None) -> None:
+    """Flags an earnings report inside the quest's 15-day window."""
+    dates = events.earnings_dates(setup["ticker"], fetch=fetch)
+    hit = events.in_window(dates, as_of, setup["plan"]["time_stop_days"]) if dates else None
+    upcoming = next((d for d in dates if d > as_of), None)
+    setup["earnings"] = {"next": upcoming, "in_window": hit is not None, "known": bool(dates)}
+    if hit:
+        setup["cautions"].insert(0, f"Earnings expected {hit}, inside this quest's window: "
+                                    "the price can jump or drop sharply overnight")
 
 
 def market_weather(spy: pd.DataFrame | None, as_of) -> dict | None:
@@ -79,7 +126,7 @@ def history_start() -> str | None:
     return state.get("history_start")
 
 
-def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, exchanges=None,
+def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, exchanges=None, earnings_fetch=None,
              profiles=None) -> dict:
     cfg = scoring.load_weights()
     rules, trade_cfg = cfg["rules"], settings()["trade"]
@@ -100,7 +147,8 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
     source = source or get_price_source()
     exchanges = exchange_map() if exchanges is None else exchanges
     profiles = profiles or IssuerProfiles()
-    price_data = source.history(triggered + ["SPY"], today - timedelta(days=PRICE_LOOKBACK_DAYS), today)
+    price_data = source.history(triggered + ["SPY"] + list(SECTOR_ETFS.values()),
+                                today - timedelta(days=PRICE_LOOKBACK_DAYS), today)
     as_of = price_data["SPY"].index[-1] if "SPY" in price_data else pd.Timestamp(today)
 
     picks, watch, skipped, evaluated = [], [], [], []
@@ -117,11 +165,14 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
         if not liq["ok"]:
             skipped.append({"ticker": t, "reason": liq["reason"]})
             continue
-        if profiles.get(by_ticker[t][-1]["issuer_cik"])["is_fund"]:
+        profile = profiles.get(by_ticker[t][-1]["issuer_cik"])
+        if profile["is_fund"]:
             skipped.append({"ticker": t, "reason": "a fund, not an operating company"})
             continue
+        sector = sector_of(profile.get("sic"))
+        market = {"spy": price_data.get("SPY"), "etf": price_data.get(etf_of(sector)), "sector": sector}
         setup = evaluate(t, by_ticker[t], [p for p in prior if p["ticker"] == t],
-                         history_start(), df, cfg, trade_cfg)
+                         history_start(), df, cfg, trade_cfg, market)
         if setup is None:
             skipped.append({"ticker": t, "reason": "not enough price history"})
             continue
@@ -136,6 +187,8 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
     picks.sort(key=lambda s: -s["score"])
     watch.sort(key=lambda s: -s["score"])
     market = market_weather(price_data.get("SPY"), as_of)
+    for s in picks + watch:   # earnings inside the quest's window? (a few lookups per night)
+        add_earnings(s, f"{as_of:%Y-%m-%d}", earnings_fetch)
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "as_of": f"{as_of:%Y-%m-%d}",

@@ -82,7 +82,13 @@ def cmd_backfill(args):
 
 def cmd_backtest(args):
     from swingquest.backtest import report
-    if args.rebuild:
+    if args.earnings:   # mark which past quests/rumors had earnings inside their window
+        import json
+        from swingquest import events
+        rows = json.loads(report.ROWS_FILE.read_text(encoding="utf-8"))
+        meta = json.loads(report.META_FILE.read_text(encoding="utf-8"))
+        card = report.save_backtest(events.annotate(rows), meta)
+    elif args.rebuild:
         card = report.write_scorecard()
     else:
         from swingquest import store
@@ -191,6 +197,8 @@ def main(argv=None):
     bt = sub.add_parser("backtest", help="replay the scanner through history -> scorecard.json")
     bt.add_argument("--start", help="first signal date (default: 400 days after history starts)")
     bt.add_argument("--end", help="last signal date (default: today)")
+    bt.add_argument("--earnings", action="store_true",
+                    help="look up earnings dates for past quests/rumors and mark them (uses Yahoo)")
     bt.add_argument("--rebuild", action="store_true",
                     help="rebuild scorecard.json from saved results without re-running")
     bt.add_argument("--sec-rate", type=float, default=None,

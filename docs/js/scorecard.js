@@ -30,6 +30,9 @@ const FILTERS = {
   buyer: { label: "Top buyer", opts: { Any: () => true, ...Object.fromEntries(Object.entries(ROLE_GROUPS).map(([k, f]) => [k, (r) => f(r.role)])) } },
   price: { label: "Share price", opts: { Any: () => true, "Under $5": (r) => r.entry < 5, "$5–$30": (r) => r.entry >= 5 && r.entry <= 30, "Over $30": (r) => r.entry > 30 } },
   cluster: { label: "Insider cluster", opts: { Any: () => true, "2+ insiders": (r) => r.cluster_points > 0, "Lone buyer": (r) => !r.cluster_points } },
+  rs: { label: "Stock vs market (3 months)", opts: { Any: () => true, Beating: (r) => r.rs_3m != null && r.rs_3m >= 0, Lagging: (r) => r.rs_3m != null && r.rs_3m < 0 } },
+  sector: { label: "Its sector vs market (3 months)", opts: { Any: () => true, Leading: (r) => r.sector_rs != null && r.sector_rs >= 0, Lagging: (r) => r.sector_rs != null && r.sector_rs < 0 } },
+  earnings: { label: "Earnings inside the quest window", opts: { Any: () => true, "No earnings": (r) => r.earnings_in_window === false, "Earnings inside": (r) => r.earnings_in_window === true } },
   path: { label: "Path (timing)", opts: { Any: () => true, "Open (Ready)": (r) => r.timing === "Ready", "Blocked (Wait)": (r) => r.timing === "Wait", "Don't chase": (r) => r.timing === "Extended" } },
 };
 

@@ -35,7 +35,8 @@ def save_backtest(rows: list[dict], meta: dict) -> dict:
 
 HISTORY_FILE = DATA_OUT_DIR / "history.json"
 HISTORY_FIELDS = ["signal_date", "score", "status", "timing", "role", "cluster_points",
-                  "excess_15", "ret_15", "taken", "trade_return", "exit_reason", "source", "entry"]
+                  "excess_15", "ret_15", "taken", "trade_return", "exit_reason", "source", "entry",
+                  "rs_3m", "sector_rs", "sector", "earnings_in_window"]
 
 
 def write_history(rows: list[dict], live_rows: list[dict] | None = None) -> None:

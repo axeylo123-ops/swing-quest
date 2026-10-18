@@ -10,7 +10,8 @@ from datetime import date, timedelta
 
 from swingquest.config import load_yaml
 
-FACTORS = ["cluster", "role", "dollar_size", "stake_increase", "first_buy", "price_context"]
+FACTORS = ["cluster", "role", "dollar_size", "stake_increase", "first_buy", "price_context",
+           "relative_strength", "sector_strength"]
 ROLE_WORDS = {"CEO": "the CEO", "CFO": "the CFO", "Director": "a director",
               "Officer": "an officer", "10% Owner": "a 10% owner (big investor)", "Other": "an insider"}
 
@@ -105,6 +106,27 @@ def price_context(snap: dict) -> dict:
     return {"fraction": frac, "value": round(pos, 4), "reason": reason}
 
 
+def relative_strength(snap: dict) -> dict:
+    """Is the stock beating the market (SPY) over the last 3 months?"""
+    v = snap.get("rs_3m")
+    if v is None:
+        return {"fraction": 0.0, "value": None, "reason": None}
+    frac = 1.0 if v >= 0.10 else 0.7 if v >= 0.05 else 0.4 if v >= 0 else 0.0
+    reason = (f"Beating the market by {v:+.0%} over 3 months" if v >= 0
+              else f"Lagging the market by {abs(v):.0%} over 3 months")
+    return {"fraction": frac, "value": round(v, 4), "reason": reason}
+
+
+def sector_strength(snap: dict) -> dict:
+    """Is the stock's sector (via its sector fund) beating the market over 3 months?"""
+    v, sector = snap.get("sector_rs"), snap.get("sector")
+    if v is None or not sector:
+        return {"fraction": 0.0, "value": None, "reason": None}
+    frac = 1.0 if v >= 0.03 else 0.5 if v >= 0 else 0.0
+    reason = f"Its sector ({sector}) is {'leading' if v >= 0 else 'lagging'} the market by {abs(v):.0%} over 3 months"
+    return {"fraction": frac, "value": round(v, 4), "reason": reason}
+
+
 def score(buys: list[dict], prior_buys: list[dict], history_start: str | None,
           snap: dict, cfg: dict) -> dict:
     """Returns {'score': 0-100, 'factors': {...}, 'reasons': [...], 'cautions': [...]}."""
@@ -115,14 +137,19 @@ def score(buys: list[dict], prior_buys: list[dict], history_start: str | None,
         "stake_increase": stake_increase(buys),
         "first_buy": first_buy(buys, prior_buys, history_start),
         "price_context": price_context(snap),
+        "relative_strength": relative_strength(snap),
+        "sector_strength": sector_strength(snap),
     }
     weights = cfg["weights"]
     for name, f in factors.items():
-        f["points"] = round(weights[name] * f["fraction"], 1)
+        f["points"] = round(weights.get(name, 0) * f["fraction"], 1)
     total = round(sum(f["points"] for f in factors.values()))
+    # A factor with weight 0 is "observed only": shown as context, not counted.
+    scored = lambda n: weights.get(n, 0) > 0
     return {
         "score": max(0, min(100, total)),
         "factors": factors,
-        "reasons": [f["reason"] for f in factors.values() if f.get("reason")],
+        "reasons": [f["reason"] for n, f in factors.items() if f.get("reason") and scored(n)],
+        "context": [f["reason"] for n, f in factors.items() if f.get("reason") and not scored(n)],
         "cautions": [f["caution"] for f in factors.values() if f.get("caution")],
     }

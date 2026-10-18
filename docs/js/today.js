@@ -15,6 +15,7 @@ const PATH = {
 const FACTOR_NAMES = {
   cluster: "Insider cluster", role: "Buyer's rank", dollar_size: "Gold committed ($)",
   stake_increase: "Stake increase", first_buy: "First buy in 12 months", price_context: "Near 52-week low",
+  relative_strength: "Beating the market (observed)", sector_strength: "Sector leading (observed)",
 };
 const VOWS = [
   "I enter only inside the buy zone, or not at all",
@@ -32,6 +33,20 @@ function sizing(pl) {
     <div class="small">Buy about <strong>${s.shares} shares</strong> (≈ ${dollars(s.cost)}). If the retreat is hit you lose about
       <strong>${dollars(s.risk)}</strong>, which is ${rules.riskPct}% of your ${dollars(rules.account)} account. If the treasure is reached you gain about
       <strong>${dollars(s.shares * (pl.target - pl.reference))}</strong>.</div></div>`;
+}
+
+// Earnings inside the quest's window: the most common nasty surprise for swing trades.
+function earningsBanner(p) {
+  const e = p.earnings;
+  if (!e) return "";
+  if (e.in_window) {
+    const c = p.cautions.find((x) => x.startsWith("Earnings expected")) || "";
+    const d = (c.match(/\d{4}-\d{2}-\d{2}/) || [e.next])[0];
+    return `<div class="omen" style="border-color:var(--retreat);background:rgba(139,30,30,.08);margin-top:10px">
+      <div class="verdict" style="color:var(--retreat)">⚠ Earnings on ${esc(shortDate(d))}: inside this quest's window</div>
+      <div class="small">Earnings reports can gap a stock up or down overnight, past your retreat. Consider a smaller position, or skipping it.</div></div>`;
+  }
+  return e.next ? `<div class="small muted" style="margin-top:6px">Next earnings ${esc(shortDate(e.next))}, after this quest ends.</div>` : "";
 }
 
 const pathChip = (label) => { const p = PATH[label] || PATH.Wait; return `<span class="chip ${p.cls}">${p.text} · ${p.plain}</span>`; };
@@ -66,6 +81,7 @@ function questScroll(p, asOf, hist) {
       </div>
       ${gem(p.score, 70)}
     </div>
+    ${earningsBanner(p)}
 
     <div class="terms">
       <div><div class="k">Enter at</div><div class="plain">buy zone</div><div class="v">${pl.entry_low.toFixed(2)}–${pl.entry_high.toFixed(2)}</div></div>
@@ -80,7 +96,9 @@ function questScroll(p, asOf, hist) {
     <div class="two-col">
       <div><h3>Why this quest</h3>
         <ul class="lore">${p.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
-        ${p.cautions.length ? `<ul class="lore warn" style="margin-top:4px">${p.cautions.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}</div>
+        ${p.cautions.length ? `<ul class="lore warn" style="margin-top:4px">${p.cautions.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}
+        ${p.context?.length ? `<h3 style="margin:10px 0 4px">Also worth knowing <span class="muted small" style="text-transform:none;letter-spacing:0">(not scored yet)</span></h3>
+          <ul class="lore path">${p.context.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>` : ""}</div>
       <div><h3>The path</h3>${pathChip(p.timing)}
         <ul class="lore path" style="margin-top:6px">${p.timing_notes.map((r) => `<li>${esc(r)}</li>`).join("")}</ul></div>
     </div>
@@ -115,7 +133,7 @@ function questScroll(p, asOf, hist) {
 function rumor(p, i) {
   return `<div class="note" style="--r:${[-2, 1.5, -1, 2][i % 4]}deg">
     <div class="spread"><div><div class="ticker">${esc(p.ticker)}</div><div class="company small">${esc(p.company || "")}</div></div>${gem(p.score, 46)}</div>
-    <div style="margin:8px 0 4px">${pathChip(p.timing)}</div>
+    <div style="margin:8px 0 4px">${pathChip(p.timing)}${p.earnings?.in_window ? ' <span class="chip fled">Earnings in window</span>' : ""}</div>
     <ul class="lore small">${p.reasons.slice(0, 3).map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
     <div class="small" style="margin-top:6px;color:var(--ink-2)"><em>${esc(p.timing_notes[0] || "")}</em></div>
   </div>`;

@@ -14,6 +14,8 @@ const FACTORS = {
   stake_increase: { label: "Stake Increase", glyph: "ᛋ", what: "How much the purchase grew the insider's existing holding." },
   first_buy: { label: "First Buy in a Year", glyph: "ᚠ", what: "The insider hadn't bought in the previous 12 months." },
   price_context: { label: "Near the Valley", glyph: "ᚹ", what: "The stock is trading near its 52-week low." },
+  relative_strength: { label: "Beating the Market", glyph: "ᛏ", what: "The stock beat SPY over the last 3 months. Observed only until you give it weight." },
+  sector_strength: { label: "Sector Leading", glyph: "ᛒ", what: "Its sector fund beat SPY over the last 3 months. Observed only until you give it weight." },
 };
 const VERDICTS = {
   helping: { cls: "open", text: "Helping", say: "Signals where this was strong beat the others." },

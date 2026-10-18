@@ -12,6 +12,10 @@ weights:
   stake_increase: 15   # how much the buy grew their existing holding
   first_buy: 10        # first purchase by that insider in 12+ months
   price_context: 15    # near the 52-week low = more points
+  # Observed only (weight 0): shown as context on each quest and judged by the
+  # weekly Reckoning. Give them weight here if the Reckoning shows they help.
+  relative_strength: 0 # stock beating the market (SPY) over 3 months
+  sector_strength: 0   # its sector fund beating the market over 3 months
 
 # How much of the weight each role earns.
 role_points:
