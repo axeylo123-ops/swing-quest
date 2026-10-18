@@ -3,12 +3,12 @@
  "end": "2026-09-25",
  "events": 13529,
  "skipped": {
-  "too cheap or thinly traded": 6882,
+  "too cheap or thinly traded": 5172,
   "price doesn't match filing (ticker change or split)": 820,
   "no price data (often delisted)": 3820,
   "trades OTC": 588,
   "no trading days after filing": 212,
-  "a fund, not an operating company": 72,
-  "not enough price history": 13
+  "a fund, not an operating company": 81,
+  "not enough price history": 21
  }
 }

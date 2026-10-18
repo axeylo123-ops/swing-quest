@@ -179,6 +179,45 @@ function activeQuests(live, asOf) {
       <div class="table-wrap"><table><thead><tr><th>Quest</th><th>Posted</th><th>Outcome</th><th class="num">Result</th></tr></thead><tbody>${closed}</tbody></table></div></div>` : ""}`;
 }
 
+// The best near-misses tonight, so the board is never empty.
+function radarSection(data) {
+  const r = data.radar || [];
+  if (!r.length) return "";
+  return `<div class="section-title"><h2>On the Radar</h2>${flourish()}
+      <p>The strongest insider-backed stocks that aren't quests tonight, ranked. Worth watching: some will become quests.</p></div>
+    <div class="panel framed on-dark radar">${r.map((x) => `
+      <details class="radar-row">
+        <summary>
+          ${gem(x.score, 40)}
+          <span class="radar-name"><strong>${esc(x.ticker)}</strong> <span class="muted small">${esc(x.company || "")}</span><br>
+            <span class="small">${esc(x.reasons[0] || "")}</span></span>
+          <span class="chip ${x.timing === "Ready" ? "blocked" : PATH[x.timing]?.cls || "blocked"} dark radar-why">${esc(x.why_not)}</span>
+        </summary>
+        <div class="radar-body small">
+          <ul class="lore">${x.reasons.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
+          ${x.context?.length ? `<ul class="lore path" style="margin-top:4px">${x.context.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+          <div class="muted" style="margin-top:6px">${x.insiders} insider${x.insiders === 1 ? "" : "s"} bought ${money(x.dollars)} in the last 30 days · price ${price(x.price)}${x.sector ? ` · ${esc(x.sector)}` : ""}</div>
+        </div>
+      </details>`).join("")}</div>`;
+}
+
+// What happened since your previous visit (new quests, finished quests).
+function sinceLastVisit(data, live) {
+  const g = game.get(), today = new Date().toISOString().slice(0, 10);
+  const prev = [...g.checkins].reverse().find((d) => d < today);
+  const since = prev || data.as_of;
+  const finished = (live?.closed || []).filter((q) => (q.exit_date || "") >= since);
+  const fresh = data.picks.length;
+  const parts = [];
+  if (fresh) parts.push(`<strong>${fresh}</strong> quest${fresh === 1 ? "" : "s"} posted tonight`);
+  if (finished.length) parts.push(`<strong>${finished.length}</strong> finished: ${finished.map((q) =>
+    `${esc(q.ticker)} ${q.taken ? `<span class="${signClass(q.trade_return)}">${pct(q.trade_return)}</span>` : "(skipped)"}`).join(", ")}`);
+  const open = (live?.open || []).filter((q) => q.entry_date).length;
+  if (open) parts.push(`<strong>${open}</strong> in progress`);
+  if ((data.radar || []).length) parts.push(`<strong>${data.radar.length}</strong> on the radar`);
+  return `<div class="since small">${prev ? `Since your last visit (${esc(shortDate(prev))})` : "Tonight"}: ${parts.join(" · ") || "a quiet board"}</div>`;
+}
+
 export function renderToday(view, data, hist = [], live = null) {
   if (!data) {
     view.innerHTML = `<div class="panel framed hero-panel">${noticeBoard()}<div class="big">No scan yet</div>
@@ -190,9 +229,10 @@ export function renderToday(view, data, hist = [], live = null) {
   <div class="stack">
     <div class="panel framed hero-panel">
       <div class="kicker">The Quest Board · ${esc(niceDate(data.as_of))}</div>
+      ${sinceLastVisit(data, live)}
       ${none ? `<div class="empty-board">${noticeBoard()}</div>` : ""}
       <div class="big">${none ? "The board is empty tonight" : `${data.picks.length} quest${data.picks.length > 1 ? "s" : ""} posted`}</div>
-      <p>${none ? "No stock passed every rule. Patience is a weapon: a hero who waits beats one who forces a fight."
+      <p>${none ? `No stock passed every rule tonight.${(data.radar || []).length ? " Check the radar below for the closest candidates." : ""} Patience is a weapon.`
                : `Each passed the rules, scored ${data.rules.min_score}+ and has an open path. Read the scroll, then decide.`}</p>
       <div class="tallies">
         <div class="tally"><div class="v">${s.insider_buys_in_window}</div><div class="k">Insider buys</div><div class="s">last 30 days</div></div>
@@ -215,6 +255,8 @@ export function renderToday(view, data, hist = [], live = null) {
     ${data.watchlist.length ? `<div class="section-title"><h2>Rumors</h2>${flourish()}
       <p>Strong insider buying, but the path isn't open yet. Not a buy, just one to watch.</p></div>
       <div class="notes">${data.watchlist.map(rumor).join("")}</div>` : ""}
+
+    ${radarSection(data)}
 
     <div class="panel on-dark">
       <details ${none && !data.watchlist.length ? "open" : ""}>

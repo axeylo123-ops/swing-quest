@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T13:00:11+00:00",
+ "generated_at": "2026-10-18T13:11:00+00:00",
  "open": [
   {
    "id": "BORR-2026-10-16",
@@ -68,6 +68,72 @@
    "skip_reason": "no next-day price yet"
   },
   {
+   "id": "HEI-2026-10-16",
+   "ticker": "HEI",
+   "company": "HEICO CORP",
+   "score": 70,
+   "signal_date": "2026-10-16",
+   "entry_date": null,
+   "entry": null,
+   "stop": null,
+   "target": null,
+   "plan": {
+    "reference": 309.87,
+    "entry_low": 308.06,
+    "entry_high": 313.49,
+    "stop": 295.38,
+    "target": 349.71,
+    "risk_pct": 0.0467,
+    "reward_risk": 2.75,
+    "reward_risk_worst": 2.0,
+    "time_stop_days": 15
+   },
+   "last_close": 309.87,
+   "last_date": "2026-10-16",
+   "return_now": null,
+   "days_held": null,
+   "exit_reason": "open",
+   "exit_date": null,
+   "exit_price": null,
+   "trade_return": null,
+   "excess_15": null,
+   "taken": false,
+   "skip_reason": "no next-day price yet"
+  },
+  {
+   "id": "PAM-2026-10-16",
+   "ticker": "PAM",
+   "company": "Pampa Energy Inc.",
+   "score": 74,
+   "signal_date": "2026-10-16",
+   "entry_date": null,
+   "entry": null,
+   "stop": null,
+   "target": null,
+   "plan": {
+    "reference": 81.1,
+    "entry_low": 80.57,
+    "entry_high": 82.17,
+    "stop": 76.82,
+    "target": 92.87,
+    "risk_pct": 0.0528,
+    "reward_risk": 2.75,
+    "reward_risk_worst": 2.0,
+    "time_stop_days": 15
+   },
+   "last_close": 81.1,
+   "last_date": "2026-10-16",
+   "return_now": null,
+   "days_held": null,
+   "exit_reason": "open",
+   "exit_date": null,
+   "exit_price": null,
+   "trade_return": null,
+   "excess_15": null,
+   "taken": false,
+   "skip_reason": "no next-day price yet"
+  },
+  {
    "id": "PEP-2026-10-16",
    "ticker": "PEP",
    "company": "PEPSICO INC",
@@ -119,5 +185,5 @@
   "stop_first": null,
   "time_exit": null
  },
- "logged_signals": 12
+ "logged_signals": 13
 }

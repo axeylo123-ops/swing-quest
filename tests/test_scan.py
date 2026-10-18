@@ -25,6 +25,17 @@ def fixed_rules(monkeypatch):
     monkeypatch.setattr(scan.events, "earnings_dates", lambda ticker, fetch=None: ["2026-10-27"])  # no internet in tests
 
 
+def test_radar_lists_near_misses_with_reasons():
+    def s(t, score, status, timing):
+        return {"ticker": t, "company": t, "score": score, "status": status, "timing": timing, "reasons": ["r1", "r2"],
+                "context": [], "indicators": {"close": 10.0}, "insiders": [{"name": "A", "value": 1e5}]}
+    ev = [s("PICK", 90, "pick", "Ready"), s("WAIT", 70, "watch", "Wait"), s("LOW", 50, "below", "Ready"),
+          s("HOT", 66, "watch", "Extended"), s("NOISE", 20, "below", "Ready")]
+    r = scan.radar_list(ev, min_score=60)
+    assert [x["ticker"] for x in r] == ["WAIT", "HOT", "LOW"]          # quests and noise excluded, best first
+    assert "blocked" in r[0]["why_not"] and "chase" in r[1]["why_not"] and "needs 60" in r[2]["why_not"]
+
+
 def test_earnings_inside_window_adds_warning(monkeypatch, tmp_path):
     r = run(monkeypatch, tmp_path, strong_cluster(), {"SPY": bars(), "ABCD": bars()})
     p = r["picks"][0]

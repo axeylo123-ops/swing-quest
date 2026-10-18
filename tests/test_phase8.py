@@ -2,11 +2,12 @@
 import pandas as pd
 import pytest
 
+from tests.helpers import FIXED_CFG
 from swingquest import events, health, sectors
 from swingquest.backtest import scorecard
 from swingquest.signals import scan, scoring
 
-CFG = scoring.load_weights()
+CFG = FIXED_CFG  # fixed test config (see tests/helpers.py)
 
 
 @pytest.mark.parametrize("sic,sector", [("2834", "Health Care"), ("1311", "Energy"), ("7372", "Technology"),

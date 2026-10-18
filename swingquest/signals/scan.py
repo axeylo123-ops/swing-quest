@@ -97,6 +97,35 @@ def chart_data(prices: pd.DataFrame) -> list[list]:
             for d, r in tail.iterrows()]
 
 
+RADAR_SIZE = 8
+RADAR_MIN_SCORE = 40   # below this, a stock is noise, not a candidate
+
+
+def radar_list(evaluated: list[dict], min_score: int, size: int = RADAR_SIZE) -> list[dict]:
+    """The best-scoring stocks that are NOT quests tonight, so the board is
+    never empty. Each says plainly why it isn't a quest (yet)."""
+    out = []
+    for s in sorted(evaluated, key=lambda s: -s["score"]):
+        if s["status"] == "pick" or s["score"] < RADAR_MIN_SCORE:
+            continue
+        if s["score"] < min_score:
+            why = f"score {s['score']}, needs {min_score}"
+        elif s["timing"] == "Wait":
+            why = "path blocked: still falling, wait for it to turn up"
+        else:
+            why = "ran up too fast: don't chase"
+        out.append({
+            "ticker": s["ticker"], "company": s.get("company"), "score": s["score"], "timing": s["timing"],
+            "why_not": why, "reasons": s["reasons"][:3], "context": s.get("context", [])[:2],
+            "price": s["indicators"]["close"], "sector": s.get("sector"),
+            "insiders": len({b["name"] for b in s["insiders"]}),
+            "dollars": round(sum(b["value"] for b in s["insiders"]), 2),
+        })
+        if len(out) >= size:
+            break
+    return out
+
+
 def add_earnings(setup: dict, as_of: str, fetch=None) -> None:
     """Flags an earnings report inside the quest's 15-day window."""
     dates = events.earnings_dates(setup["ticker"], fetch=fetch)
@@ -187,6 +216,7 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
     picks.sort(key=lambda s: -s["score"])
     watch.sort(key=lambda s: -s["score"])
     market = market_weather(price_data.get("SPY"), as_of)
+    radar = radar_list(evaluated, rules["min_score"])
     for s in picks + watch:   # earnings inside the quest's window? (a few lookups per night)
         add_earnings(s, f"{as_of:%Y-%m-%d}", earnings_fetch)
     result = {
@@ -206,6 +236,7 @@ def run_scan(today: date | None = None, out_dir=DATA_OUT_DIR, source=None, excha
         "skipped": skipped,
         "rules": {"min_score": rules["min_score"], "weights": cfg["weights"]},
         "market": market,
+        "radar": radar,
     }
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "today.json").write_text(json.dumps(result, indent=1, allow_nan=False),

@@ -1,4 +1,5 @@
 # Swing Quest scoring weights. YOU own this file.
+# 2026-10-18: applied the Reckoning's tested suggestion (relative strength now counts a little).
 # The weekly System Health report may suggest changes in
 # weights_proposed.yaml, but nothing here changes unless you edit it.
 #
@@ -6,15 +7,15 @@
 # Weights must add up to 100, so the score runs from 0 to 100.
 
 weights:
-  cluster: 25          # several different insiders buying within 30 days
-  role: 20             # CEO/CFO > Director > other officers > 10% owners
-  dollar_size: 15      # total $ bought in the 30-day window
-  stake_increase: 15   # how much the buy grew their existing holding
-  first_buy: 10        # first purchase by that insider in 12+ months
-  price_context: 15    # near the 52-week low = more points
+  cluster: 27          # several different insiders buying within 30 days
+  role: 17             # CEO/CFO > Director > other officers > 10% owners
+  dollar_size: 13      # total $ bought in the 30-day window
+  stake_increase: 13   # how much the buy grew their existing holding
+  first_buy: 13        # first purchase by that insider in 12+ months
+  price_context: 13    # near the 52-week low = more points
+  relative_strength: 4 # stock beating the market (SPY) over 3 months (counts since 2026-10-18)
   # Observed only (weight 0): shown as context on each quest and judged by the
-  # weekly Reckoning. Give them weight here if the Reckoning shows they help.
-  relative_strength: 0 # stock beating the market (SPY) over 3 months
+  # weekly Reckoning. Give it weight here if the Reckoning shows it helps.
   sector_strength: 0   # its sector fund beating the market over 3 months
 
 # How much of the weight each role earns.
@@ -23,12 +24,12 @@ role_points:
   CFO: 1.0
   Director: 0.7
   Officer: 0.5
-  "10% Owner": 0.3
+  "10% Owner": 0.5
   Other: 0.2
 
 rules:
   window_days: 30            # look-back window for insider buys
   trigger_days: 5            # a NEW buy must be filed within this many calendar days
-  min_score: 65              # minimum score to be a pick (raised from 60 on 2026-10-17: option B)
-  quests_per_month: 4        # your goal: a few high-quality trades a month (the weekly report tunes toward this)
+  min_score: 65              # minimum score to be a quest (~5/month; 55-64 show on the radar instead)
+  quests_per_month: 5        # goal: high-quality picks worth checking daily (~1 a week + the nightly radar list)
   ignore_10b5_1_plans: true  # pre-scheduled plan buys say little about conviction

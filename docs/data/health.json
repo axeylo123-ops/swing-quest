@@ -1,211 +1,155 @@
 {
- "generated_at": "2026-10-18T01:34:23+00:00",
+ "generated_at": "2026-10-18T13:11:01+00:00",
  "week": "2026-10-12",
  "factors": [
   {
    "name": "cluster",
    "label": "Insider cluster",
-   "weight": 25,
-   "edge": 0.01044,
-   "with_n": 266,
-   "without_n": 856,
+   "weight": 27,
+   "edge": 0.00782,
+   "with_n": 539,
+   "without_n": 2276,
    "verdict": "helping"
   },
   {
    "name": "role",
    "label": "Buyer's rank",
-   "weight": 20,
-   "edge": -0.03107,
-   "with_n": 1037,
-   "without_n": 85,
-   "verdict": "hurting"
+   "weight": 17,
+   "edge": -0.02026,
+   "with_n": 2806,
+   "without_n": 9,
+   "verdict": "not enough data"
   },
   {
    "name": "dollar_size",
    "label": "Gold committed ($)",
-   "weight": 15,
-   "edge": 0.00267,
-   "with_n": 570,
-   "without_n": 552,
+   "weight": 13,
+   "edge": 0.00418,
+   "with_n": 1343,
+   "without_n": 1472,
    "verdict": "unclear"
   },
   {
    "name": "stake_increase",
    "label": "Stake increase",
-   "weight": 15,
-   "edge": -0.01138,
-   "with_n": 673,
-   "without_n": 449,
-   "verdict": "hurting"
+   "weight": 13,
+   "edge": -8e-05,
+   "with_n": 1575,
+   "without_n": 1240,
+   "verdict": "unclear"
   },
   {
    "name": "first_buy",
    "label": "First buy in a year",
-   "weight": 10,
-   "edge": 0.01076,
-   "with_n": 753,
-   "without_n": 369,
+   "weight": 13,
+   "edge": 0.00959,
+   "with_n": 1897,
+   "without_n": 918,
    "verdict": "helping"
   },
   {
    "name": "price_context",
    "label": "Near 52-week low",
-   "weight": 15,
-   "edge": -0.01268,
-   "with_n": 537,
-   "without_n": 585,
-   "verdict": "hurting"
+   "weight": 13,
+   "edge": 0.00024,
+   "with_n": 1120,
+   "without_n": 1695,
+   "verdict": "unclear"
   },
   {
    "name": "relative_strength",
    "label": "Beating the market",
-   "weight": 0,
-   "edge": 0.02988,
-   "with_n": 230,
-   "without_n": 892,
+   "weight": 4,
+   "edge": 0.00624,
+   "with_n": 589,
+   "without_n": 2226,
    "verdict": "helping"
   },
   {
    "name": "sector_strength",
    "label": "Sector leading",
    "weight": 0,
-   "edge": -0.01616,
-   "with_n": 468,
-   "without_n": 654,
+   "edge": -0.01426,
+   "with_n": 1142,
+   "without_n": 1673,
    "verdict": "hurting"
   }
  ],
  "suggestions": [
   {
-   "factor": "cluster",
-   "label": "Insider cluster weight",
-   "current": 25,
-   "suggested": 28,
-   "why": "strong signals beat weak ones by +1.0%"
-  },
-  {
-   "factor": "role",
-   "label": "Buyer's rank weight",
-   "current": 20,
-   "suggested": 19,
-   "why": "rebalanced so weights add to 100"
-  },
-  {
-   "factor": "dollar_size",
-   "label": "Gold committed ($) weight",
-   "current": 15,
-   "suggested": 14,
-   "why": "rebalanced so weights add to 100"
-  },
-  {
-   "factor": "stake_increase",
-   "label": "Stake increase weight",
-   "current": 15,
-   "suggested": 10,
-   "why": "strong signals did worse than weak ones (-1.1%)"
-  },
-  {
-   "factor": "first_buy",
-   "label": "First buy in a year weight",
-   "current": 10,
-   "suggested": 14,
-   "why": "strong signals beat weak ones by +1.1%"
-  },
-  {
-   "factor": "price_context",
-   "label": "Near 52-week low weight",
-   "current": 15,
-   "suggested": 10,
-   "why": "strong signals did worse than weak ones (-1.3%)"
-  },
-  {
-   "factor": "relative_strength",
-   "label": "Beating the market weight",
-   "current": 0,
-   "suggested": 5,
-   "why": "strong signals beat weak ones by +3.0%"
-  },
-  {
-   "factor": "role_points.10% Owner",
-   "label": "Points for a 10% Owner",
-   "current": 0.3,
-   "suggested": 0.5,
-   "why": "10% Owner buys beat the average signal by +2.8%"
-  },
-  {
    "factor": "rules.min_score",
    "label": "Minimum score for a quest",
    "current": 65,
-   "suggested": 55,
-   "why": "about 3.6 quests a month (your goal: 4); the weaker half of the history still beat SPY by +1.7%"
+   "suggested": 60,
+   "why": "about 5.9 quests a month (your goal: 5); the weaker half of the history still beat SPY by +1.4%"
   }
  ],
  "recommended": true,
  "whatif": {
   "current": {
    "all": {
-    "n": 97,
-    "win_rate": 0.56,
-    "avg_trade_return": 0.04972,
-    "avg_excess_15": 0.03904,
+    "n": 190,
+    "win_rate": 0.585,
+    "avg_trade_return": 0.03418,
+    "avg_excess_15": 0.02204,
     "enough_data": true
    },
    "older": {
-    "n": 47,
-    "win_rate": 0.5789,
-    "avg_trade_return": 0.02931,
-    "avg_excess_15": 0.01272,
+    "n": 96,
+    "win_rate": 0.6234,
+    "avg_trade_return": 0.02891,
+    "avg_excess_15": 0.01237,
     "enough_data": true
    },
    "newer": {
-    "n": 50,
-    "win_rate": 0.5405,
-    "avg_trade_return": 0.07068,
-    "avg_excess_15": 0.06379,
+    "n": 94,
+    "win_rate": 0.5429,
+    "avg_trade_return": 0.03997,
+    "avg_excess_15": 0.03193,
     "enough_data": true
    },
-   "per_month": 2.8,
-   "worst_half": 0.01272
+   "per_month": 5.5,
+   "worst_half": 0.01237
   },
   "proposed": {
    "all": {
-    "n": 124,
-    "win_rate": 0.6022,
-    "avg_trade_return": 0.04978,
-    "avg_excess_15": 0.04461,
+    "n": 203,
+    "win_rate": 0.5786,
+    "avg_trade_return": 0.03365,
+    "avg_excess_15": 0.02356,
     "enough_data": true
    },
    "older": {
-    "n": 57,
-    "win_rate": 0.6444,
-    "avg_trade_return": 0.03324,
-    "avg_excess_15": 0.01735,
+    "n": 100,
+    "win_rate": 0.6049,
+    "avg_trade_return": 0.02585,
+    "avg_excess_15": 0.01403,
     "enough_data": true
    },
    "newer": {
-    "n": 67,
-    "win_rate": 0.5625,
-    "avg_trade_return": 0.06529,
-    "avg_excess_15": 0.06781,
+    "n": 103,
+    "win_rate": 0.5513,
+    "avg_trade_return": 0.04175,
+    "avg_excess_15": 0.0328,
     "enough_data": true
    },
-   "per_month": 3.6,
-   "worst_half": 0.01735
+   "per_month": 5.9,
+   "worst_half": 0.01403
   }
  },
  "observations": [
-  "Today's settings give about 2.8 quests a month; your goal is 4.",
-  "Quest exits: target first 13%, stop first 28%, 15-day time limit 59%.",
-  "By share price, under $5: +3.6% vs SPY (106 signals); $5-$30: +1.1% vs SPY (1004 signals); over $30: -0.7% vs SPY (12 signals).",
-  "Quests with earnings inside the window: +33.3% vs SPY (2), without: +1.5% (94).",
-  "Live tracking: 12 signals logged, 3 quests, 0 finished."
+  "Today's settings give about 5.5 quests a month; your goal is 5.",
+  "Quest exits: target first 11%, stop first 29%, 15-day time limit 61%.",
+  "By share price, under $5: +3.6% vs SPY (106 signals); $5-$30: +1.1% vs SPY (1006 signals); over $30: +0.1% vs SPY (1703 signals).",
+  "Quests with earnings inside the window: +17.5% vs SPY (3), without: +1.0% (186).",
+  "Live tracking: 13 signals logged, 5 quests, 0 finished."
  ],
  "improvements": [
   "Most quests end at the 15-day limit before reaching the target. Worth testing a closer target (e.g. a 1.5 x ATR stop instead of 2 x, which keeps the 2:1 ratio) in settings.yaml.",
   "Live results are still building (0/30 finished quests). Until then, judgments lean on the backtest, which flatters results (delisted stocks are missing)."
  ],
  "sources": {
-  "backtest_signals": 1122,
-  "live_signals": 12
+  "backtest_signals": 2815,
+  "live_signals": 13
  }
 }

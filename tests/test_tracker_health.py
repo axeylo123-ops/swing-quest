@@ -5,11 +5,12 @@ from datetime import date
 import pandas as pd
 import pytest
 
+from tests.helpers import FIXED_CFG
 from swingquest import health, tracker
 from swingquest.prices.base import PriceSource
 from swingquest.signals.scoring import FACTORS, load_weights
 
-CFG = load_weights()
+CFG = FIXED_CFG  # fixed test config (see tests/helpers.py)
 
 
 def setup(ticker="ABCD", status="pick", score=72, timing="Ready", filed="2026-10-14"):

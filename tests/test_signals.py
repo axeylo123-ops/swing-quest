@@ -3,9 +3,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from tests.helpers import FIXED_CFG
 from swingquest.signals import plan, scoring, technicals
 
-CFG = scoring.load_weights()
+CFG = FIXED_CFG  # fixed test config (see tests/helpers.py)
 TRADE = {"atr_period": 14, "stop_atr_multiple": 2.0, "min_reward_risk": 2.0, "time_stop_days": 15}
 
 

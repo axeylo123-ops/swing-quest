@@ -48,7 +48,7 @@ The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
 2. **Keep only real purchases.** Code "P" (open-market buys) of common stock.
    Option exercises, grants, gifts and sales are ignored. Pre-scheduled 10b5-1
    plan buys are ignored too.
-3. **Universe:** not OTC, not a fund, price above $2 (optional ceiling), and
+3. **Universe:** not OTC, not a fund, price above $2 (no ceiling by default), and
    more than $10M traded per day so you can get in and out.
 4. **Score 0–100** from six insider facts: several insiders buying (cluster),
    the buyer's rank, dollars spent, how much it grew their stake, first buy in
@@ -60,8 +60,8 @@ The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
    window, the scroll warns you, because earnings can gap a stock past your stop.
 5. **Timing ("the path")** from the chart: *Open* (back above the 20-day
    average), *Blocked* (still falling), *Don't chase* (ran up too fast).
-6. **A quest** = score at or above the minimum **and** an open path. Good score
-   but blocked = a *Rumor* (watch only).
+6. **A quest** = score at or above the minimum (65) **and** an open path. Good score
+   but blocked = a *Rumor*. The best of the rest (40+) appear **On the Radar**.
 7. **Trade plan:** stop = 2 × ATR (the stock's typical daily move) below the
    price; target set so reward is at least 2× risk even at the top of the buy
    zone; exit after 15 trading days regardless.
@@ -81,16 +81,16 @@ The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
   of history. A change is recommended only if the *weaker* half improves.
 
 ### What the data says so far (Nov 2023 – Sep 2026)
-Your current rules (option B: score 65+, price $2–$30), replayed on 13,440
-insider-buying events:
-- **97 finished quests, about 2.8 a month. 56% won, average trade +5.0%,
-  +3.9% vs the market** over the same 15 days.
-- But the halves differ a lot: older half +1.1% vs the market, newer half
-  +6.7%. Recent months were unusually good for small stocks. Expect something
-  closer to the older half, and let the live record decide.
-- Higher scores don't keep getting better (80+ did worse than 60–79), so the
-  weekly report keeps re-checking the weights.
-- Insider buying matters more at cheaper, smaller companies. Big-investor and
+Current rules (score 65+, price above $2, tuned weights), replayed on every
+insider-buying event:
+- **190 finished quests, about 5.5 a month. 58.5% won, average trade +3.4%,
+  +2.2% vs the market** over the same 15 days.
+- Older half +1.2% vs the market, newer half +3.2%: positive in both, but recent
+  months were unusually good. Expect something nearer the older half.
+- Every night the **On the Radar** list shows the best near-misses (score 40+),
+  each with the reason it isn't a quest yet, so the board is never empty.
+- Stocks already beating the market did better, so relative strength now counts
+  a little. Insider buying matters more at smaller companies. Big-investor and
   CEO/CFO buys beat director buys. Most quests end at the 15-day limit.
 
 ---
