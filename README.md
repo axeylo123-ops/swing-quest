@@ -1,164 +1,84 @@
 # Swing Quest
 
-Swing Quest finds US stocks where company insiders (CEOs, CFOs, directors, big
-investors) just bought shares **with their own money**. It turns the best of them
-into "quests": a buy zone, a stop-loss, a target, and a 15-trading-day time
-limit. Then it **honestly tracks whether they work**, and shows everything in a
-game-styled dashboard you can check in 10–15 minutes after work.
+A stock-picking command center for swing trades (days to a few weeks), built
+for a 10-minute check after work. Every weekday it ranks ~1,800 liquid US and
+Canadian stocks on six pillars, picks the top ideas with a full trade plan,
+and judges the stocks you already own with the same rules.
 
-> **Not financial advice.** An educational project. Every trade decision is yours.
+**Live dashboard:** https://axeylo123-ops.github.io/swing-quest/
+
+> **Not financial advice.** An educational project. Every decision is yours.
 
 ---
 
-## How to use it (your 10–15 minutes)
+## Your 10 minutes
 
-| When | Where | What to do |
+| Where | What you get |
+|---|---|
+| **Command** | Today's **top 3 ideas** (Conviction, upside, buy zone, stop, target, exit date, pillar meters), the **watchlist**, and a verdict on **each of your holdings** (Add / Hold / Trim? / Review) |
+| **Dossier** (tap any stock) | A short analyst note: upside, estimate revisions and earnings beats, genuine insider buying, quality, momentum, value, risks, the trade plan, and how many shares to buy for your risk |
+| **Scanner** | Every ranked stock. Sort by any pillar, filter by country, sector or verdict. Press `/` anywhere to search |
+| **Holdings** | Import your Questrade file once (Excel or CSV, positions or trade history). It's read **only in your browser**; account numbers are dropped immediately. Set your account size and risk per trade |
+| **Record** | How the system's ideas actually did, graded automatically 15 trading days later |
+| **System** | The pillars, weights and rules in plain words |
+
+## How a stock is judged
+
+Each pillar ranks a stock against all the others (70 = better than 70% of them):
+
+| Pillar | Weight | Measures |
 |---|---|---|
-| Every weekday evening | **Quest Board** | An empty board is normal: patience earns XP too. If quests are posted, read each scroll. |
-| When a quest appears | Quest scroll | **Enter at:** buy only inside this price range at the next open, and skip it if the price opens higher. **Retreat:** your stop-loss; place it right after buying. **Treasure:** your target. **Return by:** sell on this date if neither was hit. **How many shares?:** sized so a stop-out costs only your chosen % of the account. |
-| After deciding | Quest scroll | **Seal as reviewed** (+5 XP) and **swear the oath** (+15 XP). Passing on a quest on purpose also counts. |
-| While holding | **Your Active Quests** | Day count, profit or loss, and distance to the retreat and treasure. Graded automatically. |
-| Once a week | **Reckoning** | Flip the six runes to see which parts of the score help. If a change is **Recommended**, you decide whether to apply it (see below). |
-| Whenever curious | **Chronicle** | "Can I trust the quests?" in plain words. Use **Ask the Oracle** to see how any kind of past signal did. |
-| Optional | **Treasury** | Set your account size and risk per quest. Import your Questrade **Positions** export (Excel or CSV) to see your holdings next to the quests. It's read only in your browser and never uploaded; account numbers are dropped immediately. |
+| **Upside** | 25 | Analyst average target vs price; room back to the 52-week high |
+| **Analysts** | 15 | Consensus rating, coverage, estimate revisions (last 30 days), earnings-beat record |
+| **Insiders** | 15 | *Genuine* open-market buying (company plans, mismatched prices and 10b5-1 plans are filtered out). No buying = neutral |
+| **Quality** | 15 | Operating margin, return on equity, debt, growth, free cash flow |
+| **Momentum** | 15 | 3-month return vs the market, 6-month return, 50/200-day trend |
+| **Value** | 10 | Forward P/E and price/sales within its own sector |
+| **Risk** | −15 max | Very volatile, tiny, heavily indebted, heavily shorted, no analysts, earnings inside the trade window |
+| **Canada** | +3 | A tie-breaker, never the main reason |
 
-**Holding briefs (US and Canadian):** in the Treasury, press **Copy command**,
-paste it into the terminal in the Swing Quest folder, and refresh. Each holding
-gets 1–2 sentences: analyst rating and average price target, trend, 52-week
-position, dividend, and recent insider buying (US only). The briefs are made on
-your PC, stored in git-ignored folders, and never published. After the first run,
-`daily` refreshes them on your PC.
+A **top idea** ranks high on Conviction (one per sector) **and** has at least 8%
+upside, decent quality, limited risk, and a chart whose trend has turned up.
+Every idea comes with a plan: buy zone, stop at 2× the stock's average daily
+move, target at least 2× the risk, sell after 15 trading days regardless.
 
-**Canada:** insider *quests* are US-only, because Canada's insider system (SEDI)
-has no free bulk download or API. Canadian holdings still get full briefs from
-free Yahoo data (analysts, targets, trend).
+Weights and rules live in `config/weights.yaml` and change only when you edit them.
 
-**Changing the rules:** open `config/weights.yaml` (scoring) or
-`config/settings.yaml` (universe and trade rules), edit the numbers, save, commit.
-The weekly report writes its suggestions to `config/weights_proposed.yaml`, but
-**nothing changes unless you edit `weights.yaml` yourself.**
+## Data (all free)
 
----
+- **SEC EDGAR:** insider filings (Form 4), fetched politely with your name/email.
+- **Yahoo Finance (yfinance):** prices daily; analysts, estimates and fundamentals on
+  a rolling weekly refresh. The price source is a swappable "plug".
+- **Index lists:** S&P 500/400/600 and S&P/TSX Composite members from Wikipedia, weekly.
 
-## How it works, in plain words
+## Automation
 
-1. **Read insider filings.** Every insider trade must be reported to the SEC on
-   a "Form 4". Swing Quest reads them from SEC EDGAR, politely: it sends your
-   name/email as required and stays at 5 requests a second (the limit is 10).
-2. **Keep only real purchases.** Code "P" (open-market buys) of common stock.
-   Option exercises, grants, gifts and sales are ignored. Pre-scheduled 10b5-1
-   plan buys are ignored too.
-3. **Universe:** not OTC, not a fund, price above $2 (no ceiling by default), and
-   more than $10M traded per day so you can get in and out.
-4. **Score 0–100** from six insider facts: several insiders buying (cluster),
-   the buyer's rank, dollars spent, how much it grew their stake, first buy in
-   12 months, and nearness to the 52-week low.
-   Two more factors are **observed only** (weight 0 until you choose otherwise):
-   the stock beating the market over 3 months, and its sector beating the market.
-   They show as "Also worth knowing" on each quest, and the Reckoning judges them weekly.
-   **Earnings warning:** if the company reports earnings inside the quest's 15-day
-   window, the scroll warns you, because earnings can gap a stock past your stop.
-5. **Timing ("the path")** from the chart: *Open* (back above the 20-day
-   average), *Blocked* (still falling), *Don't chase* (ran up too fast).
-6. **A quest** = score at or above the minimum (65) **and** an open path. Good score
-   but blocked = a *Rumor*. The best of the rest (40+) appear **On the Radar**.
-7. **Trade plan:** stop = 2 × ATR (the stock's typical daily move) below the
-   price; target set so reward is at least 2× risk even at the top of the buy
-   zone; exit after 15 trading days regardless.
+GitHub Actions runs `python -m swingquest daily` on weekdays after the close
+(~6:30 pm ET) and before the open (~8 am ET), commits the results, and the
+dashboard updates. Your SEC name/email is an encrypted repo secret.
 
-### Honest testing
-- **Backtest:** every past insider buy since late 2023 is replayed with the same
-  code, using only what was known at the time. Entry is at the next day's open;
-  the trade is skipped if it opens above the zone; if the stop and target are
-  hit the same day, the stop counts first; a gap through the stop exits at the
-  worse open.
-- **Live tracking:** every signal the daily scan scores is logged once and graded
-  automatically with the same rules (`data/signals/live.json`).
-- **Scorecard:** results by score, buyer, timing, price and period, vs SPY.
-  Groups under 30 signals are marked "not enough data".
-- **Weekly report:** judges each factor, proposes small changes tuned to your
-  goal of about 4 quests a month, and replays them on the older and newer half
-  of history. A change is recommended only if the *weaker* half improves.
-
-### What the data says so far (Nov 2023 – Sep 2026)
-Current rules (score 65+, price above $2, tuned weights), replayed on every
-insider-buying event:
-- **190 finished quests, about 5.5 a month. 58.5% won, average trade +3.4%,
-  +2.2% vs the market** over the same 15 days.
-- Older half +1.2% vs the market, newer half +3.2%: positive in both, but recent
-  months were unusually good. Expect something nearer the older half.
-- Every night the **On the Radar** list shows the best near-misses (score 40+),
-  each with the reason it isn't a quest yet, so the board is never empty.
-- Stocks already beating the market did better, so relative strength now counts
-  a little. Insider buying matters more at smaller companies. Big-investor and
-  CEO/CFO buys beat director buys. Most quests end at the 15-day limit.
-
----
-
-## Commands (Windows)
+## Commands (Windows, from the project folder)
 
 ```bash
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
-copy .env.example .env                      # put your name + email in .env
-.venv\Scripts\python -m pytest              # 126 tests
-.venv\Scripts\python -m swingquest daily    # fetch + scan + log + grade (what automation runs)
-.venv\Scripts\python -m swingquest health   # weekly report + suggestions (never applied)
-.venv\Scripts\python -m swingquest backtest # replay history -> scorecard (~10 min)
-.venv\Scripts\python -m swingquest backfill --days 2026-04-01:2026-10-13 --rate 8   # resumable
+.venv\Scripts\python -m swingquest daily          # filings + rank the market + track ideas
+.venv\Scripts\python -m swingquest rank --no-fetch # re-rank from cached data
+.venv\Scripts\python -m pytest                    # tests
+.venv\Scripts\python -m http.server 8765 --directory docs   # dashboard at http://localhost:8765
 ```
 
-Dashboard locally: `.venv\Scripts\python -m http.server 8765 --directory docs`,
-then open http://localhost:8765.
+## Honest limits
 
-## Folder map
-```
-config/          weights.yaml (yours), weights_proposed.yaml (suggestions), settings.yaml
-swingquest/      sec/ (SEC client, Form 4 reader, bulk + daily backfill), prices/ (swappable
-                 price source), signals/ (score, timing, plan, scan), backtest/ (engine,
-                 outcomes, scorecard), tracker.py (live log), health.py (weekly report)
-data/            insider purchases, backtest rows, live signal log, fetch state
-docs/            the dashboard (GitHub Pages) + docs/data/*.json it reads
-.github/         daily scan, weekly health, tests
-tests/           126 tests for parsing, scoring, backtest math, tracking, health
-```
+1. **Analyst and fundamental history isn't free**, so the full system can only be proven
+   live (Record tab). The insider pillar was backtested on 2023–2026: about +2% vs the
+   market per 15-day trade, but free prices miss some delisted companies, so that's flattering.
+2. **Yahoo data is unofficial.** It can be late, missing, or throttled; stale data is kept
+   rather than dropped.
+3. **Canadian insider trades aren't covered** (SEDI has no free feed). Canadian stocks are
+   still ranked on the other five pillars.
+4. **Analyst targets are often optimistic**; Upside is a ranking input, not a promise.
 
 ## Privacy
-- Your SEC name/email live in `.env` (git-ignored) or a GitHub secret.
-- `*.csv` is git-ignored. Portfolio files are read only in your browser
-  (localStorage), account columns are dropped first, and nothing is uploaded.
-- Game progress and your trading rules are stored only in your browser.
 
----
-
-## Known weaknesses
-1. **Survivorship bias.** Free prices (yfinance) lack many delisted companies.
-   About 3,400 past events had no prices, so results are likely somewhat better
-   than reality, especially for cheap stocks.
-2. **The edge is small.** Even the best settings beat the market by roughly
-   1–2.5% per 3-week trade on average, with many losing trades. Live results are
-   just starting; until about 30 quests finish, trust the backtest only partly.
-3. **Tuned on the same history it's judged on.** The both-halves check reduces,
-   but doesn't remove, the risk of fitting luck.
-4. **Insider quests are US only.** Canadian insiders report to SEDI, which has no free feed.
-   Canadian holdings show "no signal coverage".
-5. **yfinance is unofficial.** It can break or throttle. The downloader retries
-   and waits, but a bad day can mean a missed scan.
-6. **Earnings dates come from Yahoo** and can be missing or shift. The warning is a
-   heads-up, not a guarantee.
-7. **Prices are split-adjusted**, so a few old trades fail the price sanity check
-   and are skipped (about 700 events, mostly ticker changes).
-8. **Exits are simple:** a fixed 2 × ATR stop, a 2:1 target and 15 days. Most
-   quests time out; a closer stop wasn't clearly better in testing.
-
-## Next upgrades
-1. **A paid price source with delisted stocks** (e.g. EODHD or Polygon, about
-   US$20–30/month) to remove survivorship bias. The price "plug" makes this a
-   one-file change. *(Costs money: your call.)*
-2. **Short interest and analyst revisions** as observed factors (US).
-3. **Trade journal from Questrade activity exports**: check automatically
-   whether real trades kept the oath.
-4. **Canadian insider quests (SEDI)**: no free feed today. Options: a paid provider (e.g. Finnhub or Smart Insider), or the SEDI-to-SEDAR+ move if it adds downloads. Canadian holdings already get analyst briefs.
-5. **Smarter exits to test:** trailing stops, or holding winners past 15 days.
-6. **New quests:** e.g. "follow 10 quests without breaking a vow". Badges are
-   one list in `docs/js/game.js`.
+- `.env` (your SEC name/email) and `*.csv` are git-ignored.
+- Holdings, risk rules and XP live only in your browser (localStorage). The public site
+  publishes market data only; your holdings are matched against it in your browser.

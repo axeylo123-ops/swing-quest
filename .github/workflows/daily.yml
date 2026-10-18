@@ -19,7 +19,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
 
@@ -30,14 +30,16 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # Company profiles (fund or not) almost never change; keep them between runs.
+      # Company profiles and earnings dates change slowly; keep them between runs.
       - uses: actions/cache@v4
         with:
-          path: cache/issuer_profiles.json
-          key: issuer-profiles-${{ github.run_id }}
-          restore-keys: issuer-profiles-
+          path: |
+            cache/issuer_profiles.json
+            cache/earnings
+          key: slow-cache-${{ github.run_id }}
+          restore-keys: slow-cache-
 
-      - name: Fetch filings, scan, log and grade signals
+      - name: Fetch filings, rank the market, track ideas
         env:
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}   # your name + email, kept secret
         run: python -m swingquest daily

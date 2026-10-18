@@ -34,6 +34,34 @@ def timing(snap: dict) -> dict:
     return {"label": label, "notes": notes}
 
 
+def trend_timing(snap: dict, above200: bool | None) -> dict:
+    """Timing for the whole-market ranking (momentum aware):
+    - uptrend (above the 200-day): Ready, including pullbacks to the 20/50-day,
+      which are often the best entries; Extended only if it ran up too fast
+    - downtrend: Ready only once it has turned back above the 20-day; else Wait
+    """
+    close, sma20, sma50, rsi, atr = (snap[k] for k in ("close", "sma20", "sma50", "rsi", "atr"))
+    notes = []
+    if rsi > 75 or close > sma20 + 2.5 * atr:
+        label = "Extended"
+        notes.append("Ran up fast: wait for a pullback instead of chasing")
+    elif close < sma20 - 2 * atr:
+        label = "Wait"
+        notes.append("Sharp drop: more than 2 average daily moves below its 20-day average, let it settle")
+    elif above200 or (above200 is None and close > sma50):
+        label = "Ready"
+        notes.append("Uptrend, pulling back toward its 20-day average: a typical entry" if close < sma20
+                     else "Uptrend, above its 20-day average")
+    elif close > sma20 and rsi >= 40:
+        label = "Ready"
+        notes.append("Below its 200-day average but turning up (back above its 20-day)")
+    else:
+        label = "Wait"
+        notes.append("Downtrend: below its 200-day and 20-day averages, wait for it to turn up")
+    notes.append(f"RSI {rsi:.0f}" + (" (overbought)" if rsi > 70 else " (oversold)" if rsi < 30 else ""))
+    return {"label": label, "notes": notes}
+
+
 def trade_plan(reference: float, atr: float, trade_cfg: dict) -> dict | None:
     stop = reference - trade_cfg["stop_atr_multiple"] * atr
     if stop <= 0 or atr <= 0:

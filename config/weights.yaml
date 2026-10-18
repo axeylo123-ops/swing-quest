@@ -18,6 +18,29 @@ weights:
   # weekly Reckoning. Give it weight here if the Reckoning shows it helps.
   sector_strength: 0   # its sector fund beating the market over 3 months
 
+# ---------------------------------------------------------------------------
+# THE BRAIN (whole-market stock picking). Each pillar is a 0-100 score; the
+# weights below blend them into one Conviction score. Refine as we learn.
+pillars:
+  upside: 25       # analyst target vs price, room to the 52-week high
+  analysts: 15     # consensus rating, coverage, estimate revisions, earnings beats
+  insiders: 15     # genuine open-market insider buying (50 = none, not negative)
+  quality: 15      # margins, return on equity, debt, growth, cash flow
+  momentum: 15     # beating the market, trend above 50/200-day averages
+  value: 10        # forward P/E and price/sales vs its own sector
+risk_max_penalty: 15   # subtracted for volatility, tiny size, heavy debt, earnings in window...
+canada_bonus: 3        # small tie-breaker for Canadian listings, never decisive
+ideas:
+  top_n: 3             # top ideas shown first
+  watch_n: 12          # next best, to watch
+  min_conviction: 58   # 'Buy candidate' needs at least this Conviction; below = Neutral
+  min_upside: 0.08     # analyst upside or swing target of at least 8%
+  min_quality: 25      # skip weak businesses
+  max_penalty: 9       # skip the riskiest
+  max_daily_move: 0.06 # skip stocks that move more than 6% a day on average (stops too wide)
+  min_dollar_volume_us: 10000000
+  min_dollar_volume_ca: 3000000
+
 # How much of the weight each role earns.
 role_points:
   CEO: 1.0

@@ -2,9 +2,9 @@
 # config/weights_proposed.yaml; your config/weights.yaml is never touched.
 name: Weekly health
 
+# Paused 2026-10-18: this reviews the old insider-only weights. A per-pillar review
+# for the new ranking comes once the live record has enough finished ideas.
 on:
-  schedule:
-    - cron: "0 13 * * 6"       # Saturday 9 am EDT / 8 am EST
   workflow_dispatch: {}
 
 permissions:

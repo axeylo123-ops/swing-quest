@@ -1,0 +1,75 @@
+{
+ "generated_at": "2026-10-18T14:57:49+00:00",
+ "started": "2026-10-16",
+ "summary": {
+  "n": 0,
+  "n_trades": 0,
+  "enough_data": false,
+  "label": "not enough data",
+  "avg_ret_5": null,
+  "avg_ret_10": null,
+  "avg_ret_15": null,
+  "avg_excess_15": null,
+  "beat_spy_rate": null,
+  "win_rate": null,
+  "avg_trade_return": null,
+  "avg_r": null,
+  "target_first": null,
+  "stop_first": null,
+  "time_exit": null
+ },
+ "watch_summary": {
+  "n": 0,
+  "n_trades": 0,
+  "enough_data": false,
+  "label": "not enough data",
+  "avg_ret_5": null,
+  "avg_ret_10": null,
+  "avg_ret_15": null,
+  "avg_excess_15": null,
+  "beat_spy_rate": null,
+  "win_rate": null,
+  "avg_trade_return": null,
+  "avg_r": null,
+  "target_first": null,
+  "stop_first": null,
+  "time_exit": null
+ },
+ "open": [
+  {
+   "ticker": "CRGY",
+   "signal_date": "2026-10-16",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 66.3,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "TXG.TO",
+   "signal_date": "2026-10-16",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 66.2,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "CRM",
+   "signal_date": "2026-10-16",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 65.3,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  }
+ ],
+ "closed": [],
+ "logged": 15
+}

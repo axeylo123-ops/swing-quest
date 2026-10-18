@@ -37,6 +37,12 @@ def earnings_dates(ticker: str, fetch=None, max_age_days: int = 7) -> list[str]:
     return dates
 
 
+def cached_dates(ticker: str) -> list[str]:
+    """Earnings dates from the cache only (no internet); [] if never fetched."""
+    path = CACHE / f"{ticker}.json"
+    return json.loads(path.read_text())["dates"] if path.exists() else []
+
+
 def quest_window(signal_day: str, days: int = WINDOW_DAYS) -> tuple[str, str]:
     """Entry day (next trading day) to the last day of the time stop, weekdays only."""
     start = pd.Timestamp(signal_day) + pd.offsets.BDay(1)

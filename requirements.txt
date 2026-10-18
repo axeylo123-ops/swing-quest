@@ -5,3 +5,4 @@ python-dotenv==1.2.4
 PyYAML==6.0.3
 requests==2.34.2
 yfinance==1.7.0
+lxml==6.1.3

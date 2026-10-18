@@ -81,11 +81,11 @@ export function priceChart(el, rows, plan) {
   if (plan) {
     const zt = y(plan.entry_high), zb = y(plan.entry_low);
     svg += `<rect x="${m.l}" y="${zt}" width="${iw}" height="${Math.max(2, zb - zt)}" fill="var(--zone)"/>`;
-    svg += `<text x="${m.l + 6}" y="${zt - 4}" style="fill:var(--price-ink)">Enter here</text>`;
+    svg += `<text x="${m.l + 6}" y="${zt - 4}" style="fill:var(--text-2)">Buy zone</text>`;
     svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(plan.target)}" y2="${y(plan.target)}" stroke="${good}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
     svg += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(plan.stop)}" y2="${y(plan.stop)}" stroke="${crit}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
-    svg += `<text x="${W - m.r + 6}" y="${y(plan.target) + 4}" style="fill:var(--treasure);font-weight:600">Treasure ${plan.target.toFixed(2)}</text>`;
-    svg += `<text x="${W - m.r + 6}" y="${y(plan.stop) + 4}" style="fill:var(--retreat);font-weight:600">Retreat ${plan.stop.toFixed(2)}</text>`;
+    svg += `<text x="${W - m.r + 6}" y="${y(plan.target) + 4}" style="fill:var(--treasure);font-weight:600">Target ${plan.target.toFixed(2)}</text>`;
+    svg += `<text x="${W - m.r + 6}" y="${y(plan.stop) + 4}" style="fill:var(--retreat);font-weight:600">Stop ${plan.stop.toFixed(2)}</text>`;
   }
   svg += `<path d="${path(rows.map((r) => r[5]))}" fill="none" stroke="${muted}" stroke-width="1.5" stroke-dasharray="3 3"/>`;
   svg += `<path d="${path(closes)}" fill="none" stroke="${s1}" stroke-width="2" stroke-linejoin="round"/>`;

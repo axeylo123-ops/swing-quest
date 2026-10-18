@@ -4,7 +4,7 @@
     python -m swingquest fetch --date 2026-10-14   # one full day (nightly index)
     python -m swingquest prices AAPL MSFT      # quick price + universe check
     python -m swingquest scan                  # fetch + score -> docs/data/today.json
-    python -m swingquest daily                 # fetch + scan + log + grade (what automation runs)
+    python -m swingquest daily                 # filings + rank the market + track ideas (what automation runs)
     python -m swingquest health                # weekly report + suggested weights (never applied)
     python -m swingquest backfill --bulk 2022q4:2026q1     # past purchases (bulk files)
     python -m swingquest backfill --days 2026-04-01:2026-10-13   # gap-fill by day
@@ -114,24 +114,19 @@ def cmd_backtest(args):
 
 
 def cmd_daily(args):
-    """The evening/morning job: fetch -> scan -> log -> grade -> scorecard."""
-    from swingquest import tracker
-    from swingquest.backtest import report
-    from swingquest.signals.scan import run_scan
+    """The evening/morning job: insider filings -> rank the market -> log and grade ideas."""
+    from swingquest import board, board_track
     if not args.no_fetch:
         cmd_fetch(argparse.Namespace(date=None))
-    result = run_scan()
-    rows, added = tracker.log_signals(result["evaluated"], result["as_of"])
-    rows = tracker.update_outcomes(rows)
-    tracker.save_log(rows)
-    view = tracker.write_dashboard(rows)
-    report.write_scorecard(live_rows=rows)
-    print(f"Scan {result['as_of']}: {result['message']} | {added} new signals logged | "
-          f"{len(view['open'])} open quests | {len(rows)} signals tracked in total")
-    from swingquest import briefs   # on your PC only: the private holdings list never reaches GitHub
-    if briefs.load_holdings():
-        briefs.write_briefs(briefs.build_briefs(briefs.load_holdings()))
-        print("Refreshed your private holding briefs.")
+    b = board.run(fetch=not args.no_fetch, info_budget=args.budget)
+    t = board_track.run(b)
+    print(f"Logged {t['added']} new ideas | {t['open']} top ideas running | {t['logged']} tracked in total")
+
+
+def cmd_rank(args):
+    """The brain: rank the whole universe and write the dashboard's board."""
+    from swingquest import board
+    board.run(fetch=not args.no_fetch, info_budget=args.budget)
 
 
 def cmd_briefs(args):
@@ -187,8 +182,13 @@ def main(argv=None):
     bf.add_argument("--rate", type=float, default=None, help="SEC requests/sec (max 10)")
     bf.set_defaults(func=cmd_backfill)
     dl = sub.add_parser("daily", help="fetch, scan, log and grade signals, update the dashboard")
-    dl.add_argument("--no-fetch", action="store_true", help="skip downloading new filings")
+    dl.add_argument("--no-fetch", action="store_true", help="skip downloading (filings, fundamentals)")
+    dl.add_argument("--budget", type=int, default=350, help="how many stale stocks to refresh from Yahoo")
     dl.set_defaults(func=cmd_daily)
+    rk = sub.add_parser("rank", help="score ~1,800 stocks on all pillars and pick the top ideas")
+    rk.add_argument("--no-fetch", action="store_true", help="use cached fundamentals (no Yahoo calls)")
+    rk.add_argument("--budget", type=int, default=350, help="how many stale stocks to refresh from Yahoo")
+    rk.set_defaults(func=cmd_rank)
     br = sub.add_parser("briefs", help="analyst + trend briefs on your holdings (private, git-ignored)")
     br.add_argument("symbols", nargs="*", help="your symbols, e.g. AAPL SHOP.TO (remembered for next time)")
     br.set_defaults(func=cmd_briefs)
