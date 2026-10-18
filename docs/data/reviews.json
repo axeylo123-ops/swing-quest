@@ -46,6 +46,6 @@
   {"title": "Post-earnings drift", "why": "Stocks that beat and rise on the report tend to keep drifting up for weeks. A clean, well-studied catalyst for the high-upside lane.", "by": "method", "status": "proposed"},
   {"title": "Short-interest squeeze setup", "why": "Heavy short selling plus rising estimates plus a breakout can produce fast +30-50% moves. Higher risk, belongs in the high-upside lane only.", "by": "method", "status": "proposed"},
   {"title": "Sector rotation strength", "why": "Favour ideas in the 3 strongest sectors over the last month; most stocks move with their sector.", "by": "method", "status": "proposed"},
-  {"title": "Weekly review routine", "why": "A scheduled Claude agent re-reviews code, scoring and the track record every week and adds findings and proposals here.", "by": "code", "status": "needs your OK"}
+  {"title": "Weekly review routine", "why": "A scheduled Claude agent re-reviews code, scoring and the track record every week and adds findings and proposals here. Runs Saturdays 9am; it can only edit this file.", "by": "code", "status": "shipped"}
  ]
 }
