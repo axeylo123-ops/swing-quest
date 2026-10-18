@@ -45,12 +45,24 @@ def _yf_info(t):
 def _yf_estimates(t):
     import yfinance as yf
     tk = yf.Ticker(t)
-    return tk.eps_revisions, tk.earnings_history
+    try:
+        trend = tk.eps_trend
+    except Exception:
+        trend = None
+    return tk.eps_revisions, tk.earnings_history, trend
 
 
-def summarize_estimates(revisions, history) -> dict:
-    """Net analyst EPS revisions (last 30 days) and the earnings-surprise record."""
+def summarize_estimates(revisions, history, trend=None) -> dict:
+    """Net analyst EPS revisions (last 30 days), the earnings-surprise record,
+    and how much the current-year EPS estimate moved in 30 days."""
     out = {}
+    try:
+        if trend is not None and len(trend) and "0y" in trend.index:
+            now, ago = float(trend.loc["0y", "current"]), float(trend.loc["0y", "30daysAgo"])
+            if ago and abs(ago) > 0.01:
+                out["eps_trend_30d"] = round((now - ago) / abs(ago), 4)
+    except (KeyError, TypeError, ValueError):
+        pass
     try:
         if revisions is not None and len(revisions):
             up = int(revisions["upLast30days"].fillna(0).sum())
@@ -111,8 +123,8 @@ def refresh_estimates(tickers: list[str], budget: int = 150, max_age_days: int =
     done = 0
     for i, t in enumerate(todo, 1):
         try:
-            rev, hist = fetch(t)
-            data.setdefault(t, {}).update(summarize_estimates(rev, hist))
+            got = fetch(t)
+            data.setdefault(t, {}).update(summarize_estimates(*got))
             done += 1
         except Exception:
             pass

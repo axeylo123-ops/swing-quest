@@ -90,7 +90,7 @@ export function priceChart(el, rows, plan) {
   svg += `<path d="${path(rows.map((r) => r[5]))}" fill="none" stroke="${muted}" stroke-width="1.5" stroke-dasharray="3 3"/>`;
   svg += `<path d="${path(closes)}" fill="none" stroke="${s1}" stroke-width="2" stroke-linejoin="round"/>`;
   svg += `<g class="hover" style="display:none"><line y1="${m.t}" y2="${m.t + ih}" stroke="${muted}" stroke-width="1"/>`
-       + `<circle r="4.5" fill="${s1}" stroke="var(--parchment)" stroke-width="2"/></g>`;
+       + `<circle r="4.5" fill="${s1}" stroke="var(--panel)" stroke-width="2"/></g>`;
   svg += `<rect class="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/></svg>`;
 
   el.innerHTML = `<div class="legend"><span><i style="background:${s1}"></i>Price (close)</span>`

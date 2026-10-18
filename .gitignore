@@ -1,5 +1,7 @@
 # --- Personal data: NEVER commit ---
 *.csv
+*.xlsx
+*.xls
 .env
 
 # --- Python ---

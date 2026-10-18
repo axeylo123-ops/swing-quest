@@ -33,6 +33,7 @@ canada_bonus: 3        # small tie-breaker for Canadian listings, never decisive
 ideas:
   top_n: 3             # top ideas shown first
   watch_n: 12          # next best, to watch
+  watch_per_industry: 2  # keep the watchlist varied
   min_conviction: 58   # 'Buy candidate' needs at least this Conviction; below = Neutral
   min_upside: 0.08     # analyst upside or swing target of at least 8%
   min_quality: 25      # skip weak businesses
@@ -40,6 +41,17 @@ ideas:
   max_daily_move: 0.06 # skip stocks that move more than 6% a day on average (stops too wide)
   min_dollar_volume_us: 10000000
   min_dollar_volume_ca: 3000000
+
+# High-upside lane: realistic +50%+ candidates WITH 2+ catalysts. Higher risk:
+# wider stop, longer time limit, size these smaller.
+high_upside:
+  n: 3
+  min_potential: 0.50    # analyst average target (3+ analysts)
+  min_catalysts: 2       # separate reasons it could move now
+  min_quality: 15
+  max_daily_move: 0.08   # big-upside names swing a lot, but 10%-a-day is a coin flip
+  stop_atr: 3.0          # stop can sit up to 3 average daily moves below
+  time_stop_days: 30     # give big moves time to play out
 
 # How much of the weight each role earns.
 role_points:

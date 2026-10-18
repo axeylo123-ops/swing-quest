@@ -9,19 +9,22 @@ import { renderHoldings } from "./holdings.js";
 import { renderRecord } from "./record.js";
 import { renderSystem } from "./system.js";
 import { openDossier } from "./dossier.js";
+import { renderAgents, stopAgents } from "./agents.js";
 
 const data = {};
 const view = $("#view");
-const TABS = ["command", "scanner", "holdings", "record", "system"];
+const TABS = ["command", "scanner", "holdings", "record", "agents", "system"];
 const open = (ticker, origin) => openDossier(ticker, data.board, data.universe, origin);
 
 function render() {
   const tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "command";
-  $$(".nav a").forEach((a) => a.classList.toggle("active", a.dataset.tab === tab));
-  if (tab === "command") renderCommand(view, data.board, data.universe, open);
+  $$(".nav a").forEach((a) => { a.classList.toggle("active", a.dataset.tab === tab); a.toggleAttribute("aria-current", a.dataset.tab === tab); });
+  stopAgents();
+  if (tab === "command") renderCommand(view, data.board, data.universe, open, data.changes);
   else if (tab === "scanner") renderScanner(view, data.universe, open);
   else if (tab === "holdings") renderHoldings(view, data.universe, open);
   else if (tab === "record") renderRecord(view, data.record, data.scorecard);
+  else if (tab === "agents") renderAgents(view, data.agents, data.reviews);
   else renderSystem(view, data.board);
 }
 
@@ -69,13 +72,15 @@ function wireSearch() {
 
 async function start() {
   view.innerHTML = '<div class="notice">Loading the board…</div>';
-  const [board, universe, record, scorecard] = await Promise.all([
-    loadJSON("data/board.json"), loadJSON("data/universe.json"), loadJSON("data/record.json"), loadJSON("data/scorecard.json"),
-  ]);
-  Object.assign(data, { board, universe, record, scorecard });
+  // the board first (it's what you came for), everything else right behind it
+  const rest = Promise.all(["universe", "record", "scorecard", "changes", "agents", "reviews"].map((k) => loadJSON(`data/${k}.json`)));
+  data.board = await loadJSON("data/board.json");
+  renderStatus();
+  render();
+  const [universe, record, scorecard, changes, agents, reviews] = await rest;
+  Object.assign(data, { universe, record, scorecard, changes, agents, reviews });
   game.onChange(() => game.renderPlayer($("#player")));
   game.renderPlayer($("#player"));
-  renderStatus();
   wireSearch();
   render();
   game.checkIn();

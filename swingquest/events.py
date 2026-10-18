@@ -32,7 +32,7 @@ def earnings_dates(ticker: str, fetch=None, max_age_days: int = 7) -> list[str]:
         df = fetch(ticker)
         dates = sorted({pd.Timestamp(d).strftime("%Y-%m-%d") for d in (df.index if df is not None else [])})
     except Exception:
-        dates = []
+        return cached_dates(ticker)      # keep the old dates; try again next run
     path.write_text(json.dumps({"fetched": date.today().isoformat(), "dates": dates}))
     return dates
 

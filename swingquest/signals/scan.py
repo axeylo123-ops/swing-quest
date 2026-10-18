@@ -32,7 +32,8 @@ def ret_over(df: pd.DataFrame | None, day, n: int = RS_DAYS) -> float | None:
     past = df["close"].loc[:day]
     if len(past) <= n:
         return None
-    return float(past.iloc[-1] / past.iloc[-1 - n] - 1)
+    r = float(past.iloc[-1] / past.iloc[-1 - n] - 1)
+    return r if math.isfinite(r) else None
 
 
 def strength(prices: pd.DataFrame, market: dict | None) -> dict:

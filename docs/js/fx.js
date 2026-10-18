@@ -23,18 +23,6 @@ export function sparks(fromEl, count = 10) {
   setTimeout(() => to.animate([{ boxShadow: "0 0 0 transparent" }, { boxShadow: "0 0 18px #44d62c" }, { boxShadow: "0 0 0 transparent" }], { duration: 500 }), 700);
 }
 
-export function levelUp(level, title) {
-  const o = document.createElement("div");
-  o.className = "levelup";
-  o.setAttribute("role", "dialog");
-  o.innerHTML = `<div class="levelup-card"><div class="lu-kicker">LEVEL UP</div><div class="lu-title">${title}</div>
-    <div class="lu-sub">Level ${level} reached. Tap to continue.</div></div>`;
-  document.body.appendChild(o);
-  const close = () => { o.classList.add("closing"); setTimeout(() => o.remove(), 300); };
-  o.addEventListener("click", close);
-  setTimeout(close, 4000);
-}
-
 export function countUp(el, to, format = (v) => String(Math.round(v)), ms = 650) {
   if (!el) return;
   if (calm() || to == null || !Number.isFinite(to)) { el.textContent = to == null ? "–" : format(to); return; }

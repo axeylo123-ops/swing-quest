@@ -27,6 +27,8 @@ def normalize(raw: pd.DataFrame) -> pd.DataFrame:
     """yfinance columns ('Open', 'Close'...) -> our standard shape."""
     df = raw.rename(columns=str.lower)
     df = df[[c for c in COLUMNS if c in df.columns]].dropna(subset=["close"])
+    ohlc = [c for c in ("open", "high", "low", "close") if c in df.columns]
+    df = df[df[ohlc].notna().all(axis=1) & (df[ohlc] > 0).all(axis=1)]   # broken bars break every calc
     df.index = pd.to_datetime(df.index).tz_localize(None).normalize()
     df.index.name = "date"
     return df.sort_index()
@@ -55,6 +57,11 @@ class _ErrorCatcher(logging.Handler):
 def is_throttle_error(message: str) -> bool:
     m = message.lower()
     return "too many requests" in m or "rate limit" in m or "ratelimit" in m
+
+
+def is_missing_error(message: str) -> bool:
+    m = message.lower()
+    return any(k in m for k in ("delisted", "not found", "no data found", "no timezone found", "no price data"))
 
 
 def last_expected_day(end: date, today: date | None = None) -> str:
@@ -116,10 +123,10 @@ class YFinanceSource(PriceSource):
                     df.to_pickle(CACHE / f"{t}.pkl")
                     self.meta[t] = {"start": start.isoformat(), "through": through}
                     result[t] = df
-                elif is_throttle_error(errors.get(t, "")):
-                    throttled.append(t)
-                else:
+                elif is_missing_error(errors.get(t, "")):
                     self.meta[t] = {"missing": date.today().isoformat()}
+                else:
+                    throttled.append(t)      # throttled or unknown failure: retry, never mark missing
             if not throttled:
                 break
             todo = throttled

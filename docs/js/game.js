@@ -5,7 +5,7 @@ import * as fx from "./fx.js";
 
 const KEY = "sq.game.v1";
 export const XP = { checkin: 10, review: 5, holdings: 10 };
-const TITLES = ["Recruit", "Operator", "Analyst", "Strategist", "Specialist", "Veteran", "Elite", "Legend"];
+const TITLES = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8+"];
 
 const blank = () => ({ xp: 0, checkins: [], reviewed: {}, streak: 0, best: 0, shields: 1, shieldWeek: null, last: null, log: [], flags: {} });
 let state = { ...blank(), ...storage.get(KEY, {}) };
@@ -28,7 +28,7 @@ function award(points, why, origin) {
   if (origin) { fx.sparks(origin); fx.floatText(origin, `+${points} XP`); }
   else toast(`+${points} XP`, why);
   const after = level();
-  if (after.level > before) setTimeout(() => fx.levelUp(after.level, after.title), 600);
+  if (after.level > before) toast(`Level ${after.level}`, "Keep checking in");
 }
 
 function updateStreak(day) {

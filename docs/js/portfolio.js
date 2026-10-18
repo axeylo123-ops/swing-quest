@@ -5,7 +5,13 @@
 import { readXlsx } from "./xlsx.js";
 
 const KEY = "sq.portfolio.v1";
-const CANADIAN = /\.(TO|V|CN|NE|TSX|TSXV)$/i;
+const CANADIAN = /\.(TO|VN|V|CN|NE|TSX|TSXV)$/i;
+const SUFFIX = { TO: "TO", TSX: "TO", VN: "V", V: "V", TSXV: "V", CN: "CN", NE: "NE" };
+// Questrade symbol -> the ticker the scanner uses: BBD.B.TO -> BBD-B.TO, XYZ.VN -> XYZ.V, BRK.B -> BRK-B
+export function yahooSymbol(raw) {
+  const s = raw.trim().toUpperCase(), m = s.match(/^(.*)\.(TO|VN|V|CN|NE|TSX|TSXV)$/);
+  return m ? `${m[1].replace(/\./g, "-")}.${SUFFIX[m[2]]}` : s.replace(/\.US$/, "").replace(/\./g, "-");
+}
 
 // ---- CSV parsing (handles quotes, commas inside quotes, CRLF) ----
 export function parseCSV(text) {
@@ -102,7 +108,7 @@ function holdingsFromActivity(rows, headerAt, header, keep) {
   const book = new Map(), oversold = new Set();
   for (const t of trades) {
     const canadian = CANADIAN.test(t.raw);
-    const symbol = canadian ? t.raw : t.raw.replace(/\.US$/, "").replace(".", "-");
+    const symbol = yahooSymbol(t.raw);
     const h = book.get(symbol) || { symbol, name: t.name, qty: 0, cost: 0, currency: t.currency, market: canadian ? "CA" : "US" };
     if (t.shares > 0) { h.cost += t.shares * t.price + t.fee; h.qty += t.shares; }
     else {
@@ -160,7 +166,7 @@ export function holdingsFromRows(rawRows) {
     const raw = (r[cols.symbol] || "").trim().toUpperCase();
     if (!raw || /^total/i.test(raw)) continue;
     const canadian = CANADIAN.test(raw);
-    const symbol = canadian ? raw : raw.replace(/\.US$/, "").replace(".", "-");
+    const symbol = yahooSymbol(raw);
     const qty = num(r[cols.qty]);
     if (!qty) continue;
     const h = merged.get(symbol) || { symbol, name: "", qty: 0, cost: 0, value: 0, price: null, currency: "", market: canadian ? "CA" : "US" };

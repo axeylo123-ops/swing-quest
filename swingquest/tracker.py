@@ -77,9 +77,14 @@ def log_signals(evaluated: list[dict], as_of: str, rows: list[dict] | None = Non
     return rows, added
 
 
+def needs_grading(r: dict) -> bool:
+    """Unfinished trades, and finished ones whose 15-day return isn't known yet."""
+    return r.get("exit_reason") not in FINAL or (r.get("entry_date") and r.get("ret_15") is None)
+
+
 def update_outcomes(rows: list[dict], source=None, today: date | None = None) -> list[dict]:
     """Grades every unfinished signal with the latest prices."""
-    todo = [r for r in rows if r.get("exit_reason") not in FINAL]
+    todo = [r for r in rows if needs_grading(r)]
     if not todo:
         return rows
     trade_cfg = settings()["trade"]

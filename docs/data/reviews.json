@@ -1,0 +1,51 @@
+{
+ "note": "Written by the review agents. Proposals are never applied automatically: you approve them.",
+ "reviewers": [
+  {
+   "id": "code", "name": "Code reviewer", "job": "Hunts bugs, bad data and silent failures",
+   "last_run": "2026-10-18",
+   "findings": [
+    {"text": "Broken price bars (zero or blank prices) could poison every calculation", "status": "fixed"},
+    {"text": "A Yahoo hiccup could mark a real stock as 'missing' for a week", "status": "fixed"},
+    {"text": "Earnings lookups that failed were cached as 'no earnings', hiding real report dates", "status": "fixed"},
+    {"text": "Finished trades stopped being graded before their 15-day return was known", "status": "fixed"},
+    {"text": "Run could publish a board without SPY (the market benchmark)", "status": "fixed"},
+    {"text": "Infinite or blank numbers could break the dashboard's data files", "status": "fixed"},
+    {"text": "Earnings check only covered the top 60, not every stock that ended up on the board", "status": "fixed"},
+    {"text": "Excel exports were not git-ignored like CSVs", "status": "fixed"}
+   ]
+  },
+  {
+   "id": "method", "name": "Method reviewer", "job": "Challenges how stocks are scored and picked",
+   "last_run": "2026-10-18",
+   "findings": [
+    {"text": "Stale analyst targets after a big drop made fallen stocks look like huge upside", "status": "fixed"},
+    {"text": "Mega-caps won the analysts pillar on raw revision counts; now per analyst", "status": "fixed"},
+    {"text": "Value compared a bank's P/E with a software company's; now within its industry", "status": "fixed"},
+    {"text": "Analysts cutting estimates was ignored; now a penalty and an automatic Avoid", "status": "fixed"},
+    {"text": "Room back to the 52-week high counted as 'upside' (it is usually where the stock fell from)", "status": "fixed"},
+    {"text": "High-upside lane accepted a single catalyst; now needs two and a turned-up chart", "status": "fixed"},
+    {"text": "Watchlist could fill up with one industry; now max two per industry", "status": "fixed"},
+    {"text": "Fundamentals are today's values, so the backtest can't test them honestly (look-ahead)", "status": "open"}
+   ]
+  },
+  {
+   "id": "design", "name": "Design reviewer", "job": "Checks the dashboard on desktop and phone",
+   "last_run": "2026-10-18",
+   "findings": [
+    {"text": "Stock dossier: focus and keyboard handling, close race, back button on phone", "status": "fixed"},
+    {"text": "Scanner re-drew the whole table on every keystroke; pillar names were cut off", "status": "fixed"},
+    {"text": "Holdings value fell back to nothing when Questrade left the market value blank", "status": "fixed"},
+    {"text": "Leftover fantasy names and a level-up popup that didn't fit the style", "status": "fixed"},
+    {"text": "Phone inputs zoomed the page (text under 16px)", "status": "fixed"},
+    {"text": "Data files could be served stale by the browser cache", "status": "fixed"}
+   ]
+  }
+ ],
+ "proposals": [
+  {"title": "Post-earnings drift", "why": "Stocks that beat and rise on the report tend to keep drifting up for weeks. A clean, well-studied catalyst for the high-upside lane.", "by": "method", "status": "proposed"},
+  {"title": "Short-interest squeeze setup", "why": "Heavy short selling plus rising estimates plus a breakout can produce fast +30-50% moves. Higher risk, belongs in the high-upside lane only.", "by": "method", "status": "proposed"},
+  {"title": "Sector rotation strength", "why": "Favour ideas in the 3 strongest sectors over the last month; most stocks move with their sector.", "by": "method", "status": "proposed"},
+  {"title": "Weekly review routine", "why": "A scheduled Claude agent re-reviews code, scoring and the track record every week and adds findings and proposals here.", "by": "code", "status": "needs your OK"}
+ ]
+}

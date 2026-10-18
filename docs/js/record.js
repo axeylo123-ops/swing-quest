@@ -21,15 +21,20 @@ export function renderRecord(view, record, scorecard) {
         </div>`
         : `<div class="notice">Live tracking started ${record?.started ? esc(niceDate(record.started)) : "today"}. Each day's top ideas are graded 15 trading days later,
             so the first results appear in about three weeks. ${record?.open?.length ? `${record.open.length} ideas are being tracked now.` : ""}</div>`}
-      ${record?.open?.length ? `<div class="table-wrap" style="margin-top:12px"><table class="data"><thead><tr><th>Idea</th><th>Posted</th><th class="num">Conv</th>
+      ${record?.high_summary?.n ? `<h3 style="margin:14px 0 10px">High-upside lane</h3><div class="tiles">
+          ${tile("Finished", record.high_summary.n, record.high_summary.n < 30 ? "under 30: too early to judge" : "trades")}
+          ${tile("Won", rate(record.high_summary.win_rate), "trades that made money")}
+          ${tile("Avg trade", pct(record.high_summary.avg_trade_return, 1), "entry to exit", cls(record.high_summary.avg_trade_return))}
+        </div>` : ""}
+      ${record?.open?.length ? `<div class="table-wrap" style="margin-top:12px"><table class="data"><thead><tr><th>Idea</th><th>Lane</th><th>Posted</th><th class="num">Conv</th>
           <th class="num">Since entry</th><th>Status</th></tr></thead><tbody>${record.open.slice(0, 15).map((r) => `<tr>
-          <td><b>${esc(r.ticker)}</b></td><td>${esc(r.signal_date)}</td><td class="num neon">${Math.round(r.conviction ?? 0)}</td>
+          <td><b>${esc(r.ticker)}</b></td><td class="tiny">${r.kind === "high" ? '<span class="warn">high-upside</span>' : "top idea"}</td><td>${esc(r.signal_date)}</td><td class="num neon">${Math.round(r.conviction ?? 0)}</td>
           <td class="num ${cls(r.return_now)}">${pct(r.return_now, 1)}</td><td>${r.entry_date ? "running" : "starts next open"}</td></tr>`).join("")}</tbody></table></div>` : ""}
     </div></div>
     ${bt ? `<div class="hud"><div class="in">
       <h3 style="margin-bottom:10px">Background: insider-buying signal, replayed 2023–2026</h3>
       <div class="tiles">
-        ${tile("Signals", bt.n, "finished quests")}
+        ${tile("Signals", bt.n, "finished trades")}
         ${tile("Won", rate(bt.win_rate), "trades that made money")}
         ${tile("Avg trade", pct(bt.avg_trade_return, 1), "entry to exit", cls(bt.avg_trade_return))}
         ${tile("vs market", pct(bt.avg_excess_15, 1), "15 days vs SPY", cls(bt.avg_excess_15))}

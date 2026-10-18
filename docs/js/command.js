@@ -1,6 +1,6 @@
 // Command: the first screen. Top ideas, your holdings, the watchlist.
 import { esc, niceDate, shortDate, addTradingDays, storage } from "./util.js";
-import { gauge, meters, chip, pct, cls, money, headlineUpside } from "./ui.js";
+import { gauge, meters, chip, pct, cls, money, headlineUpside, zoneBar } from "./ui.js";
 import * as fx from "./fx.js";
 
 const HOLDINGS_KEY = "sq.portfolio.v1";
@@ -26,9 +26,47 @@ function ideaCard(s, i, asOf) {
         <div><div class="k">Target</div><div class="v up">${pl.target?.toFixed(2) ?? "–"}</div></div>
         <div><div class="k">Exit by</div><div class="v">${esc(exitBy)}</div></div>
       </div>
+      ${zoneBar(s)}
       ${meters(s.pillars)}
       <div class="why">${esc(lead)}</div>
+      ${s.next_earnings ? `<div class="tiny muted">Next earnings ${esc(shortDate(s.next_earnings))}</div>` : ""}
     </div></article>`;
+}
+
+// High-upside lane: +50% analyst potential with 2+ catalysts. Bigger swings, so a wider stop and a 30-day limit.
+function highLane(ready, waiting) {
+  if (!ready.length && !waiting.length) return "";
+  const row = (s) => `<div class="hu-row" data-open="${esc(s.ticker)}" tabindex="0" role="button" aria-label="Open ${esc(s.ticker)} dossier">
+      <div class="hu-pot num up">${pct(s.potential)}<small>analyst target</small></div>
+      <div style="min-width:0"><div><b>${esc(s.ticker)}</b> <span class="muted tiny">${esc((s.name || "").slice(0, 30))}</span></div>
+        <div class="hu-cats">${(s.catalysts || []).map((c) => `<span class="cat">${esc(c)}</span>`).join("")}</div>
+        <div class="tiny t2">${s.hu_ready
+          ? `Buy ${s.plan.entry_low.toFixed(2)}–${s.plan.entry_high.toFixed(2)} · stop ${s.plan.stop.toFixed(2)} · target ${s.plan.target.toFixed(2)} · ${s.plan.time_stop_days}-day limit`
+          : esc(s.why)}${s.next_earnings ? ` · earnings ${esc(shortDate(s.next_earnings))}` : ""}</div></div>
+      ${chip(s.hu_ready ? "High-upside" : "Watch")}
+    </div>`;
+  return `<div class="hud hu"><div class="in">
+    <div class="section-head"><h2>High-upside lane</h2><span class="tiny warn">higher risk · size these smaller</span></div>
+    <p class="tiny t2" style="margin:0 0 10px">Stocks analysts see rising 50%+ that also have two separate catalysts. Big targets come with big swings: wider stops, 30-day time limit.</p>
+    ${ready.length ? ready.map(row).join("") : `<div class="notice" style="margin-bottom:10px">None ready to buy today. These qualify but their charts are still falling: wait for them to turn up.</div>`}
+    ${waiting.length ? `${ready.length ? `<h3 style="margin:12px 0 6px">Waiting for the chart to turn</h3>` : ""}${waiting.map(row).join("")}` : ""}
+  </div></div>`;
+}
+
+// What changed since the last trading day, with your holdings first.
+function changesStrip(ch, universe) {
+  if (!ch) return "";
+  const mine = new Set((storage.get(HOLDINGS_KEY, null)?.holdings || []).map((h) => h.symbol));
+  const v = Object.entries(ch.verdicts || {});
+  const yours = v.filter(([t, x]) => mine.has(t) && x.hold_was !== x.hold_now);
+  const link = (t) => `<button class="tk-link" data-open="${esc(t)}">${esc(t)}</button>`;
+  const parts = [];
+  if (yours.length) parts.push(`<span class="warn">Your holdings:</span> ${yours.map(([t, x]) => `${link(t)} ${esc(x.hold_was || "–")} → <b>${esc(x.hold_now)}</b>`).join(", ")}`);
+  if (ch.new_ideas?.length) parts.push(`<span class="neon">New:</span> ${ch.new_ideas.map((x) => link(x.ticker)).join(" ")}`);
+  if (ch.dropped?.length) parts.push(`<span class="muted">Dropped:</span> ${ch.dropped.map((x) => `${link(x.ticker)} <span class="tiny muted">(${esc(x.now)})</span>`).join(" ")}`);
+  const upgrades = v.filter(([, x]) => x.now === "Buy candidate" && x.was !== "Buy candidate").length;
+  parts.push(`<span class="muted">${v.length} verdict changes · ${upgrades} new buy candidates</span>`);
+  return `<div class="changes"><span class="ch-k">Since ${esc(shortDate(ch.since))}</span>${parts.map((p) => `<span class="ch-part">${p}</span>`).join("")}</div>`;
 }
 
 function holdingsPanel(universe) {
@@ -65,7 +103,7 @@ function watchTable(list) {
     }).join("")}</tbody></table></div></div></div>`;
 }
 
-export function renderCommand(view, board, universe, open) {
+export function renderCommand(view, board, universe, open, changes) {
   if (!board) {
     view.innerHTML = `<div class="notice warn">No board yet. Run <code>python -m swingquest rank</code>.</div>`;
     return;
@@ -77,8 +115,10 @@ export function renderCommand(view, board, universe, open) {
       <div><h1 style="font-size:26px;letter-spacing:.12em">Today's top ideas</h1>
         <div class="small muted">Scan of ${board.ranked_n.toLocaleString()} stocks · prices as of ${esc(niceDate(board.as_of))} · ranked on ${Object.keys(board.weights).length} pillars</div></div>
     </div>
+    ${changesStrip(changes, universe)}
     ${top.length ? `<div class="ideas">${top.map((s, i) => ideaCard(s, i, board.as_of)).join("")}</div>`
       : `<div class="notice">No stock passes every check tonight (upside, quality, risk and timing). The best candidates are on the watchlist below.</div>`}
+    ${highLane(board.high || [], board.high_wait || [])}
     <div class="grid-main">
       <div class="stack">${watchTable(board.watch || [])}</div>
       <div class="stack">${holdingsPanel(universe)}</div>
@@ -93,6 +133,6 @@ export function renderCommand(view, board, universe, open) {
   });
   view.querySelectorAll("[data-open]").forEach((el) => {
     el.addEventListener("click", () => open(el.dataset.open, el));
-    el.addEventListener("keydown", (e) => { if (e.key === "Enter") open(el.dataset.open, el); });
+    el.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && el.tagName !== "BUTTON") { e.preventDefault(); open(el.dataset.open, el); } });
   });
 }

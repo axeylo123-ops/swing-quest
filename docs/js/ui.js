@@ -46,3 +46,16 @@ export function headlineUpside(s) {
   if (s.analyst_upside != null && s.n_analysts) return { value: s.analyst_upside, label: "analyst upside" };
   return { value: s.swing_upside, label: "swing target" };
 }
+
+// Where today's price sits between the stop and the target, with the buy zone shaded.
+export function zoneBar(s) {
+  const pl = s.plan;
+  if (!pl || s.price == null) return "";
+  const lo = pl.stop, hi = pl.target, at = (x) => Math.max(0, Math.min(100, ((x - lo) / (hi - lo)) * 100));
+  const inZone = s.price >= pl.entry_low && s.price <= pl.entry_high;
+  const where = inZone ? '<span class="neon">in the buy zone</span>' : s.price > pl.entry_high ? '<span class="warn">above the buy zone: wait</span>' : "below the buy zone";
+  return `<div class="zone-wrap" title="Stop ${lo.toFixed(2)} · buy ${pl.entry_low.toFixed(2)}–${pl.entry_high.toFixed(2)} · target ${hi.toFixed(2)}">
+    <div class="zone-l"><span>stop</span><span>now ${s.price.toFixed(2)} · ${where}</span><span>target</span></div>
+    <div class="zone"><span class="z" style="left:${at(pl.entry_low)}%;width:${at(pl.entry_high) - at(pl.entry_low)}%"></span>
+      <span class="p" style="left:${at(s.price)}%"></span></div></div>`;
+}

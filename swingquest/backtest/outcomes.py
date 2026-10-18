@@ -88,3 +88,25 @@ def measure(df: pd.DataFrame, spy: pd.DataFrame, signal_day: pd.Timestamp, atr: 
     result["taken"] = True
     result.update(simulate_trade(df.iloc[entry_i:], entry, stop, target, trade_cfg["time_stop_days"]))
     return result
+
+
+def measure_plan(df: pd.DataFrame, spy: pd.DataFrame, signal_day: pd.Timestamp, plan: dict) -> dict:
+    """Grades a trade using the plan's own stop and target levels (chart-based
+    plans), buying at the next open if it's inside the buy zone."""
+    i = df.index.get_loc(signal_day)
+    entry_i = i + 1
+    if entry_i >= len(df):
+        return {"exit_reason": "open", "taken": False, "skip_reason": "no next-day price yet"}
+    entry = float(df["open"].iloc[entry_i])
+    stop, target = plan["stop"], plan["target"]
+    result = {"entry_date": f"{df.index[entry_i]:%Y-%m-%d}", "entry": round(entry, 4), "stop": stop, "target": target}
+    result.update(forward_returns(df, spy, entry_i))
+    if entry > plan["entry_high"]:
+        result.update({"taken": False, "skip_reason": "opened above the buy zone", "exit_reason": "skipped"})
+        return result
+    if entry <= stop:
+        result.update({"taken": False, "skip_reason": "opened below the stop", "exit_reason": "skipped"})
+        return result
+    result["taken"] = True
+    result.update(simulate_trade(df.iloc[entry_i:], entry, stop, target, plan["time_stop_days"]))
+    return result

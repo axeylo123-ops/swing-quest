@@ -14,10 +14,10 @@ export function renderHoldings(view, universe, open) {
   const rules = getRules();
   const by = Object.fromEntries((universe?.stocks || []).map((s) => [s.ticker, s]));
   const rows = holdings.map((h) => ({ h, s: by[h.symbol] }));
-  const book = holdings.reduce((a, h) => a + (h.value ?? h.bookCost ?? 0), 0);
+  const book = holdings.reduce((a, h) => a + (h.value ?? h.bookCost ?? (h.avgCost != null ? h.avgCost * h.qty : 0)), 0);
 
   view.innerHTML = `<div class="stack">
-    <div class="section-head"><h2>Your holdings</h2><span class="tiny muted">stored only in this browser · never uploaded</span></div>
+    <div class="section-head"><h2>Your holdings</h2><span class="tiny muted" title="Browser storage is shared by every page on this github.io address, so only publish your own pages there.">stored only in this browser · never uploaded</span></div>
     ${rows.length ? `<div class="hud"><div class="in">
       <div class="tiles" style="margin-bottom:12px">
         <div class="tile"><div class="k">Holdings</div><div class="v">${holdings.length}</div><div class="s">${rows.filter((r) => r.s).length} covered by the scanner</div></div>
@@ -82,5 +82,8 @@ export function renderHoldings(view, universe, open) {
     setRules({ account, riskPct });
     game.toast("Risk rules saved", `${riskPct}% = ${dollars(account * riskPct / 100)} per trade`);
   });
-  view.querySelectorAll("tr[data-open]").forEach((tr) => tr.addEventListener("click", () => open(tr.dataset.open, tr)));
+  view.querySelectorAll("tr[data-open]").forEach((tr) => {
+    tr.addEventListener("click", () => open(tr.dataset.open, tr));
+    tr.addEventListener("keydown", (e) => { if (e.key === "Enter") open(tr.dataset.open, tr); });
+  });
 }

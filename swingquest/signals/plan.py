@@ -62,6 +62,54 @@ def trend_timing(snap: dict, above200: bool | None) -> dict:
     return {"label": label, "notes": notes}
 
 
+def level_plan(prices, atr: float, min_rr: float = 2.0, time_stop_days: int = 15,
+               max_stop_atr: float = 3.0, target_hint: float | None = None) -> dict | None:
+    """A trade plan built on real chart levels, the way a trader would:
+    - stop just under the nearest support that's at least 1 ATR below the price
+      (10-day low, 20-day low or the 50-day average), never more than
+      `max_stop_atr` ATRs away
+    - target at the next resistance above (60-day or 52-week high, or an
+      analyst target passed as `target_hint`), but always at least `min_rr`
+      times the risk, even if you buy at the top of the zone
+    """
+    close = float(prices["close"].iloc[-1])
+    if atr <= 0 or close <= 0:
+        return None
+    lows, highs = prices["low"], prices["high"]
+    supports = {
+        "the 10-day low": float(lows.tail(10).min()),
+        "the 20-day low": float(lows.tail(20).min()),
+        "the 50-day average": float(prices["close"].tail(50).mean()),
+    }
+    usable = {k: v for k, v in supports.items() if close - max_stop_atr * atr <= v <= close - atr}
+    if usable:
+        basis, level = max(usable.items(), key=lambda kv: kv[1])   # nearest solid support
+        stop, stop_basis = level - 0.25 * atr, f"just under {basis}"
+    else:
+        stop, stop_basis = close - 2 * atr, "2 average daily moves below"
+    if stop <= 0:
+        return None
+    entry_high = close + 0.5 * atr
+    floor_target = entry_high + min_rr * (entry_high - stop)
+    resist = {"the 60-day high": float(highs.tail(60).max()), "the 52-week high": float(highs.tail(252).max())}
+    if target_hint:
+        resist["the analyst average target"] = float(target_hint)
+    above = {k: v for k, v in resist.items() if v >= floor_target}
+    if above:
+        tb, target = min(above.items(), key=lambda kv: kv[1])          # first level that still pays 2:1
+        target_basis = f"at {tb}"
+    else:
+        target, target_basis = floor_target, f"{min_rr:.0f}x the risk"
+    risk = close - stop
+    return {
+        "reference": round(close, 2), "entry_low": round(close - 0.25 * atr, 2), "entry_high": round(entry_high, 2),
+        "stop": round(stop, 2), "target": round(target, 2), "risk_pct": round(risk / close, 4),
+        "reward_risk": round((target - close) / risk, 2),
+        "reward_risk_worst": round((target - entry_high) / (entry_high - stop), 2),
+        "time_stop_days": time_stop_days, "stop_basis": stop_basis, "target_basis": target_basis,
+    }
+
+
 def trade_plan(reference: float, atr: float, trade_cfg: dict) -> dict | None:
     stop = reference - trade_cfg["stop_atr_multiple"] * atr
     if stop <= 0 or atr <= 0:
