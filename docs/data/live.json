@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T01:34:22+00:00",
+ "generated_at": "2026-10-18T13:00:11+00:00",
  "open": [
   {
    "id": "BORR-2026-10-16",
@@ -35,39 +35,6 @@
    "skip_reason": "no next-day price yet"
   },
   {
-   "id": "PEP-2026-10-16",
-   "ticker": "PEP",
-   "company": "PEPSICO INC",
-   "score": 63,
-   "signal_date": "2026-10-16",
-   "entry_date": null,
-   "entry": null,
-   "stop": null,
-   "target": null,
-   "plan": {
-    "reference": 131.49,
-    "entry_low": 130.81,
-    "entry_high": 132.85,
-    "stop": 126.04,
-    "target": 146.48,
-    "risk_pct": 0.0415,
-    "reward_risk": 2.75,
-    "reward_risk_worst": 2.0,
-    "time_stop_days": 15
-   },
-   "last_close": 131.49,
-   "last_date": "2026-10-16",
-   "return_now": null,
-   "days_held": null,
-   "exit_reason": "open",
-   "exit_date": null,
-   "exit_price": null,
-   "trade_return": null,
-   "excess_15": null,
-   "taken": false,
-   "skip_reason": "no next-day price yet"
-  },
-  {
    "id": "GME-2026-10-16",
    "ticker": "GME",
    "company": "GameStop Corp.",
@@ -89,6 +56,39 @@
     "time_stop_days": 15
    },
    "last_close": 26.81,
+   "last_date": "2026-10-16",
+   "return_now": null,
+   "days_held": null,
+   "exit_reason": "open",
+   "exit_date": null,
+   "exit_price": null,
+   "trade_return": null,
+   "excess_15": null,
+   "taken": false,
+   "skip_reason": "no next-day price yet"
+  },
+  {
+   "id": "PEP-2026-10-16",
+   "ticker": "PEP",
+   "company": "PEPSICO INC",
+   "score": 63,
+   "signal_date": "2026-10-16",
+   "entry_date": null,
+   "entry": null,
+   "stop": null,
+   "target": null,
+   "plan": {
+    "reference": 131.49,
+    "entry_low": 130.81,
+    "entry_high": 132.85,
+    "stop": 126.04,
+    "target": 146.48,
+    "risk_pct": 0.0415,
+    "reward_risk": 2.75,
+    "reward_risk_worst": 2.0,
+    "time_stop_days": 15
+   },
+   "last_close": 131.49,
    "last_date": "2026-10-16",
    "return_now": null,
    "days_held": null,

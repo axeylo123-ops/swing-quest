@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T01:34:22+00:00",
+ "generated_at": "2026-10-18T13:00:11+00:00",
  "as_of": "2026-10-16",
  "status": "setups",
  "message": "2 setup(s) today",
@@ -1910,7 +1910,7 @@
   },
   {
    "ticker": "NAD",
-   "reason": "no price data"
+   "reason": "a fund, not an operating company"
   },
   {
    "ticker": "NEOV",
@@ -1922,7 +1922,7 @@
   },
   {
    "ticker": "ONMD",
-   "reason": "no price data"
+   "reason": "only $0.4M traded per day"
   },
   {
    "ticker": "PAM",
@@ -1930,7 +1930,7 @@
   },
   {
    "ticker": "PCQ",
-   "reason": "no price data"
+   "reason": "only $2.6M traded per day"
   },
   {
    "ticker": "PED",
@@ -1942,7 +1942,7 @@
   },
   {
    "ticker": "PODC",
-   "reason": "no price data"
+   "reason": "price $1.75 is under $2"
   },
   {
    "ticker": "PRIM",
@@ -1950,7 +1950,7 @@
   },
   {
    "ticker": "PRTA",
-   "reason": "no price data"
+   "reason": "only $4.7M traded per day"
   },
   {
    "ticker": "QTEX",
@@ -1970,7 +1970,7 @@
   },
   {
    "ticker": "SAH",
-   "reason": "no price data"
+   "reason": "price $63.61 is above your $30 limit"
   },
   {
    "ticker": "SAR",
@@ -2006,7 +2006,7 @@
   },
   {
    "ticker": "WVVI",
-   "reason": "no price data"
+   "reason": "only $0.0M traded per day"
   },
   {
    "ticker": "XAIR",
