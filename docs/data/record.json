@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T15:11:19+00:00",
+ "generated_at": "2026-10-19T18:13:19+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 0,
@@ -35,41 +35,109 @@
   "stop_first": null,
   "time_exit": null
  },
+ "high_summary": {
+  "n": 0,
+  "n_trades": 0,
+  "enough_data": false,
+  "label": "not enough data",
+  "avg_ret_5": null,
+  "avg_ret_10": null,
+  "avg_ret_15": null,
+  "avg_excess_15": null,
+  "beat_spy_rate": null,
+  "win_rate": null,
+  "avg_trade_return": null,
+  "avg_r": null,
+  "target_first": null,
+  "stop_first": null,
+  "time_exit": null
+ },
  "open": [
   {
-   "ticker": "CRGY",
-   "signal_date": "2026-10-16",
+   "ticker": "SNX",
+   "kind": "top",
+   "signal_date": "2026-10-19",
    "entry_date": null,
    "entry": null,
-   "conviction": 66.3,
+   "conviction": 71.8,
    "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "GFF",
+   "kind": "top",
+   "signal_date": "2026-10-19",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 66.1,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "DSV.TO",
+   "kind": "top",
+   "signal_date": "2026-10-19",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 65.0,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "ATEC",
+   "kind": "high",
+   "signal_date": "2026-10-19",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 61.1,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "CRGY",
+   "kind": "top",
+   "signal_date": "2026-10-16",
+   "entry_date": "2026-10-19",
+   "entry": 13.72,
+   "conviction": 66.3,
+   "return_now": -0.00328,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   },
   {
    "ticker": "CRM",
+   "kind": "top",
    "signal_date": "2026-10-16",
-   "entry_date": null,
-   "entry": null,
+   "entry_date": "2026-10-19",
+   "entry": 238.475,
    "conviction": 65.3,
-   "return_now": null,
+   "return_now": 0.01411,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   },
   {
    "ticker": "TXG.TO",
+   "kind": "top",
    "signal_date": "2026-10-16",
-   "entry_date": null,
-   "entry": null,
+   "entry_date": "2026-10-19",
+   "entry": 72.88,
    "conviction": 66.2,
-   "return_now": null,
+   "return_now": 0.01441,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   }
  ],
  "closed": [],
- "logged": 19
+ "logged": 25
 }

@@ -1,78 +1,78 @@
 {
- "started": "2026-10-18T16:16:05+00:00",
- "finished": "2026-10-18T16:16:10+00:00",
- "as_of": "2026-10-16",
- "mode": "offline",
+ "started": "2026-10-19T17:59:51+00:00",
+ "finished": "2026-10-19T18:13:19+00:00",
+ "as_of": "2026-10-19",
+ "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,842 insider buys in 60 days",
+   "stat": "1,790 insider buys in 60 days",
    "lines": [
-    "691 companies with insider buying",
-    "2,249 stocks to scan (2,030 US, 219 Canada)"
+    "673 companies with insider buying",
+    "2,235 stocks to scan (2,016 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.0
+   "secs": 0.3
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "1,979 price histories",
+   "stat": "2,227 price histories",
    "lines": [
-    "offline run: used cached data",
-    "1,722 company profiles on file"
+    "176 company profiles refreshed",
+    "2,251 company profiles on file"
    ],
    "status": "done",
-   "secs": 0.8
+   "secs": 552.7
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "642 stocks with genuine insider buying",
+   "stat": "626 stocks with genuine insider buying",
    "lines": [
-    "226 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "225 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: TENX (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.2
   },
   {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "estimates from cache",
+   "stat": "350 estimate sets refreshed",
    "lines": [
-    "98 companies where analysts are raising estimates",
-    "1,700 companies with analyst coverage"
+    "279 companies where analysts are raising estimates",
+    "2,061 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 0.0
+   "secs": 222.8
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,572 stocks ranked",
+   "stat": "1,752 stocks ranked",
    "lines": [
-    "#1 TXG.TO at conviction 75",
+    "#1 TXG.TO at conviction 74",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 4.5
+   "secs": 32.1
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "253 avoided \u00b7 386 limited upside",
+   "stat": "375 avoided \u00b7 405 limited upside",
    "lines": [
-    "543 on hold until the chart turns up or earnings pass",
-    "71 ran up too fast (don't chase)",
-    "27 report earnings inside the trade window"
+    "598 on hold until the chart turns up or earnings pass",
+    "46 ran up too fast (don't chase)",
+    "48 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 0 high-upside",
+   "stat": "3 top ideas \u00b7 1 high-upside",
    "lines": [
-    "top: GFF, NFI.TO, X.TO",
-    "high-upside waiting: MPWR, STRL, HLNE",
+    "top: SNX, GFF, DSV.TO",
+    "high-upside waiting: FTK, STRL, ARLO",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,9 +94,9 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "9 new ideas logged \u00b7 6 running",
+   "stat": "6 new ideas logged \u00b7 7 running",
    "lines": [
-    "24 ideas tracked since 2026-10-16",
+    "25 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)"
    ],
    "status": "done",
