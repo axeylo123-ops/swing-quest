@@ -19,6 +19,7 @@ and judges the stocks you already own with the same rules.
 | **Dossier** (tap any stock) | A short analyst note: upside, estimate revisions and earnings beats, genuine insider buying, quality, momentum, value, risks, the trade plan, and how many shares to buy for your risk |
 | **Scanner** | Every ranked stock. Sort by any pillar, filter by country, sector or verdict. Press `/` anywhere to search |
 | **Holdings** | Import your Questrade file once (Excel or CSV, positions or trade history). It's read **only in your browser**; account numbers are dropped immediately. Set your account size and risk per trade |
+| **Paper** | Practice trades as **$100 bubbles**: press *Paper buy* on any listed stock, add one line on why. Each bubble's size follows the price (price doubles = bubble twice as big); it pops green at the target ring, red at the stop ring. The system's own picks trade alongside yours, with the same rules, so you can see who does better. Replay slider, finished-trade shelf. Stays in your browser |
 | **Record** | How the system's ideas actually did, graded automatically against their own plans |
 | **Agents** | A replay of last night's run: 8 pipeline agents (scout, feed, insider analyst, analyst desk, ranker, risk officer, planner, record keeper) doing their step with real counts, plus the review crew's findings and proposals |
 | **System** | The pillars, weights and rules in plain words |

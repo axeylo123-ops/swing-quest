@@ -110,6 +110,7 @@ def run(fetch: bool = True, info_budget: int = 350, progress=print) -> dict:
               f"{sum(1 for f in funds.values() if f.get('numberOfAnalystOpinions')):,} companies with analyst coverage"])
     board = build(events.earnings_dates if fetch else events.cached_dates)
     board["insiders"] = ins
+    board["price_data"] = price_data          # for the paper-trading price feed (not written to JSON)
     crew_report(log, board, cfg)
     write(board, price_data, cfg, len(stocks))
     log.write(board["ranked"][0]["as_of"] if board["ranked"] else None)

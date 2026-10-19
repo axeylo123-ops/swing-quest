@@ -8,23 +8,33 @@ import { renderScanner } from "./scanner.js";
 import { renderHoldings } from "./holdings.js";
 import { renderRecord } from "./record.js";
 import { renderSystem } from "./system.js";
-import { openDossier } from "./dossier.js";
+import { openDossier, closeForNav as closeDossier } from "./dossier.js";
 import { renderAgents, stopAgents } from "./agents.js";
+import { renderPaper, stopPaper } from "./bubbles.js";
 
 const data = {};
 const view = $("#view");
-const TABS = ["command", "scanner", "holdings", "record", "agents", "system"];
-const open = (ticker, origin) => openDossier(ticker, data.board, data.universe, origin);
+const TABS = ["command", "scanner", "holdings", "paper", "record", "agents", "system"];
+const open = (ticker, origin, opts) => openDossier(ticker, data.board, data.universe, origin, opts);
 
 function render() {
   const tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "command";
   $$(".nav a").forEach((a) => { a.classList.toggle("active", a.dataset.tab === tab); a.toggleAttribute("aria-current", a.dataset.tab === tab); });
   stopAgents();
+  stopPaper();
   if (tab === "command") renderCommand(view, data.board, data.universe, open, data.changes);
   else if (tab === "scanner") renderScanner(view, data.universe, open);
   else if (tab === "holdings") renderHoldings(view, data.universe, open);
   else if (tab === "record") renderRecord(view, data.record, data.scorecard);
   else if (tab === "agents") renderAgents(view, data.agents, data.reviews);
+  else if (tab === "paper") {
+    // the price feed is only needed here, so it loads the first time you open the tab
+    if (data.paper === undefined) {
+      view.innerHTML = '<div class="notice">Loading prices…</div>';
+      data.paper = null;
+      loadJSON("data/paper.json").then((p) => { data.paper = p || { bars: {}, system: [] }; if (location.hash === "#paper") render(); });
+    } else if (data.paper) renderPaper(view, data.paper, data.board, data.universe, open);
+  }
   else renderSystem(view, data.board);
 }
 
@@ -86,5 +96,5 @@ async function start() {
   game.checkIn();
 }
 
-window.addEventListener("hashchange", () => { render(); view.focus({ preventScroll: true }); window.scrollTo(0, 0); });
+window.addEventListener("hashchange", () => { closeDossier(); render(); view.focus({ preventScroll: true }); window.scrollTo(0, 0); });
 start();

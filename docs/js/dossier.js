@@ -3,6 +3,7 @@ import { esc, shortDate, addTradingDays, shareCount, getRules, loadJSON } from "
 import { gauge, meters, chip, pct, cls, money, headlineUpside, zoneBar } from "./ui.js";
 import { priceChart } from "./charts.js";
 import * as game from "./game.js";
+import { buyBox, wireBuy } from "./bubbles.js";
 
 let notesCache = null;
 const LINES = [["upside", "Upside"], ["earnings", "Earnings"], ["insiders", "Insiders"], ["quality", "Quality"],
@@ -45,6 +46,9 @@ function setBackground(inert) {
   for (const sel of ["main", ".topbar", ".footer"]) document.querySelector(sel)?.toggleAttribute("inert", inert);
 }
 
+// Switching tabs: close without stepping history back (that would undo the switch).
+export function closeForNav() { ownHistory = false; close(); }
+
 export function close() {
   if (!isOpen) return;
   isOpen = false;
@@ -68,14 +72,14 @@ function show(origin) {
   isOpen = true;
   b.hidden = false;
   setBackground(true);
-  requestAnimationFrame(() => { b.classList.add("show"); d.classList.add("show"); d.setAttribute("aria-hidden", "false"); });
+  requestAnimationFrame(() => { if (!isOpen) return; b.classList.add("show"); d.classList.add("show"); d.setAttribute("aria-hidden", "false"); });
   b.onclick = close;
 }
 
 const header = (s, universe) => `<div class="spread"><span class="tiny muted">DOSSIER · RANK #${s.rank} OF ${universe?.stocks?.length?.toLocaleString() ?? "?"}</span>
   <button class="btn" id="close-drawer" aria-label="Close dossier">← Back · Esc</button></div>`;
 
-export async function openDossier(ticker, board, universe, origin) {
+export async function openDossier(ticker, board, universe, origin, opts = {}) {
   const lists = [...(board?.top || []), ...(board?.high || []), ...(board?.high_wait || []), ...(board?.watch || [])];
   const full = lists.find((x) => x.ticker === ticker);
   const s = full || universe?.stocks?.find((x) => x.ticker === ticker);
@@ -121,12 +125,18 @@ export async function openDossier(ticker, board, universe, origin) {
       ${pl.stop_basis ? `<div class="tiny t2" style="margin-top:6px">Stop: ${esc(pl.stop_basis)} · Target: ${esc(pl.target_basis)}
         · reward ${pl.reward_risk?.toFixed(1)}× the risk${pl.reward_risk_worst ? ` (${pl.reward_risk_worst.toFixed(1)}× if you buy at the top of the zone)` : ""}</div>` : ""}
       <div style="margin-top:8px">${sizing(s)}</div>
+      <div style="margin-top:10px">${buyBox(s, board)}</div>
       <div class="tiny muted" style="margin-top:4px">${esc((s.timing_notes || []).join(" · "))}</div></div>` : ""}
     ${s.chart?.length ? `<div class="chart" id="dossier-chart"></div>` : ""}
     <div class="tiny muted">Pillars rank this stock against every stock we cover: 70 means better than 70% of them. Not financial advice.</div>
   </div>`;
   d.querySelector("#close-drawer").addEventListener("click", close);
   d.querySelector("#close-drawer").focus({ preventScroll: true });
+  wireBuy(d, s, () => {
+    game.toast("Bubble bought", `$100 of ${s.ticker} · see it in the Paper tab`);
+    openDossier(ticker, board, universe, null, { keepFocus: true });
+  });
+  if (opts.buy) { const w = d.querySelector("#pp-new-why"); if (w) { w.scrollIntoView({ block: "center" }); w.focus({ preventScroll: true }); } }
   if (s.chart?.length) setTimeout(() => priceChart(d.querySelector("#dossier-chart"), s.chart, pl), 60);
   if ((board?.top || []).some((x) => x.ticker === ticker)) game.reviewIdea(`${ticker}-${board.as_of}`, ticker, origin);
 }

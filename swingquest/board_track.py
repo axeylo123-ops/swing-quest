@@ -8,7 +8,7 @@ Record tab, and keeps pillar scores so we can learn which pillars work.
 import json
 from datetime import date, datetime, timezone
 
-from swingquest import crew, tracker
+from swingquest import crew, paper, tracker
 from swingquest.backtest import scorecard
 from swingquest.config import DATA_OUT_DIR, ROOT, settings
 
@@ -32,6 +32,8 @@ def to_row(s: dict, kind: str) -> dict | None:
         "verdict": s["verdict"], "timing": s["timing"], "country": s["country"], "sector": s.get("sector"),
         **{f"{k}_frac": round(v / 100, 3) for k, v in s["pillars"].items()},
         "plan": pl, "atr": atr, "exit_reason": None,
+        "reason": ("catalysts: " + ", ".join(s["catalysts"])) if s.get("catalysts")
+                  else (s.get("note") or {}).get("upside", "").split(" · ")[0],
     }
 
 
@@ -114,9 +116,11 @@ def run(board: dict) -> dict:
     rows = grade(rows)
     save(rows)
     rec = write_record(rows)
+    pp = paper.publish(board, rows, board.get("price_data"))
     s = rec["summary"]
     crew.append("keeper", "Record keeper", "Logs every idea and grades it against its own plan",
                 f"{added} new ideas logged · {len(rec['open'])} running",
                 [f"{rec['logged']} ideas tracked since {rec['started'] or 'today'}",
-                 f"{s.get('n', 0)} finished top ideas graded" + (" (fewer than 30: too early to judge)" if s.get("n", 0) < 30 else "")])
+                 f"{s.get('n', 0)} finished top ideas graded" + (" (fewer than 30: too early to judge)" if s.get("n", 0) < 30 else ""),
+                 f"price feed for paper trades: {pp['tickers']} stocks, {pp['system']} system picks"])
     return {"added": added, "open": len(rec["open"]), "logged": rec["logged"]}

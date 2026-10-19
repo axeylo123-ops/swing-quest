@@ -29,7 +29,8 @@ function ideaCard(s, i, asOf) {
       ${zoneBar(s)}
       ${meters(s.pillars)}
       <div class="why">${esc(lead)}</div>
-      ${s.next_earnings ? `<div class="tiny muted">Next earnings ${esc(shortDate(s.next_earnings))}</div>` : ""}
+      <div class="spread">${s.next_earnings ? `<span class="tiny muted">Next earnings ${esc(shortDate(s.next_earnings))}</span>` : "<span></span>"}
+        <button class="paper-btn" data-buy="${esc(s.ticker)}" aria-label="Paper buy ${esc(s.ticker)}">＋ Paper $100</button></div>
     </div></article>`;
 }
 
@@ -43,7 +44,8 @@ function highLane(ready, waiting) {
         <div class="tiny t2">${s.hu_ready
           ? `Buy ${s.plan.entry_low.toFixed(2)}–${s.plan.entry_high.toFixed(2)} · stop ${s.plan.stop.toFixed(2)} · target ${s.plan.target.toFixed(2)} · ${s.plan.time_stop_days}-day limit`
           : esc(s.why)}${s.next_earnings ? ` · earnings ${esc(shortDate(s.next_earnings))}` : ""}</div></div>
-      ${chip(s.hu_ready ? "High-upside" : "Watch")}
+      <div style="display:grid;gap:6px;justify-items:end">${chip(s.hu_ready ? "High-upside" : "Watch")}
+        <button class="paper-btn" data-buy="${esc(s.ticker)}" aria-label="Paper buy ${esc(s.ticker)}">＋ Paper</button></div>
     </div>`;
   return `<div class="hud hu"><div class="in">
     <div class="section-head"><h2>High-upside lane</h2><span class="tiny warn">higher risk · size these smaller</span></div>
@@ -133,6 +135,10 @@ export function renderCommand(view, board, universe, open, changes) {
   });
   view.querySelectorAll("[data-open]").forEach((el) => {
     el.addEventListener("click", () => open(el.dataset.open, el));
-    el.addEventListener("keydown", (e) => { if ((e.key === "Enter" || e.key === " ") && el.tagName !== "BUTTON") { e.preventDefault(); open(el.dataset.open, el); } });
+    el.addEventListener("keydown", (e) => { if (e.target === el && (e.key === "Enter" || e.key === " ") && el.tagName !== "BUTTON") { e.preventDefault(); open(el.dataset.open, el); } });
   });
+  view.querySelectorAll("[data-buy]").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    open(b.dataset.buy, b, { buy: true });
+  }));
 }
