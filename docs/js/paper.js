@@ -124,10 +124,12 @@ export function newTrade(s, why, now = new Date()) {
 }
 
 // Grades every trade; a finished result is kept with the trade so it survives prices rolling out of the feed.
-export function gradeMine(trades, bars) {
+export function gradeMine(trades, bars, asOf) {
   let changed = false;
   const out = trades.map((t) => {
     if (t.result) return { t, g: t.result };
+    // no prices for it yet (bought today, or tonight's prices aren't published yet): it's waiting, not missing
+    if (!bars?.[t.ticker]?.length && (!asOf || t.fillOn > asOf)) return { t, g: { status: "pending", fillOn: t.fillOn } };
     const g = simulate(bars?.[t.ticker], t.plan, t.fillOn, { closeOn: t.closeOn });
     if (g.status === "closed" || g.status === "skipped") { t.result = g; changed = true; }
     return { t, g };

@@ -20,7 +20,7 @@ function items(paper, universe) {
   const bars = paper?.bars || {};
   const names = Object.fromEntries((universe?.stocks || []).map((s) => [s.ticker, s.name]));
   const trades = P.load();
-  const { graded, changed } = P.gradeMine(trades, bars);
+  const { graded, changed } = P.gradeMine(trades, bars, paper?.as_of);
   if (changed) P.save(trades);
   const mine = graded.map(({ t, g }) => ({ id: t.id, owner: "you", t, g, name: t.name || names[t.ticker] || "", why: t.why }));
   const sys = (paper?.system || []).map((p) => ({ id: `sys-${p.id}`, owner: "sys", t: p, g: P.gradeSystem(p, bars[p.ticker]),
@@ -70,7 +70,7 @@ function paint(root, list, day, last, prev) {
     const core = el.querySelector(".core"), r = radius(st.value);
     core.style.r = `${r}px`;
     el.dataset.state = st.kind;
-    el.querySelector(".b-v").textContent = st.kind === "pending" ? "next open" : `$${st.value.toFixed(0)} ${pct(st.value / P.START - 1)}`;
+    el.querySelector(".b-v").textContent = st.kind === "pending" ? (x.owner === "you" && x.t.fillOn ? `buys ${shortDate(x.t.fillOn)}` : "next open") : `$${st.value.toFixed(0)} ${pct(st.value / P.START - 1)}`;
     if (prev && prev !== day && (st.kind === "won") && !el.dataset.popped) { el.dataset.popped = "1"; fx.sparks(el, 14); }
     if (st.kind !== "won" && st.kind !== "lost") delete el.dataset.popped;
   }
@@ -164,7 +164,7 @@ export function renderPaper(view, paper, board, universe, open) {
   const arena = view.querySelector("#arena"), label = view.querySelector("#pp-day"), range = view.querySelector("#pp-range");
   const setDay = (i, prev) => {
     di = i;
-    label.textContent = days[i] ? `${shortDate(days[i])}${days[i] === last ? " · latest" : ""}` : "";
+    label.textContent = days[i] ? `${shortDate(days[i])}${days[i] === last ? " · latest prices" : ""}` : "Prices arrive after the evening run";
     paint(arena, shown(), days[i], last, prev);
     if (range) range.value = i;
   };
