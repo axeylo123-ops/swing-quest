@@ -1,17 +1,17 @@
 {
- "started": "2026-10-20T01:10:46+00:00",
- "finished": "2026-10-20T01:21:18+00:00",
- "as_of": "2026-10-19",
+ "started": "2026-10-20T16:03:51+00:00",
+ "finished": "2026-10-20T16:16:26+00:00",
+ "as_of": "2026-10-20",
  "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,739 insider buys in 60 days",
+   "stat": "1,746 insider buys in 60 days",
    "lines": [
-    "661 companies with insider buying",
-    "2,225 stocks to scan (2,006 US, 219 Canada)"
+    "664 companies with insider buying",
+    "2,228 stocks to scan (2,009 US, 219 Canada)"
    ],
    "status": "done",
    "secs": 0.2
@@ -20,25 +20,25 @@
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,217 price histories",
+   "stat": "2,220 price histories",
    "lines": [
-    "6 company profiles refreshed",
-    "2,257 company profiles on file"
+    "3 company profiles refreshed",
+    "2,260 company profiles on file"
    ],
    "status": "done",
-   "secs": 403.5
+   "secs": 490.5
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "611 stocks with genuine insider buying",
+   "stat": "614 stocks with genuine insider buying",
    "lines": [
-    "226 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "228 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: TENX (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.2
   },
   {
    "id": "analyst",
@@ -46,33 +46,33 @@
    "job": "Tracks analyst targets, estimate changes and earnings beats",
    "stat": "350 estimate sets refreshed",
    "lines": [
-    "455 companies where analysts are raising estimates",
-    "2,064 companies with analyst coverage"
+    "608 companies where analysts are raising estimates",
+    "2,065 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 217.4
+   "secs": 256.7
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,755 stocks ranked",
+   "stat": "1,747 stocks ranked",
    "lines": [
-    "#1 TXG.TO at conviction 74",
+    "#1 TXG.TO at conviction 75",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 10.8
+   "secs": 6.8
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "472 avoided \u00b7 392 limited upside",
+   "stat": "564 avoided \u00b7 379 limited upside",
    "lines": [
-    "516 on hold until the chart turns up or earnings pass",
-    "71 ran up too fast (don't chase)",
-    "45 report earnings inside the trade window"
+    "452 on hold until the chart turns up or earnings pass",
+    "64 ran up too fast (don't chase)",
+    "49 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 1 high-upside",
+   "stat": "3 top ideas \u00b7 0 high-upside",
    "lines": [
-    "top: GFF, DSV.TO, HQY",
-    "high-upside waiting: FTK, MPWR, FIX",
+    "top: SNX, TSM, DSV.TO",
+    "high-upside waiting: FTK, FIX, HLNE",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "2 new ideas logged \u00b7 8 running",
+   "stat": "1 new ideas logged \u00b7 8 running",
    "lines": [
-    "27 ideas tracked since 2026-10-16",
+    "28 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 31 stocks, 8 system picks"
+    "price feed for paper trades: 33 stocks, 8 system picks"
    ],
    "status": "done",
    "secs": null
