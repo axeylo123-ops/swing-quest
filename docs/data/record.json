@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-20T16:16:26+00:00",
+ "generated_at": "2026-10-21T00:56:24+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 0,
@@ -60,7 +60,7 @@
    "entry_date": "2026-10-20",
    "entry": 11.2,
    "conviction": 65.0,
-   "return_now": 0.00982,
+   "return_now": 0.00268,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +72,7 @@
    "entry_date": "2026-10-20",
    "entry": 93.43,
    "conviction": 66.1,
-   "return_now": 0.00974,
+   "return_now": -0.00824,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-10-20",
    "entry": 245.06,
    "conviction": 71.8,
-   "return_now": 0.01494,
+   "return_now": 0.01432,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +96,19 @@
    "entry_date": "2026-10-20",
    "entry": 10.57,
    "conviction": 61.1,
-   "return_now": 0.02602,
+   "return_now": -0.01514,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "SEI",
+   "kind": "high",
+   "signal_date": "2026-10-19",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 58.8,
+   "return_now": null,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +120,7 @@
    "entry_date": "2026-10-19",
    "entry": 13.72,
    "conviction": 66.3,
-   "return_now": -0.01166,
+   "return_now": -0.00146,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +132,7 @@
    "entry_date": "2026-10-19",
    "entry": 238.48,
    "conviction": 65.3,
-   "return_now": 0.00306,
+   "return_now": 0.01665,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +144,7 @@
    "entry_date": "2026-10-19",
    "entry": 91.53,
    "conviction": 65.1,
-   "return_now": 0.0384,
+   "return_now": 0.01683,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,12 +156,12 @@
    "entry_date": "2026-10-19",
    "entry": 72.88,
    "conviction": 66.2,
-   "return_now": 0.00123,
+   "return_now": 0.00453,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   }
  ],
  "closed": [],
- "logged": 28
+ "logged": 29
 }
