@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-21T00:56:24+00:00",
+ "generated_at": "2026-10-21T16:31:27+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 0,
@@ -54,13 +54,25 @@
  },
  "open": [
   {
+   "ticker": "VYX",
+   "kind": "high",
+   "signal_date": "2026-10-21",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 57.0,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
    "ticker": "DSV.TO",
    "kind": "top",
    "signal_date": "2026-10-19",
    "entry_date": "2026-10-20",
    "entry": 11.2,
    "conviction": 65.0,
-   "return_now": 0.00268,
+   "return_now": 0.00357,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +84,7 @@
    "entry_date": "2026-10-20",
    "entry": 93.43,
    "conviction": 66.1,
-   "return_now": -0.00824,
+   "return_now": 0.01049,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +96,7 @@
    "entry_date": "2026-10-20",
    "entry": 245.06,
    "conviction": 71.8,
-   "return_now": 0.01432,
+   "return_now": 0.02699,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +108,7 @@
    "entry_date": "2026-10-20",
    "entry": 10.57,
    "conviction": 61.1,
-   "return_now": -0.01514,
+   "return_now": 0.03406,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -105,10 +117,10 @@
    "ticker": "SEI",
    "kind": "high",
    "signal_date": "2026-10-19",
-   "entry_date": null,
-   "entry": null,
+   "entry_date": "2026-10-20",
+   "entry": 63.97,
    "conviction": 58.8,
-   "return_now": null,
+   "return_now": 0.08441,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +132,7 @@
    "entry_date": "2026-10-19",
    "entry": 13.72,
    "conviction": 66.3,
-   "return_now": -0.00146,
+   "return_now": -0.01685,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +144,7 @@
    "entry_date": "2026-10-19",
    "entry": 238.48,
    "conviction": 65.3,
-   "return_now": 0.01665,
+   "return_now": 0.01526,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,7 +156,7 @@
    "entry_date": "2026-10-19",
    "entry": 91.53,
    "conviction": 65.1,
-   "return_now": 0.01683,
+   "return_now": 0.07528,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -156,12 +168,12 @@
    "entry_date": "2026-10-19",
    "entry": 72.88,
    "conviction": 66.2,
-   "return_now": 0.00453,
+   "return_now": 0.00412,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   }
  ],
  "closed": [],
- "logged": 29
+ "logged": 31
 }
