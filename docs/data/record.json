@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-23T00:58:15+00:00",
+ "generated_at": "2026-10-23T16:15:55+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 0,
@@ -54,13 +54,13 @@
  },
  "open": [
   {
-   "ticker": "PNFP",
-   "kind": "top",
+   "ticker": "EFX.TO",
+   "kind": "high",
    "signal_date": "2026-10-22",
-   "entry_date": null,
-   "entry": null,
-   "conviction": 65.9,
-   "return_now": null,
+   "entry_date": "2026-10-23",
+   "entry": 32.14,
+   "conviction": 60.1,
+   "return_now": 0.01649,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -69,22 +69,10 @@
    "ticker": "RBA",
    "kind": "high",
    "signal_date": "2026-10-22",
-   "entry_date": null,
-   "entry": null,
+   "entry_date": "2026-10-23",
+   "entry": 83.84,
    "conviction": 63.4,
-   "return_now": null,
-   "exit_reason": "open",
-   "trade_return": null,
-   "excess_15": null
-  },
-  {
-   "ticker": "EFX.TO",
-   "kind": "high",
-   "signal_date": "2026-10-22",
-   "entry_date": null,
-   "entry": null,
-   "conviction": 60.1,
-   "return_now": null,
+   "return_now": 0.0006,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,19 +84,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.00123,
-   "exit_reason": "open",
-   "trade_return": null,
-   "excess_15": null
-  },
-  {
-   "ticker": "DSV.TO",
-   "kind": "top",
-   "signal_date": "2026-10-19",
-   "entry_date": "2026-10-20",
-   "entry": 11.2,
-   "conviction": 65.0,
-   "return_now": -0.07321,
+   "return_now": 0.03808,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +96,7 @@
    "entry_date": "2026-10-20",
    "entry": 93.43,
    "conviction": 66.1,
-   "return_now": 0.01284,
+   "return_now": 0.03527,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +108,7 @@
    "entry_date": "2026-10-20",
    "entry": 245.06,
    "conviction": 71.8,
-   "return_now": 0.02481,
+   "return_now": 0.0221,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,19 +120,7 @@
    "entry_date": "2026-10-20",
    "entry": 10.57,
    "conviction": 61.1,
-   "return_now": 0.02744,
-   "exit_reason": "open",
-   "trade_return": null,
-   "excess_15": null
-  },
-  {
-   "ticker": "SEI",
-   "kind": "high",
-   "signal_date": "2026-10-19",
-   "entry_date": "2026-10-20",
-   "entry": 63.97,
-   "conviction": 58.8,
-   "return_now": 0.08441,
+   "return_now": 0.07237,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -168,7 +132,7 @@
    "entry_date": "2026-10-19",
    "entry": 13.72,
    "conviction": 66.3,
-   "return_now": -0.01603,
+   "return_now": 0.01786,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -180,7 +144,7 @@
    "entry_date": "2026-10-19",
    "entry": 238.48,
    "conviction": 65.3,
-   "return_now": 0.01384,
+   "return_now": 0.02927,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -192,11 +156,13 @@
    "entry_date": "2026-10-19",
    "entry": 91.53,
    "conviction": 65.1,
-   "return_now": 0.06938,
+   "return_now": 0.13414,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
-  },
+  }
+ ],
+ "closed": [
   {
    "ticker": "TXG.TO",
    "kind": "top",
@@ -204,12 +170,47 @@
    "entry_date": "2026-10-19",
    "entry": 72.88,
    "conviction": 66.2,
-   "return_now": -0.06861,
-   "exit_reason": "open",
+   "return_now": -0.07176,
+   "exit_reason": "stop",
+   "trade_return": -0.08233,
+   "excess_15": null
+  },
+  {
+   "ticker": "DSV.TO",
+   "kind": "top",
+   "signal_date": "2026-10-19",
+   "entry_date": "2026-10-20",
+   "entry": 11.2,
+   "conviction": 65.0,
+   "return_now": -0.08527,
+   "exit_reason": "stop",
+   "trade_return": -0.08482,
+   "excess_15": null
+  },
+  {
+   "ticker": "SEI",
+   "kind": "high",
+   "signal_date": "2026-10-19",
+   "entry_date": "2026-10-20",
+   "entry": 63.97,
+   "conviction": 58.8,
+   "return_now": -0.08027,
+   "exit_reason": "stop",
+   "trade_return": -0.12162,
+   "excess_15": null
+  },
+  {
+   "ticker": "PNFP",
+   "kind": "top",
+   "signal_date": "2026-10-22",
+   "entry_date": "2026-10-23",
+   "entry": 101.46,
+   "conviction": 65.9,
+   "return_now": -0.00453,
+   "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "closed": [],
- "logged": 34
+ "logged": 36
 }
