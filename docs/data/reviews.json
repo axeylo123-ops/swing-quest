@@ -3,8 +3,12 @@
  "reviewers": [
   {
    "id": "code", "name": "Code reviewer", "job": "Hunts bugs, bad data and silent failures",
-   "last_run": "2026-10-18",
+   "last_run": "2026-10-24",
    "findings": [
+    {"text": "Evening run scores US stocks on yesterday's prices: the 10-23 board (made 9pm New York) has SNX, SBLK and PNFP charts ending 10-22 while Canadian stocks end 10-23, and the 10-21 and 10-22 evening runs did the same. Plans and buy zones are a day old even though the header says today", "status": "open"},
+    {"text": "The 'morning' run (cron 12:00 UTC) actually started around 16:15 UTC, after the US open, so US stocks get a half-finished day as their 'close' (10-23 run: US as_of 10-23 at 12:15pm New York). Scores, buy zones and the Record's logged ideas then rest on a midday price", "status": "open"},
+    {"text": "paper.publish() wraps the price download for stocks that left the universe in 'except Exception: pass', so if Yahoo fails those bubbles quietly lose their prices with no message in the Agents log", "status": "open"},
+    {"text": "High-upside picks get the earnings warning added twice (brain.py, the loop after high_upside()): RBA's risk list shows 'earnings on 2026-11-09, inside the trade window' two times", "status": "open"},
     {"text": "Broken price bars (zero or blank prices) could poison every calculation", "status": "fixed"},
     {"text": "A Yahoo hiccup could mark a real stock as 'missing' for a week", "status": "fixed"},
     {"text": "Earnings lookups that failed were cached as 'no earnings', hiding real report dates", "status": "fixed"},
@@ -17,8 +21,11 @@
   },
   {
    "id": "method", "name": "Method reviewer", "job": "Challenges how stocks are scored and picked",
-   "last_run": "2026-10-18",
+   "last_run": "2026-10-24",
    "findings": [
+    {"text": "RBA is a 'ready' high-upside pick while its own main verdict says 'Watch: below its 200-day average and lagging the market'. It fell from about $110 to $84 in 60 days, is 28% behind the market over 3 months and has momentum 26. high_upside() only checks timing and the 50-day line, so a falling knife can get through", "status": "open"},
+    {"text": "The high-upside lane never waits for earnings: all four of today's names report inside their 30-day plan (FTK 11-03, RBA 11-09, DSV.TO 11-12, MRVL 12-01). A top idea in the same spot would be told 'wait for the report', so the riskier lane takes on the bigger gamble", "status": "open"},
+    {"text": "Record: only 2 finished trades, so it's too early to judge (need 30). Both were Canadian gold/silver miners stopped out within days (TXG.TO -8.2%, DSV.TO -8.5%), and both are back on today's board, with TXG.TO ranked #1 at conviction 76", "status": "open"},
     {"text": "Stale analyst targets after a big drop made fallen stocks look like huge upside", "status": "fixed"},
     {"text": "Mega-caps won the analysts pillar on raw revision counts; now per analyst", "status": "fixed"},
     {"text": "Value compared a bank's P/E with a software company's; now within its industry", "status": "fixed"},
@@ -31,8 +38,10 @@
   },
   {
    "id": "design", "name": "Design reviewer", "job": "Checks the dashboard on desktop and phone",
-   "last_run": "2026-10-18",
+   "last_run": "2026-10-24",
    "findings": [
+    {"text": "Paper tab 'Sell now (last close)' looks like it does nothing: it sets the sell day to paper.json's as_of (10-23), but US prices stop at 10-22, so simulate() keeps the trade open and the button stays. Tested in paper.js: the status stays 'open'", "status": "open"},
+    {"text": "Bubbles are just 'RBA paper trade' to a screen reader: the dollar value, return and 'TARGET ✓ / STOPPED' are in a hidden SVG or CSS ::after, the selected bubble has no aria-pressed, and focus doesn't move to the detail panel that opens", "status": "open"},
     {"text": "Stock dossier: focus and keyboard handling, close race, back button on phone", "status": "fixed"},
     {"text": "Scanner re-drew the whole table on every keystroke; pillar names were cut off", "status": "fixed"},
     {"text": "Holdings value fell back to nothing when Questrade left the market value blank", "status": "fixed"},
@@ -46,6 +55,8 @@
   {"title": "Post-earnings drift", "why": "Stocks that beat and rise on the report tend to keep drifting up for weeks. A clean, well-studied catalyst for the high-upside lane.", "by": "method", "status": "proposed"},
   {"title": "Short-interest squeeze setup", "why": "Heavy short selling plus rising estimates plus a breakout can produce fast +30-50% moves. Higher risk, belongs in the high-upside lane only.", "by": "method", "status": "proposed"},
   {"title": "Sector rotation strength", "why": "Favour ideas in the 3 strongest sectors over the last month; most stocks move with their sector.", "by": "method", "status": "proposed"},
-  {"title": "Weekly review routine", "why": "A scheduled Claude agent re-reviews code, scoring and the track record every week and adds findings and proposals here. Runs Saturdays 9am; it can only edit this file.", "by": "code", "status": "shipped"}
+  {"title": "Weekly review routine", "why": "A scheduled Claude agent re-reviews code, scoring and the track record every week and adds findings and proposals here. Runs Saturdays 9am; it can only edit this file.", "by": "code", "status": "shipped"},
+  {"title": "Cooldown after a stop-out", "why": "Don't re-list a stock as a top idea or high-upside pick for about 10 trading days after its logged trade hits the stop. Both finished trades so far (TXG.TO, DSV.TO) were stopped out and came straight back onto the board.", "by": "method", "status": "proposed"},
+  {"title": "Price-date badge per market", "why": "Show 'US prices as of … · Canada prices as of …' next to the board date. Right now the header says 10-23 while US numbers are from 10-22, and you can't see that from the dashboard.", "by": "design", "status": "proposed"}
  ]
 }
