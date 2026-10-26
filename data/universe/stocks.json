@@ -1,5 +1,5 @@
 {
-"updated": "2026-10-18",
+"updated": "2026-10-26",
 "stocks": [
 {
 "ticker": "A",
@@ -9229,7 +9229,7 @@
 },
 {
 "ticker": "RMD",
-"name": "ResMed|",
+"name": "ResMed",
 "sector": "Health Care",
 "index": "S&P 500",
 "country": "US"
@@ -9789,7 +9789,7 @@
 },
 {
 "ticker": "SKYD",
-"name": "Skydance Corporation",
+"name": "Skydance",
 "sector": "Communication Services",
 "index": "S&P 500",
 "country": "US"

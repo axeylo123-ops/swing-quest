@@ -1,77 +1,77 @@
 {
- "started": "2026-10-24T00:56:21+00:00",
- "finished": "2026-10-24T01:03:36+00:00",
- "as_of": "2026-10-23",
+ "started": "2026-10-26T17:57:37+00:00",
+ "finished": "2026-10-26T18:10:34+00:00",
+ "as_of": "2026-10-26",
  "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,701 insider buys in 60 days",
+   "stat": "1,611 insider buys in 60 days",
    "lines": [
-    "646 companies with insider buying",
-    "2,212 stocks to scan (1,993 US, 219 Canada)"
+    "625 companies with insider buying",
+    "2,195 stocks to scan (1,976 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.2
+   "secs": 0.7
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,202 price histories",
+   "stat": "2,185 price histories",
    "lines": [
-    "4 company profiles refreshed",
+    "350 company profiles refreshed",
     "2,276 company profiles on file"
    ],
    "status": "done",
-   "secs": 422.4
+   "secs": 601.9
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "595 stocks with genuine insider buying",
+   "stat": "575 stocks with genuine insider buying",
    "lines": [
-    "233 buys thrown out (10b5-1 plans, company plans, odd prices)",
-    "strongest: AMRZ (insider score 100)"
+    "229 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "strongest: DKS (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.2
   },
   {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "4 estimate sets refreshed",
+   "stat": "235 estimate sets refreshed",
    "lines": [
-    "949 companies where analysts are raising estimates",
+    "948 companies where analysts are raising estimates",
     "2,070 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 3.4
+   "secs": 148.3
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,751 stocks ranked",
+   "stat": "1,740 stocks ranked",
    "lines": [
-    "#1 TXG.TO at conviction 76",
+    "#1 SNX at conviction 71",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 8.4
+   "secs": 24.9
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "730 avoided \u00b7 403 limited upside",
+   "stat": "724 avoided \u00b7 414 limited upside",
    "lines": [
-    "342 on hold until the chart turns up or earnings pass",
-    "80 ran up too fast (don't chase)",
+    "334 on hold until the chart turns up or earnings pass",
+    "43 ran up too fast (don't chase)",
     "50 report earnings inside the trade window"
    ],
    "status": "done",
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 1 high-upside",
+   "stat": "3 top ideas \u00b7 2 high-upside",
    "lines": [
-    "top: SNX, SBLK, PNFP",
-    "high-upside waiting: DSV.TO, FTK, MRVL",
+    "top: SNX, TSM, SBLK",
+    "high-upside waiting: FTK, DSV.TO, ATI",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "1 new ideas logged \u00b7 11 running",
+   "stat": "3 new ideas logged \u00b7 9 running",
    "lines": [
-    "37 ideas tracked since 2026-10-16",
+    "40 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 46 stocks, 13 system picks"
+    "price feed for paper trades: 49 stocks, 13 system picks"
    ],
    "status": "done",
    "secs": null
