@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-28T01:46:38+00:00",
+ "generated_at": "2026-10-28T17:56:11+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 0,
@@ -57,10 +57,10 @@
    "ticker": "ARLO",
    "kind": "high",
    "signal_date": "2026-10-27",
-   "entry_date": null,
-   "entry": null,
+   "entry_date": "2026-10-28",
+   "entry": 12.92,
    "conviction": 59.5,
-   "return_now": null,
+   "return_now": 0.02361,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +72,7 @@
    "entry_date": "2026-10-23",
    "entry": 32.14,
    "conviction": 60.1,
-   "return_now": 0.04854,
+   "return_now": 0.0865,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.01407,
+   "return_now": 0.01163,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +96,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": -0.05037,
+   "return_now": -0.03378,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +108,7 @@
    "entry_date": "2026-10-20",
    "entry": 93.43,
    "conviction": 66.1,
-   "return_now": 0.0731,
+   "return_now": 0.07401,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +120,7 @@
    "entry_date": "2026-10-20",
    "entry": 245.06,
    "conviction": 71.8,
-   "return_now": 0.03942,
+   "return_now": 0.04166,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +132,7 @@
    "entry_date": "2026-10-20",
    "entry": 10.57,
    "conviction": 61.1,
-   "return_now": 0.02838,
+   "return_now": 0.08657,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,7 +144,7 @@
    "entry_date": "2026-10-19",
    "entry": 13.72,
    "conviction": 66.3,
-   "return_now": -0.00219,
+   "return_now": 0.00911,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -156,7 +156,7 @@
    "entry_date": "2026-10-19",
    "entry": 238.48,
    "conviction": 65.3,
-   "return_now": 0.01011,
+   "return_now": 0.01076,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -168,7 +168,7 @@
    "entry_date": "2026-10-19",
    "entry": 91.53,
    "conviction": 65.1,
-   "return_now": 0.10215,
+   "return_now": 0.10816,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -182,7 +182,7 @@
    "entry_date": "2026-10-19",
    "entry": 72.88,
    "conviction": 66.2,
-   "return_now": -0.05749,
+   "return_now": -0.0708,
    "exit_reason": "stop",
    "trade_return": -0.08233,
    "excess_15": null
@@ -194,7 +194,7 @@
    "entry_date": "2026-10-20",
    "entry": 11.2,
    "conviction": 65.0,
-   "return_now": -0.05268,
+   "return_now": -0.05937,
    "exit_reason": "stop",
    "trade_return": -0.08482,
    "excess_15": null
@@ -206,7 +206,7 @@
    "entry_date": "2026-10-20",
    "entry": 63.97,
    "conviction": 58.8,
-   "return_now": 0.02126,
+   "return_now": 0.05378,
    "exit_reason": "stop",
    "trade_return": -0.12162,
    "excess_15": null
@@ -218,11 +218,11 @@
    "entry_date": "2026-10-23",
    "entry": 101.46,
    "conviction": 65.9,
-   "return_now": -0.01705,
+   "return_now": -0.02134,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 45
+ "logged": 46
 }
