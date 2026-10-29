@@ -1,7 +1,7 @@
 {
- "started": "2026-10-29T01:55:32+00:00",
- "finished": "2026-10-29T02:08:50+00:00",
- "as_of": "2026-10-28",
+ "started": "2026-10-29T17:48:40+00:00",
+ "finished": "2026-10-29T18:00:01+00:00",
+ "as_of": "2026-10-29",
  "mode": "live",
  "agents": [
   {
@@ -14,7 +14,7 @@
     "2,195 stocks to scan (1,976 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.2
   },
   {
    "id": "feed",
@@ -22,11 +22,11 @@
    "job": "Downloads prices and company fundamentals",
    "stat": "2,185 price histories",
    "lines": [
-    "347 company profiles refreshed",
+    "82 company profiles refreshed",
     "2,298 company profiles on file"
    ],
    "status": "done",
-   "secs": 564.1
+   "secs": 465.7
   },
   {
    "id": "insider",
@@ -38,41 +38,41 @@
     "strongest: GPUS (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.3
+   "secs": 0.2
   },
   {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "350 estimate sets refreshed",
+   "stat": "308 estimate sets refreshed",
    "lines": [
-    "956 companies where analysts are raising estimates",
-    "2,082 companies with analyst coverage"
+    "960 companies where analysts are raising estimates",
+    "2,083 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 218.6
+   "secs": 203.6
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,740 stocks ranked",
+   "stat": "1,733 stocks ranked",
    "lines": [
-    "#1 TSM at conviction 72",
+    "#1 TXG.TO at conviction 71",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 15.0
+   "secs": 10.8
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "706 avoided \u00b7 391 limited upside",
+   "stat": "705 avoided \u00b7 424 limited upside",
    "lines": [
-    "335 on hold until the chart turns up or earnings pass",
-    "23 ran up too fast (don't chase)",
-    "48 report earnings inside the trade window"
+    "295 on hold until the chart turns up or earnings pass",
+    "39 ran up too fast (don't chase)",
+    "38 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 2 high-upside",
+   "stat": "3 top ideas \u00b7 1 high-upside",
    "lines": [
-    "top: TSM, SNX, PNFP",
-    "high-upside waiting: ATI, LSCC, GRAB",
+    "top: TSM, SNX, CVE.TO",
+    "high-upside waiting: MRVL, GOOGL, DAR",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "1 new ideas logged \u00b7 11 running",
+   "stat": "2 new ideas logged \u00b7 11 running",
    "lines": [
-    "47 ideas tracked since 2026-10-16",
+    "49 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 57 stocks, 15 system picks"
+    "price feed for paper trades: 61 stocks, 15 system picks"
    ],
    "status": "done",
    "secs": null
