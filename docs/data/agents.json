@@ -1,17 +1,17 @@
 {
- "started": "2026-10-30T02:06:01+00:00",
- "finished": "2026-10-30T02:17:30+00:00",
- "as_of": "2026-10-29",
+ "started": "2026-10-30T17:29:15+00:00",
+ "finished": "2026-10-30T17:37:05+00:00",
+ "as_of": "2026-10-30",
  "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,631 insider buys in 60 days",
+   "stat": "1,634 insider buys in 60 days",
    "lines": [
-    "639 companies with insider buying",
-    "2,202 stocks to scan (1,983 US, 219 Canada)"
+    "641 companies with insider buying",
+    "2,204 stocks to scan (1,985 US, 219 Canada)"
    ],
    "status": "done",
    "secs": 0.2
@@ -20,21 +20,21 @@
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,192 price histories",
+   "stat": "2,194 price histories",
    "lines": [
-    "12 company profiles refreshed",
-    "2,305 company profiles on file"
+    "2 company profiles refreshed",
+    "2,306 company profiles on file"
    ],
    "status": "done",
-   "secs": 492.1
+   "secs": 454.2
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "581 stocks with genuine insider buying",
+   "stat": "582 stocks with genuine insider buying",
    "lines": [
-    "248 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "251 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: GPUS (insider score 100)"
    ],
    "status": "done",
@@ -44,34 +44,34 @@
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "239 estimate sets refreshed",
+   "stat": "2 estimate sets refreshed",
    "lines": [
-    "961 companies where analysts are raising estimates",
-    "2,085 companies with analyst coverage"
+    "962 companies where analysts are raising estimates",
+    "2,086 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 182.8
+   "secs": 1.7
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,740 stocks ranked",
+   "stat": "1,732 stocks ranked",
    "lines": [
-    "#1 TXG.TO at conviction 71",
+    "#1 PNFP at conviction 70",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 13.0
+   "secs": 13.3
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "710 avoided \u00b7 435 limited upside",
+   "stat": "735 avoided \u00b7 411 limited upside",
    "lines": [
-    "282 on hold until the chart turns up or earnings pass",
-    "59 ran up too fast (don't chase)",
+    "308 on hold until the chart turns up or earnings pass",
+    "42 ran up too fast (don't chase)",
     "39 report earnings inside the trade window"
    ],
    "status": "done",
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 1 high-upside",
+   "stat": "3 top ideas \u00b7 3 high-upside",
    "lines": [
-    "top: PNFP, SNX, TSM",
-    "high-upside waiting: MRVL, GOOGL, ECG",
+    "top: PNFP, CVE.TO, BTSG",
+    "high-upside waiting: AUGO, MPWR, GOOGL",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "0 new ideas logged \u00b7 11 running",
+   "stat": "1 new ideas logged \u00b7 10 running",
    "lines": [
-    "49 ideas tracked since 2026-10-16",
+    "50 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 62 stocks, 15 system picks"
+    "price feed for paper trades: 64 stocks, 16 system picks"
    ],
    "status": "done",
    "secs": null
