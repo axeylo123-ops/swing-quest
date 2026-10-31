@@ -1,6 +1,6 @@
 {
- "started": "2026-10-30T17:29:15+00:00",
- "finished": "2026-10-30T17:37:05+00:00",
+ "started": "2026-10-31T01:45:07+00:00",
+ "finished": "2026-10-31T01:54:05+00:00",
  "as_of": "2026-10-30",
  "mode": "live",
  "agents": [
@@ -8,31 +8,31 @@
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,634 insider buys in 60 days",
+   "stat": "1,590 insider buys in 60 days",
    "lines": [
-    "641 companies with insider buying",
-    "2,204 stocks to scan (1,985 US, 219 Canada)"
+    "628 companies with insider buying",
+    "2,199 stocks to scan (1,980 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.2
+   "secs": 0.5
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,194 price histories",
+   "stat": "2,189 price histories",
    "lines": [
-    "2 company profiles refreshed",
-    "2,306 company profiles on file"
+    "9 company profiles refreshed",
+    "2,311 company profiles on file"
    ],
    "status": "done",
-   "secs": 454.2
+   "secs": 518.2
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "582 stocks with genuine insider buying",
+   "stat": "570 stocks with genuine insider buying",
    "lines": [
     "251 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: GPUS (insider score 100)"
@@ -44,35 +44,35 @@
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "2 estimate sets refreshed",
+   "stat": "12 estimate sets refreshed",
    "lines": [
     "962 companies where analysts are raising estimates",
-    "2,086 companies with analyst coverage"
+    "2,089 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 1.7
+   "secs": 10.3
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,732 stocks ranked",
+   "stat": "1,739 stocks ranked",
    "lines": [
-    "#1 PNFP at conviction 70",
+    "#1 SNX at conviction 71",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 13.3
+   "secs": 8.6
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "735 avoided \u00b7 411 limited upside",
+   "stat": "744 avoided \u00b7 412 limited upside",
    "lines": [
-    "308 on hold until the chart turns up or earnings pass",
-    "42 ran up too fast (don't chase)",
-    "39 report earnings inside the trade window"
+    "300 on hold until the chart turns up or earnings pass",
+    "40 ran up too fast (don't chase)",
+    "38 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 3 high-upside",
+   "stat": "3 top ideas \u00b7 1 high-upside",
    "lines": [
-    "top: PNFP, CVE.TO, BTSG",
-    "high-upside waiting: AUGO, MPWR, GOOGL",
+    "top: CVE.TO, PNFP, MU",
+    "high-upside waiting: AUGO, GOOGL, DSV.TO",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -96,9 +96,9 @@
    "job": "Logs every idea and grades it against its own plan",
    "stat": "1 new ideas logged \u00b7 10 running",
    "lines": [
-    "50 ideas tracked since 2026-10-16",
+    "51 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 64 stocks, 16 system picks"
+    "price feed for paper trades: 65 stocks, 16 system picks"
    ],
    "status": "done",
    "secs": null
