@@ -1,78 +1,78 @@
 {
- "started": "2026-11-03T03:36:45+00:00",
- "finished": "2026-11-03T03:49:46+00:00",
- "as_of": "2026-11-02",
+ "started": "2026-11-03T18:51:37+00:00",
+ "finished": "2026-11-03T19:04:07+00:00",
+ "as_of": "2026-11-03",
  "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,470 insider buys in 60 days",
+   "stat": "1,482 insider buys in 60 days",
    "lines": [
-    "584 companies with insider buying",
-    "2,164 stocks to scan (1,945 US, 219 Canada)"
+    "589 companies with insider buying",
+    "2,168 stocks to scan (1,949 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 1.1
+   "secs": 0.4
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,155 price histories",
+   "stat": "2,159 price histories",
    "lines": [
-    "349 company profiles refreshed",
-    "2,318 company profiles on file"
+    "350 company profiles refreshed",
+    "2,322 company profiles on file"
    ],
    "status": "done",
-   "secs": 618.0
+   "secs": 729.8
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "532 stocks with genuine insider buying",
+   "stat": "536 stocks with genuine insider buying",
    "lines": [
-    "235 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "239 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: GME (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.2
   },
   {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "233 estimate sets refreshed",
+   "stat": "4 estimate sets refreshed",
    "lines": [
-    "963 companies where analysts are raising estimates",
-    "2,093 companies with analyst coverage"
+    "964 companies where analysts are raising estimates",
+    "2,097 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 146.5
+   "secs": 3.4
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,729 stocks ranked",
+   "stat": "1,720 stocks ranked",
    "lines": [
     "#1 CVE.TO at conviction 72",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 15.0
+   "secs": 15.3
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "745 avoided \u00b7 453 limited upside",
+   "stat": "738 avoided \u00b7 434 limited upside",
    "lines": [
-    "245 on hold until the chart turns up or earnings pass",
-    "57 ran up too fast (don't chase)",
-    "32 report earnings inside the trade window"
+    "244 on hold until the chart turns up or earnings pass",
+    "52 ran up too fast (don't chase)",
+    "29 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 1 high-upside",
+   "stat": "3 top ideas \u00b7 2 high-upside",
    "lines": [
-    "top: CVE.TO, RITM, BTSG",
-    "high-upside waiting: DSV.TO, SNX, GRAB",
+    "top: CVE.TO, TSM, INDV",
+    "high-upside waiting: DSV.TO, TER, UBER",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "2 new ideas logged \u00b7 10 running",
+   "stat": "2 new ideas logged \u00b7 9 running",
    "lines": [
-    "55 ideas tracked since 2026-10-16",
+    "57 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 69 stocks, 17 system picks"
+    "price feed for paper trades: 71 stocks, 17 system picks"
    ],
    "status": "done",
    "secs": null
