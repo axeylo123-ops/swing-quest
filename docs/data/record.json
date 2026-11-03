@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-02T21:19:41+00:00",
+ "generated_at": "2026-11-03T03:49:46+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 0,
@@ -72,7 +72,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": 0.02288,
+   "return_now": 0.02194,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": 0.09404,
+   "return_now": 0.09365,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,7 +144,7 @@
    "entry_date": "2026-10-19",
    "entry": 13.72,
    "conviction": 66.3,
-   "return_now": -0.01276,
+   "return_now": -0.01822,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -156,7 +156,7 @@
    "entry_date": "2026-10-19",
    "entry": 238.48,
    "conviction": 65.3,
-   "return_now": -0.05162,
+   "return_now": -0.05158,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -260,5 +260,5 @@
    "excess_15": null
   }
  ],
- "logged": 53
+ "logged": 55
 }

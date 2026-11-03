@@ -1,6 +1,6 @@
 {
- "started": "2026-11-02T21:07:42+00:00",
- "finished": "2026-11-02T21:19:41+00:00",
+ "started": "2026-11-03T03:36:45+00:00",
+ "finished": "2026-11-03T03:49:46+00:00",
  "as_of": "2026-11-02",
  "mode": "live",
  "agents": [
@@ -8,33 +8,33 @@
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,486 insider buys in 60 days",
+   "stat": "1,470 insider buys in 60 days",
    "lines": [
-    "592 companies with insider buying",
-    "2,169 stocks to scan (1,950 US, 219 Canada)"
+    "584 companies with insider buying",
+    "2,164 stocks to scan (1,945 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.4
+   "secs": 1.1
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,160 price histories",
+   "stat": "2,155 price histories",
    "lines": [
-    "350 company profiles refreshed",
-    "2,314 company profiles on file"
+    "349 company profiles refreshed",
+    "2,318 company profiles on file"
    ],
    "status": "done",
-   "secs": 699.1
+   "secs": 618.0
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "541 stocks with genuine insider buying",
+   "stat": "532 stocks with genuine insider buying",
    "lines": [
-    "233 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "235 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: GME (insider score 100)"
    ],
    "status": "done",
@@ -44,34 +44,34 @@
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "7 estimate sets refreshed",
+   "stat": "233 estimate sets refreshed",
    "lines": [
     "963 companies where analysts are raising estimates",
-    "2,090 companies with analyst coverage"
+    "2,093 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 5.3
+   "secs": 146.5
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,731 stocks ranked",
+   "stat": "1,729 stocks ranked",
    "lines": [
-    "#1 CRGY at conviction 71",
+    "#1 CVE.TO at conviction 72",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 13.9
+   "secs": 15.0
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "742 avoided \u00b7 455 limited upside",
+   "stat": "745 avoided \u00b7 453 limited upside",
    "lines": [
-    "252 on hold until the chart turns up or earnings pass",
-    "54 ran up too fast (don't chase)",
+    "245 on hold until the chart turns up or earnings pass",
+    "57 ran up too fast (don't chase)",
     "32 report earnings inside the trade window"
    ],
    "status": "done",
@@ -83,8 +83,8 @@
    "job": "Builds entry, stop, target and exit date for each idea",
    "stat": "3 top ideas \u00b7 1 high-upside",
    "lines": [
-    "top: CRGY, RITM, INDV",
-    "high-upside waiting: GOOGL, SNX, DSV.TO",
+    "top: CVE.TO, RITM, BTSG",
+    "high-upside waiting: DSV.TO, SNX, GRAB",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -96,9 +96,9 @@
    "job": "Logs every idea and grades it against its own plan",
    "stat": "2 new ideas logged \u00b7 10 running",
    "lines": [
-    "53 ideas tracked since 2026-10-16",
+    "55 ideas tracked since 2026-10-16",
     "0 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 67 stocks, 17 system picks"
+    "price feed for paper trades: 69 stocks, 17 system picks"
    ],
    "status": "done",
    "secs": null
