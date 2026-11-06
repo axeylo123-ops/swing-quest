@@ -1,39 +1,39 @@
 {
- "generated_at": "2026-11-06T02:56:27+00:00",
+ "generated_at": "2026-11-06T18:52:15+00:00",
  "started": "2026-10-16",
  "summary": {
-  "n": 0,
-  "n_trades": 0,
+  "n": 3,
+  "n_trades": 3,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": null,
-  "avg_ret_10": null,
-  "avg_ret_15": null,
-  "avg_excess_15": null,
-  "beat_spy_rate": null,
-  "win_rate": null,
-  "avg_trade_return": null,
-  "avg_r": null,
-  "target_first": null,
-  "stop_first": null,
-  "time_exit": null
+  "avg_ret_5": 0.06208,
+  "avg_ret_10": 0.03849,
+  "avg_ret_15": -0.05237,
+  "avg_excess_15": -0.01485,
+  "beat_spy_rate": 0.3333,
+  "win_rate": 0.3333,
+  "avg_trade_return": 0.01134,
+  "avg_r": 1.06567,
+  "target_first": 0.3333,
+  "stop_first": 0.6667,
+  "time_exit": 0.0
  },
  "watch_summary": {
-  "n": 0,
-  "n_trades": 0,
+  "n": 14,
+  "n_trades": 11,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": null,
-  "avg_ret_10": null,
-  "avg_ret_15": null,
-  "avg_excess_15": null,
-  "beat_spy_rate": null,
-  "win_rate": null,
-  "avg_trade_return": null,
-  "avg_r": null,
-  "target_first": null,
-  "stop_first": null,
-  "time_exit": null
+  "avg_ret_5": -0.05893,
+  "avg_ret_10": -0.0717,
+  "avg_ret_15": -0.05528,
+  "avg_excess_15": -0.01775,
+  "beat_spy_rate": 0.5,
+  "win_rate": 0.0909,
+  "avg_trade_return": -0.06403,
+  "avg_r": -0.76009,
+  "target_first": 0.0,
+  "stop_first": 0.9091,
+  "time_exit": 0.0909
  },
  "high_summary": {
   "n": 0,
@@ -54,12 +54,12 @@
  },
  "open": [
   {
-   "ticker": "ECVT",
-   "kind": "top",
-   "signal_date": "2026-11-05",
+   "ticker": "FLOC",
+   "kind": "high",
+   "signal_date": "2026-11-06",
    "entry_date": null,
    "entry": null,
-   "conviction": 69.6,
+   "conviction": 70.6,
    "return_now": null,
    "exit_reason": "open",
    "trade_return": null,
@@ -72,7 +72,7 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.04399,
+   "return_now": -0.05807,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +96,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": 0.14861,
+   "return_now": -0.05882,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +108,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.13049,
+   "return_now": 0.1148,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +120,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.2113,
+   "return_now": 0.1769,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -128,16 +128,28 @@
  ],
  "closed": [
   {
+   "ticker": "ECVT",
+   "kind": "top",
+   "signal_date": "2026-11-05",
+   "entry_date": "2026-11-06",
+   "entry": 10.09,
+   "conviction": 69.6,
+   "return_now": 0.01883,
+   "exit_reason": "stop",
+   "trade_return": -0.00198,
+   "excess_15": null
+  },
+  {
    "ticker": "CRGY",
    "kind": "top",
    "signal_date": "2026-10-16",
    "entry_date": "2026-10-19",
    "entry": 13.72,
    "conviction": 66.3,
-   "return_now": -0.18805,
+   "return_now": -0.17748,
    "exit_reason": "stop",
    "trade_return": -0.07434,
-   "excess_15": null
+   "excess_15": -0.13995
   },
   {
    "ticker": "HQY",
@@ -146,10 +158,10 @@
    "entry_date": "2026-10-19",
    "entry": 91.53,
    "conviction": 65.1,
-   "return_now": 0.13034,
+   "return_now": 0.12083,
    "exit_reason": "target",
    "trade_return": 0.17579,
-   "excess_15": null
+   "excess_15": 0.15836
   },
   {
    "ticker": "GFF",
@@ -158,7 +170,7 @@
    "entry_date": "2026-10-20",
    "entry": 93.43,
    "conviction": 66.1,
-   "return_now": 0.09601,
+   "return_now": 0.10109,
    "exit_reason": "target",
    "trade_return": 0.15948,
    "excess_15": null
@@ -170,7 +182,7 @@
    "entry_date": "2026-10-23",
    "entry": 32.14,
    "conviction": 60.1,
-   "return_now": -0.17735,
+   "return_now": -0.14655,
    "exit_reason": "stop",
    "trade_return": -0.11263,
    "excess_15": null
@@ -182,7 +194,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": -0.16192,
+   "return_now": 0.12617,
    "exit_reason": "stop",
    "trade_return": -0.1251,
    "excess_15": null
@@ -194,10 +206,10 @@
    "entry_date": "2026-10-19",
    "entry": 238.48,
    "conviction": 65.3,
-   "return_now": -0.06739,
+   "return_now": -0.10047,
    "exit_reason": "stop",
    "trade_return": -0.06743,
-   "excess_15": null
+   "excess_15": -0.06295
   },
   {
    "ticker": "SNX",
@@ -206,7 +218,7 @@
    "entry_date": "2026-10-20",
    "entry": 245.06,
    "conviction": 71.8,
-   "return_now": -0.12115,
+   "return_now": -0.10871,
    "exit_reason": "stop",
    "trade_return": -0.06729,
    "excess_15": null
@@ -218,7 +230,7 @@
    "entry_date": "2026-10-20",
    "entry": 10.57,
    "conviction": 61.1,
-   "return_now": -0.26206,
+   "return_now": -0.29139,
    "exit_reason": "stop",
    "trade_return": -0.35099,
    "excess_15": null
@@ -242,7 +254,7 @@
    "entry_date": "2026-10-20",
    "entry": 11.2,
    "conviction": 65.0,
-   "return_now": -0.0375,
+   "return_now": -0.01964,
    "exit_reason": "stop",
    "trade_return": -0.08482,
    "excess_15": null
@@ -254,7 +266,7 @@
    "entry_date": "2026-10-20",
    "entry": 63.97,
    "conviction": 58.8,
-   "return_now": -0.20979,
+   "return_now": -0.10255,
    "exit_reason": "stop",
    "trade_return": -0.12162,
    "excess_15": null
@@ -266,7 +278,7 @@
    "entry_date": "2026-10-23",
    "entry": 101.46,
    "conviction": 65.9,
-   "return_now": 0.0003,
+   "return_now": -0.00719,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -278,11 +290,11 @@
    "entry_date": "2026-11-02",
    "entry": 67.5,
    "conviction": 65.7,
-   "return_now": -0.0243,
+   "return_now": -0.00096,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 66
+ "logged": 67
 }
