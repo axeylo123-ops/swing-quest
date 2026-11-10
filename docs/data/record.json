@@ -1,80 +1,80 @@
 {
- "generated_at": "2026-11-07T02:21:37+00:00",
+ "generated_at": "2026-11-10T04:40:49+00:00",
  "started": "2026-10-16",
  "summary": {
-  "n": 3,
-  "n_trades": 3,
+  "n": 6,
+  "n_trades": 6,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": 0.06208,
-  "avg_ret_10": 0.03849,
-  "avg_ret_15": -0.05237,
-  "avg_excess_15": -0.01485,
-  "beat_spy_rate": 0.3333,
+  "avg_ret_5": 0.02592,
+  "avg_ret_10": 0.00256,
+  "avg_ret_15": -0.00692,
+  "avg_excess_15": 0.02044,
+  "beat_spy_rate": 0.5,
   "win_rate": 0.3333,
-  "avg_trade_return": 0.01134,
-  "avg_r": 1.06567,
+  "avg_trade_return": 0.0069,
+  "avg_r": 0.69033,
   "target_first": 0.3333,
   "stop_first": 0.6667,
   "time_exit": 0.0
  },
  "watch_summary": {
-  "n": 14,
-  "n_trades": 11,
+  "n": 19,
+  "n_trades": 16,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": -0.05893,
-  "avg_ret_10": -0.0717,
-  "avg_ret_15": -0.05528,
-  "avg_excess_15": -0.01775,
-  "beat_spy_rate": 0.5,
-  "win_rate": 0.0909,
-  "avg_trade_return": -0.06403,
-  "avg_r": -0.76009,
+  "avg_ret_5": -0.04887,
+  "avg_ret_10": -0.06096,
+  "avg_ret_15": -0.04031,
+  "avg_excess_15": -0.00813,
+  "beat_spy_rate": 0.4211,
+  "win_rate": 0.125,
+  "avg_trade_return": -0.05328,
+  "avg_r": -0.59388,
   "target_first": 0.0,
-  "stop_first": 0.9091,
-  "time_exit": 0.0909
+  "stop_first": 0.8125,
+  "time_exit": 0.1875
  },
  "high_summary": {
-  "n": 0,
-  "n_trades": 0,
+  "n": 2,
+  "n_trades": 2,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": null,
-  "avg_ret_10": null,
-  "avg_ret_15": null,
-  "avg_excess_15": null,
-  "beat_spy_rate": null,
-  "win_rate": null,
-  "avg_trade_return": null,
-  "avg_r": null,
-  "target_first": null,
-  "stop_first": null,
-  "time_exit": null
+  "avg_ret_5": 0.00193,
+  "avg_ret_10": -0.14304,
+  "avg_ret_15": -0.16153,
+  "avg_excess_15": -0.14433,
+  "beat_spy_rate": 0.0,
+  "win_rate": 0.0,
+  "avg_trade_return": -0.23631,
+  "avg_r": -2.9735,
+  "target_first": 0.0,
+  "stop_first": 1.0,
+  "time_exit": 0.0
  },
  "open": [
   {
-   "ticker": "FLOC",
+   "ticker": "SUPN",
    "kind": "high",
-   "signal_date": "2026-11-06",
+   "signal_date": "2026-11-09",
    "entry_date": null,
    "entry": null,
-   "conviction": 70.6,
+   "conviction": 67.2,
    "return_now": null,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   },
   {
-   "ticker": "ECVT",
-   "kind": "top",
-   "signal_date": "2026-11-05",
-   "entry_date": "2026-11-06",
-   "entry": 10.09,
-   "conviction": 69.6,
-   "return_now": 0.00892,
+   "ticker": "FLOC",
+   "kind": "high",
+   "signal_date": "2026-11-06",
+   "entry_date": "2026-11-09",
+   "entry": 20.21,
+   "conviction": 70.6,
+   "return_now": 0.03167,
    "exit_reason": "open",
-   "trade_return": -0.00198,
+   "trade_return": null,
    "excess_15": null
   },
   {
@@ -84,7 +84,7 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.06134,
+   "return_now": -0.06109,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +108,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": 0.14861,
+   "return_now": -0.06037,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +120,7 @@
    "entry_date": "2026-10-23",
    "entry": 100.9601,
    "conviction": 65.9,
-   "return_now": -0.00317,
+   "return_now": 0.01931,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +132,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.11546,
+   "return_now": 0.14229,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,13 +144,25 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.19779,
+   "return_now": 0.21499,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
   }
  ],
  "closed": [
+  {
+   "ticker": "ECVT",
+   "kind": "top",
+   "signal_date": "2026-11-05",
+   "entry_date": "2026-11-06",
+   "entry": 10.09,
+   "conviction": 69.6,
+   "return_now": 0.0664,
+   "exit_reason": "stop",
+   "trade_return": -0.00198,
+   "excess_15": null
+  },
   {
    "ticker": "CRGY",
    "kind": "top",
@@ -182,10 +194,10 @@
    "entry_date": "2026-10-20",
    "entry": 93.43,
    "conviction": 66.1,
-   "return_now": 0.08134,
+   "return_now": 0.14278,
    "exit_reason": "target",
    "trade_return": 0.15948,
-   "excess_15": null
+   "excess_15": 0.15998
   },
   {
    "ticker": "EFX.TO",
@@ -194,7 +206,7 @@
    "entry_date": "2026-10-23",
    "entry": 32.14,
    "conviction": 60.1,
-   "return_now": -0.14592,
+   "return_now": -0.11108,
    "exit_reason": "stop",
    "trade_return": -0.11263,
    "excess_15": null
@@ -206,7 +218,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": -0.16192,
+   "return_now": 0.19875,
    "exit_reason": "stop",
    "trade_return": -0.1251,
    "excess_15": null
@@ -230,10 +242,10 @@
    "entry_date": "2026-10-20",
    "entry": 245.06,
    "conviction": 71.8,
-   "return_now": -0.10744,
+   "return_now": -0.06827,
    "exit_reason": "stop",
    "trade_return": -0.06729,
-   "excess_15": null
+   "excess_15": -0.05107
   },
   {
    "ticker": "ATEC",
@@ -242,10 +254,10 @@
    "entry_date": "2026-10-20",
    "entry": 10.57,
    "conviction": 61.1,
-   "return_now": -0.29612,
+   "return_now": -0.3018,
    "exit_reason": "stop",
    "trade_return": -0.35099,
-   "excess_15": null
+   "excess_15": -0.2846
   },
   {
    "ticker": "TXG.TO",
@@ -266,10 +278,10 @@
    "entry_date": "2026-10-20",
    "entry": 11.2,
    "conviction": 65.0,
-   "return_now": -0.00982,
+   "return_now": 0.04107,
    "exit_reason": "stop",
    "trade_return": -0.08482,
-   "excess_15": null
+   "excess_15": 0.05827
   },
   {
    "ticker": "SEI",
@@ -278,10 +290,10 @@
    "entry_date": "2026-10-20",
    "entry": 63.97,
    "conviction": 58.8,
-   "return_now": -0.20979,
+   "return_now": -0.02126,
    "exit_reason": "stop",
    "trade_return": -0.12162,
-   "excess_15": null
+   "excess_15": -0.00406
   },
   {
    "ticker": "BTSG",
@@ -290,11 +302,11 @@
    "entry_date": "2026-11-02",
    "entry": 67.5,
    "conviction": 65.7,
-   "return_now": -0.0243,
+   "return_now": 0.02444,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 68
+ "logged": 72
 }
