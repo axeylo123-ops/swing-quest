@@ -1,7 +1,7 @@
 {
- "started": "2026-11-10T19:05:18+00:00",
- "finished": "2026-11-10T19:25:19+00:00",
- "as_of": "2026-11-10",
+ "started": "2026-11-11T02:08:31+00:00",
+ "finished": "2026-11-11T02:33:34+00:00",
+ "as_of": "2026-11-09",
  "mode": "live",
  "agents": [
   {
@@ -10,69 +10,69 @@
    "job": "Reads SEC insider filings and builds the stock list",
    "stat": "1,560 insider buys in 60 days",
    "lines": [
-    "629 companies with insider buying",
-    "2,180 stocks to scan (1,961 US, 219 Canada)"
+    "630 companies with insider buying",
+    "2,178 stocks to scan (1,959 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.8
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,169 price histories",
+   "stat": "2,167 price histories",
    "lines": [
-    "349 company profiles refreshed",
-    "2,368 company profiles on file"
+    "350 company profiles refreshed",
+    "2,376 company profiles on file"
    ],
    "status": "done",
-   "secs": 1185.7
+   "secs": 1306.5
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "574 stocks with genuine insider buying",
+   "stat": "576 stocks with genuine insider buying",
    "lines": [
-    "255 buys thrown out (10b5-1 plans, company plans, odd prices)",
-    "strongest: CYBN (insider score 100)"
+    "254 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "strongest: TENX (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.3
+   "secs": 0.1
   },
   {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "3 estimate sets refreshed",
+   "stat": "248 estimate sets refreshed",
    "lines": [
-    "972 companies where analysts are raising estimates",
-    "2,130 companies with analyst coverage"
+    "968 companies where analysts are raising estimates",
+    "2,138 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 2.1
+   "secs": 179.1
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,733 stocks ranked",
+   "stat": "1,736 stocks ranked",
    "lines": [
-    "#1 INSW at conviction 77",
+    "#1 INSW at conviction 78",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 12.3
+   "secs": 15.8
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "809 avoided \u00b7 434 limited upside",
+   "stat": "821 avoided \u00b7 435 limited upside",
    "lines": [
     "229 on hold until the chart turns up or earnings pass",
-    "22 ran up too fast (don't chase)",
-    "4 report earnings inside the trade window"
+    "25 ran up too fast (don't chase)",
+    "6 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -81,10 +81,10 @@
    "id": "planner",
    "name": "Planner",
    "job": "Builds entry, stop, target and exit date for each idea",
-   "stat": "3 top ideas \u00b7 2 high-upside",
+   "stat": "3 top ideas \u00b7 1 high-upside",
    "lines": [
-    "top: INSW, BTO.TO, ECVT",
-    "high-upside waiting: HPE, SPXC, SM",
+    "top: BTO.TO, ECVT, CHRD",
+    "high-upside waiting: PAM, OMCL, YPF",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "4 new ideas logged \u00b7 9 running",
+   "stat": "3 new ideas logged \u00b7 9 running",
    "lines": [
-    "76 ideas tracked since 2026-10-16",
+    "79 ideas tracked since 2026-10-16",
     "6 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 89 stocks, 22 system picks"
+    "price feed for paper trades: 92 stocks, 22 system picks"
    ],
    "status": "done",
    "secs": null

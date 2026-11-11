@@ -1,5 +1,5 @@
 {
-"updated": "2026-11-03",
+"updated": "2026-11-11",
 "stocks": [
 {
 "ticker": "A",
@@ -4483,7 +4483,7 @@
 },
 {
 "ticker": "FORM",
-"name": "FormFactor, Inc.",
+"name": "FormFactor",
 "sector": "Information Technology",
 "index": "S&P 400",
 "country": "US"
@@ -4805,9 +4805,9 @@
 },
 {
 "ticker": "GKOS",
-"name": "Glaukos Corp.",
+"name": "Glaukos",
 "sector": "Health Care",
-"index": "S&P 600",
+"index": "S&P 400",
 "country": "US"
 },
 {
@@ -6281,13 +6281,6 @@
 "country": "US"
 },
 {
-"ticker": "KVUE",
-"name": "Kenvue",
-"sector": "Consumer Staples",
-"index": "S&P 500",
-"country": "US"
-},
-{
 "ticker": "KWR",
 "name": "Quaker Chemical Corporation",
 "sector": "Materials",
@@ -7275,8 +7268,8 @@
 "country": "US"
 },
 {
-"ticker": "MSGS",
-"name": "Madison Square Garden Sports Corp.",
+"ticker": "MSGK",
+"name": "MSG Knickerbockers Corp.",
 "sector": "Communication Services",
 "index": "S&P 600",
 "country": "US"
@@ -8006,7 +7999,7 @@
 "ticker": "OKTA",
 "name": "Okta, Inc.",
 "sector": "Information Technology",
-"index": "S&P 400",
+"index": "S&P 500",
 "country": "US"
 },
 {
@@ -10202,7 +10195,7 @@
 },
 {
 "ticker": "SUPN",
-"name": "Supernus Pharmaceuticals, Inc.",
+"name": "Supernus, Inc.",
 "sector": "Health Care",
 "index": "S&P 600",
 "country": "US"
