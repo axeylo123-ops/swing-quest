@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T02:33:34+00:00",
+ "generated_at": "2026-11-11T19:24:03+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 6,
@@ -57,10 +57,10 @@
    "ticker": "BTO.TO",
    "kind": "top",
    "signal_date": "2026-11-10",
-   "entry_date": null,
-   "entry": null,
+   "entry_date": "2026-11-11",
+   "entry": 7.59,
    "conviction": 71.3,
-   "return_now": null,
+   "return_now": -0.02042,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +72,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.00036,
+   "return_now": 0.06882,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.21,
    "conviction": 70.6,
-   "return_now": 0.03167,
+   "return_now": 0.03216,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +96,7 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.09754,
+   "return_now": -0.09377,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +120,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": -0.06037,
+   "return_now": -0.04876,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +132,7 @@
    "entry_date": "2026-10-23",
    "entry": 100.9601,
    "conviction": 65.9,
-   "return_now": 0.01822,
+   "return_now": 0.00966,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,7 +144,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.14683,
+   "return_now": 0.13418,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -156,10 +156,10 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.23219,
+   "return_now": 0.27383,
    "exit_reason": "open",
    "trade_return": null,
-   "excess_15": null
+   "excess_15": 0.28214
   }
  ],
  "closed": [
@@ -170,7 +170,7 @@
    "entry_date": "2026-11-06",
    "entry": 10.09,
    "conviction": 69.6,
-   "return_now": 0.0664,
+   "return_now": 0.05847,
    "exit_reason": "stop",
    "trade_return": -0.00198,
    "excess_15": null
@@ -218,7 +218,7 @@
    "entry_date": "2026-10-23",
    "entry": 32.14,
    "conviction": 60.1,
-   "return_now": -0.1117,
+   "return_now": -0.1005,
    "exit_reason": "stop",
    "trade_return": -0.11263,
    "excess_15": null
@@ -230,7 +230,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": 0.19875,
+   "return_now": 0.14599,
    "exit_reason": "stop",
    "trade_return": -0.1251,
    "excess_15": null
@@ -314,7 +314,7 @@
    "entry_date": "2026-11-02",
    "entry": 67.5,
    "conviction": 65.7,
-   "return_now": 0.02444,
+   "return_now": 0.08356,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
