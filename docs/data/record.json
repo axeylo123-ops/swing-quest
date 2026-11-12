@@ -1,58 +1,70 @@
 {
- "generated_at": "2026-11-12T03:38:54+00:00",
+ "generated_at": "2026-11-12T19:49:43+00:00",
  "started": "2026-10-16",
  "summary": {
-  "n": 6,
-  "n_trades": 6,
+  "n": 7,
+  "n_trades": 7,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": 0.02592,
-  "avg_ret_10": 0.00256,
-  "avg_ret_15": -0.00692,
-  "avg_excess_15": 0.02044,
-  "beat_spy_rate": 0.5,
-  "win_rate": 0.3333,
-  "avg_trade_return": 0.0069,
-  "avg_r": 0.69033,
-  "target_first": 0.3333,
-  "stop_first": 0.6667,
-  "time_exit": 0.0
+  "avg_ret_5": 0.02257,
+  "avg_ret_10": 0.00224,
+  "avg_ret_15": -0.00754,
+  "avg_excess_15": 0.0163,
+  "beat_spy_rate": 0.4286,
+  "win_rate": 0.2857,
+  "avg_trade_return": 0.00431,
+  "avg_r": 0.56414,
+  "target_first": 0.2857,
+  "stop_first": 0.5714,
+  "time_exit": 0.1429
  },
  "watch_summary": {
-  "n": 20,
-  "n_trades": 17,
+  "n": 22,
+  "n_trades": 19,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": -0.04392,
-  "avg_ret_10": -0.05669,
-  "avg_ret_15": -0.03773,
-  "avg_excess_15": -0.00568,
-  "beat_spy_rate": 0.45,
-  "win_rate": 0.1176,
-  "avg_trade_return": -0.05362,
-  "avg_r": -0.61776,
+  "avg_ret_5": -0.04025,
+  "avg_ret_10": -0.06034,
+  "avg_ret_15": -0.0393,
+  "avg_excess_15": -0.00993,
+  "beat_spy_rate": 0.4091,
+  "win_rate": 0.1053,
+  "avg_trade_return": -0.05353,
+  "avg_r": -0.658,
   "target_first": 0.0,
-  "stop_first": 0.8235,
-  "time_exit": 0.1765
+  "stop_first": 0.8421,
+  "time_exit": 0.1579
  },
  "high_summary": {
-  "n": 2,
-  "n_trades": 2,
+  "n": 3,
+  "n_trades": 3,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": 0.00193,
-  "avg_ret_10": -0.14304,
-  "avg_ret_15": -0.16153,
-  "avg_excess_15": -0.14433,
+  "avg_ret_5": 0.01954,
+  "avg_ret_10": -0.15447,
+  "avg_ret_15": -0.13807,
+  "avg_excess_15": -0.12571,
   "beat_spy_rate": 0.0,
   "win_rate": 0.0,
-  "avg_trade_return": -0.23631,
-  "avg_r": -2.9735,
+  "avg_trade_return": -0.19508,
+  "avg_r": -2.31567,
   "target_first": 0.0,
   "stop_first": 1.0,
   "time_exit": 0.0
  },
  "open": [
+  {
+   "ticker": "AAON",
+   "kind": "high",
+   "signal_date": "2026-11-12",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 53.8,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
   {
    "ticker": "BTO.TO",
    "kind": "top",
@@ -60,7 +72,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.02767,
+   "return_now": -0.06192,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +84,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.06664,
+   "return_now": 0.06628,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +96,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.21,
    "conviction": 70.6,
-   "return_now": 0.03365,
+   "return_now": 0.04651,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +108,7 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.10583,
+   "return_now": -0.11564,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,19 +132,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": -0.04876,
-   "exit_reason": "open",
-   "trade_return": null,
-   "excess_15": null
-  },
-  {
-   "ticker": "PNFP",
-   "kind": "top",
-   "signal_date": "2026-10-22",
-   "entry_date": "2026-10-23",
-   "entry": 100.9601,
-   "conviction": 65.9,
-   "return_now": 0.00872,
+   "return_now": -0.07508,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,10 +144,10 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.1411,
+   "return_now": 0.13049,
    "exit_reason": "open",
    "trade_return": null,
-   "excess_15": null
+   "excess_15": 0.13317
   },
   {
    "ticker": "VYX",
@@ -156,7 +156,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.28378,
+   "return_now": 0.24324,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.29234
@@ -164,13 +164,25 @@
  ],
  "closed": [
   {
+   "ticker": "PNFP",
+   "kind": "top",
+   "signal_date": "2026-10-22",
+   "entry_date": "2026-10-23",
+   "entry": 100.9601,
+   "conviction": 65.9,
+   "return_now": -0.01124,
+   "exit_reason": "time",
+   "trade_return": -0.01124,
+   "excess_15": -0.00856
+  },
+  {
    "ticker": "ECVT",
    "kind": "top",
    "signal_date": "2026-11-05",
    "entry_date": "2026-11-06",
    "entry": 10.09,
    "conviction": 69.6,
-   "return_now": 0.07235,
+   "return_now": 0.07086,
    "exit_reason": "stop",
    "trade_return": -0.00198,
    "excess_15": null
@@ -218,10 +230,10 @@
    "entry_date": "2026-10-23",
    "entry": 32.14,
    "conviction": 60.1,
-   "return_now": -0.10392,
+   "return_now": -0.09116,
    "exit_reason": "stop",
    "trade_return": -0.11263,
-   "excess_15": null
+   "excess_15": -0.08848
   },
   {
    "ticker": "KRMN",
@@ -230,7 +242,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": 0.16715,
+   "return_now": 0.07456,
    "exit_reason": "stop",
    "trade_return": -0.1251,
    "excess_15": null
@@ -314,11 +326,11 @@
    "entry_date": "2026-11-02",
    "entry": 67.5,
    "conviction": 65.7,
-   "return_now": 0.07585,
+   "return_now": 0.06859,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 79
+ "logged": 81
 }
