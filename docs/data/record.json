@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T19:49:43+00:00",
+ "generated_at": "2026-11-13T03:14:10+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 7,
@@ -72,7 +72,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.06192,
+   "return_now": -0.07115,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.06628,
+   "return_now": 0.05759,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +96,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.21,
    "conviction": 70.6,
-   "return_now": 0.04651,
+   "return_now": 0.04354,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +108,7 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.11564,
+   "return_now": -0.12142,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +132,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": -0.07508,
+   "return_now": -0.08437,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,10 +144,10 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.13049,
+   "return_now": 0.12428,
    "exit_reason": "open",
    "trade_return": null,
-   "excess_15": 0.13317
+   "excess_15": 0.12794
   },
   {
    "ticker": "VYX",
@@ -156,7 +156,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.24324,
+   "return_now": 0.22359,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.29234
@@ -182,7 +182,7 @@
    "entry_date": "2026-11-06",
    "entry": 10.09,
    "conviction": 69.6,
-   "return_now": 0.07086,
+   "return_now": 0.06541,
    "exit_reason": "stop",
    "trade_return": -0.00198,
    "excess_15": null
@@ -242,7 +242,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": 0.07456,
+   "return_now": 0.05772,
    "exit_reason": "stop",
    "trade_return": -0.1251,
    "excess_15": null
@@ -326,7 +326,7 @@
    "entry_date": "2026-11-02",
    "entry": 67.5,
    "conviction": 65.7,
-   "return_now": 0.06859,
+   "return_now": 0.05852,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
