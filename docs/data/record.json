@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T03:14:10+00:00",
+ "generated_at": "2026-11-13T19:23:52+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 7,
@@ -19,21 +19,21 @@
   "time_exit": 0.1429
  },
  "watch_summary": {
-  "n": 22,
-  "n_trades": 19,
+  "n": 24,
+  "n_trades": 21,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": -0.04025,
-  "avg_ret_10": -0.06034,
-  "avg_ret_15": -0.0393,
-  "avg_excess_15": -0.00993,
-  "beat_spy_rate": 0.4091,
-  "win_rate": 0.1053,
-  "avg_trade_return": -0.05353,
-  "avg_r": -0.658,
+  "avg_ret_5": -0.03993,
+  "avg_ret_10": -0.04418,
+  "avg_ret_15": -0.01742,
+  "avg_excess_15": 0.01045,
+  "beat_spy_rate": 0.4583,
+  "win_rate": 0.1429,
+  "avg_trade_return": -0.04629,
+  "avg_r": -0.59676,
   "target_first": 0.0,
-  "stop_first": 0.8421,
-  "time_exit": 0.1579
+  "stop_first": 0.8095,
+  "time_exit": 0.1905
  },
  "high_summary": {
   "n": 3,
@@ -54,12 +54,12 @@
  },
  "open": [
   {
-   "ticker": "AAON",
+   "ticker": "EYE",
    "kind": "high",
-   "signal_date": "2026-11-12",
+   "signal_date": "2026-11-13",
    "entry_date": null,
    "entry": null,
-   "conviction": 53.8,
+   "conviction": 54.2,
    "return_now": null,
    "exit_reason": "open",
    "trade_return": null,
@@ -72,7 +72,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.07115,
+   "return_now": -0.07181,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.05759,
+   "return_now": 0.07914,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,19 +96,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.21,
    "conviction": 70.6,
-   "return_now": 0.04354,
-   "exit_reason": "open",
-   "trade_return": null,
-   "excess_15": null
-  },
-  {
-   "ticker": "OMCL",
-   "kind": "top",
-   "signal_date": "2026-11-04",
-   "entry_date": "2026-11-05",
-   "entry": 39.78,
-   "conviction": 68.7,
-   "return_now": -0.12142,
+   "return_now": 0.048,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -132,7 +120,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": -0.08437,
+   "return_now": -0.0832,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -144,7 +132,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.12428,
+   "return_now": 0.14027,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.12794
@@ -156,13 +144,25 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.22359,
+   "return_now": 0.29545,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.29234
   }
  ],
  "closed": [
+  {
+   "ticker": "OMCL",
+   "kind": "top",
+   "signal_date": "2026-11-04",
+   "entry_date": "2026-11-05",
+   "entry": 39.78,
+   "conviction": 68.7,
+   "return_now": -0.11765,
+   "exit_reason": "stop",
+   "trade_return": -0.12569,
+   "excess_15": null
+  },
   {
    "ticker": "PNFP",
    "kind": "top",
@@ -242,7 +242,7 @@
    "entry_date": "2026-10-29",
    "entry": 38.29,
    "conviction": 46.8,
-   "return_now": 0.05772,
+   "return_now": 0.03212,
    "exit_reason": "stop",
    "trade_return": -0.1251,
    "excess_15": null
@@ -326,11 +326,23 @@
    "entry_date": "2026-11-02",
    "entry": 67.5,
    "conviction": 65.7,
-   "return_now": 0.05852,
+   "return_now": 0.04444,
+   "exit_reason": "skipped",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "AAON",
+   "kind": "high",
+   "signal_date": "2026-11-12",
+   "entry_date": "2026-11-13",
+   "entry": 83.875,
+   "conviction": 53.8,
+   "return_now": -0.03964,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 81
+ "logged": 84
 }
