@@ -1,17 +1,17 @@
 {
- "started": "2026-11-17T04:43:37+00:00",
- "finished": "2026-11-17T05:04:35+00:00",
- "as_of": "2026-11-16",
+ "started": "2026-11-17T20:16:05+00:00",
+ "finished": "2026-11-17T20:36:20+00:00",
+ "as_of": "2026-11-17",
  "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,587 insider buys in 60 days",
+   "stat": "1,610 insider buys in 60 days",
    "lines": [
-    "650 companies with insider buying",
-    "2,199 stocks to scan (1,980 US, 219 Canada)"
+    "657 companies with insider buying",
+    "2,204 stocks to scan (1,985 US, 219 Canada)"
    ],
    "status": "done",
    "secs": 0.2
@@ -20,21 +20,21 @@
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,189 price histories",
+   "stat": "2,193 price histories",
    "lines": [
-    "350 company profiles refreshed",
-    "2,443 company profiles on file"
+    "348 company profiles refreshed",
+    "2,447 company profiles on file"
    ],
    "status": "done",
-   "secs": 1141.1
+   "secs": 1198.7
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "595 stocks with genuine insider buying",
+   "stat": "602 stocks with genuine insider buying",
    "lines": [
-    "253 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "255 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: BORR (insider score 100)"
    ],
    "status": "done",
@@ -44,35 +44,35 @@
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "142 estimate sets refreshed",
+   "stat": "5 estimate sets refreshed",
    "lines": [
-    "999 companies where analysts are raising estimates",
-    "2,195 companies with analyst coverage"
+    "1,001 companies where analysts are raising estimates",
+    "2,197 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 108.5
+   "secs": 3.7
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,758 stocks ranked",
+   "stat": "1,755 stocks ranked",
    "lines": [
-    "#1 INSW at conviction 76",
+    "#1 INSW at conviction 77",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 7.8
+   "secs": 11.9
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "831 avoided \u00b7 404 limited upside",
+   "stat": "826 avoided \u00b7 372 limited upside",
    "lines": [
-    "229 on hold until the chart turns up or earnings pass",
-    "18 ran up too fast (don't chase)",
-    "3 report earnings inside the trade window"
+    "274 on hold until the chart turns up or earnings pass",
+    "6 ran up too fast (don't chase)",
+    "2 report earnings inside the trade window"
    ],
    "status": "done",
    "secs": 0.0
@@ -83,8 +83,8 @@
    "job": "Builds entry, stop, target and exit date for each idea",
    "stat": "3 top ideas \u00b7 0 high-upside",
    "lines": [
-    "top: INSW, QNST, CXW",
-    "high-upside waiting: OMCL, PAM, HPE",
+    "top: INSW, CXW, QNST",
+    "high-upside waiting: PAM, HPE, NEO",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "0 new ideas logged \u00b7 6 running",
+   "stat": "2 new ideas logged \u00b7 7 running",
    "lines": [
-    "85 ideas tracked since 2026-10-16",
+    "87 ideas tracked since 2026-10-16",
     "7 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 97 stocks, 24 system picks"
+    "price feed for paper trades: 99 stocks, 25 system picks"
    ],
    "status": "done",
    "secs": null
