@@ -1,5 +1,5 @@
 {
-"updated": "2026-11-11",
+"updated": "2026-11-19",
 "stocks": [
 {
 "ticker": "A",
@@ -1556,13 +1556,6 @@
 "country": "US"
 },
 {
-"ticker": "BKH",
-"name": "Black Hills Corporation",
-"sector": "Utilities",
-"index": "S&P 400",
-"country": "US"
-},
-{
 "ticker": "BKNG",
 "name": "Booking Holdings",
 "sector": "Consumer Discretionary",
@@ -2301,6 +2294,13 @@
 "ticker": "CHWY",
 "name": "Chewy",
 "sector": "Consumer Discretionary",
+"index": "S&P 400",
+"country": "US"
+},
+{
+"ticker": "CHYM",
+"name": "Chime Financial",
+"sector": "Financials",
 "index": "S&P 400",
 "country": "US"
 },
@@ -5490,6 +5490,13 @@
 "country": "US"
 },
 {
+"ticker": "HZN",
+"name": "Bright Horizon Energy Corporation",
+"sector": "Utilities",
+"index": "S&P 400",
+"country": "US"
+},
+{
 "ticker": "HZO",
 "name": "MarineMax, Inc.",
 "sector": "Consumer Discretionary",
@@ -5934,6 +5941,13 @@
 "ticker": "JEF",
 "name": "Jefferies",
 "sector": "Financials",
+"index": "S&P 400",
+"country": "US"
+},
+{
+"ticker": "JHX",
+"name": "James Hardie Industries",
+"sector": "Materials",
 "index": "S&P 400",
 "country": "US"
 },
@@ -7828,13 +7842,6 @@
 "country": "CA"
 },
 {
-"ticker": "NWE",
-"name": "NorthWestern Energy",
-"sector": "Utilities",
-"index": "S&P 400",
-"country": "US"
-},
-{
 "ticker": "NWL",
 "name": "Newell Brands",
 "sector": "Consumer Discretionary",
@@ -9281,13 +9288,6 @@
 "name": "Rockwell Automation",
 "sector": "Industrials",
 "index": "S&P 500",
-"country": "US"
-},
-{
-"ticker": "ROKU",
-"name": "Roku, Inc.",
-"sector": "Communication Services",
-"index": "S&P 400",
 "country": "US"
 },
 {
