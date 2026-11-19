@@ -1,77 +1,77 @@
 {
- "started": "2026-11-19T03:47:05+00:00",
- "finished": "2026-11-19T04:11:15+00:00",
- "as_of": "2026-11-18",
+ "started": "2026-11-19T19:47:13+00:00",
+ "finished": "2026-11-19T20:08:40+00:00",
+ "as_of": "2026-11-19",
  "mode": "live",
  "agents": [
   {
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "1,787 insider buys in 60 days",
+   "stat": "1,824 insider buys in 60 days",
    "lines": [
-    "721 companies with insider buying",
-    "2,263 stocks to scan (2,044 US, 219 Canada)"
-   ],
-   "status": "done",
-   "secs": 1.1
-  },
-  {
-   "id": "feed",
-   "name": "Feed",
-   "job": "Downloads prices and company fundamentals",
-   "stat": "2,253 price histories",
-   "lines": [
-    "350 company profiles refreshed",
-    "2,498 company profiles on file"
-   ],
-   "status": "done",
-   "secs": 1250.6
-  },
-  {
-   "id": "insider",
-   "name": "Insider analyst",
-   "job": "Separates real conviction buys from plans and noise",
-   "stat": "665 stocks with genuine insider buying",
-   "lines": [
-    "263 buys thrown out (10b5-1 plans, company plans, odd prices)",
-    "strongest: BORR (insider score 100)"
+    "733 companies with insider buying",
+    "2,275 stocks to scan (2,056 US, 219 Canada)"
    ],
    "status": "done",
    "secs": 0.2
   },
   {
+   "id": "feed",
+   "name": "Feed",
+   "job": "Downloads prices and company fundamentals",
+   "stat": "2,265 price histories",
+   "lines": [
+    "347 company profiles refreshed",
+    "2,507 company profiles on file"
+   ],
+   "status": "done",
+   "secs": 1272.5
+  },
+  {
+   "id": "insider",
+   "name": "Insider analyst",
+   "job": "Separates real conviction buys from plans and noise",
+   "stat": "674 stocks with genuine insider buying",
+   "lines": [
+    "273 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "strongest: BORR (insider score 100)"
+   ],
+   "status": "done",
+   "secs": 0.1
+  },
+  {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "270 estimate sets refreshed",
+   "stat": "12 estimate sets refreshed",
    "lines": [
-    "1,022 companies where analysts are raising estimates",
-    "2,232 companies with analyst coverage"
+    "1,023 companies where analysts are raising estimates",
+    "2,239 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 178.3
+   "secs": 8.1
   },
   {
    "id": "ranker",
    "name": "Ranker",
    "job": "Scores every stock on six pillars into one Conviction",
-   "stat": "1,771 stocks ranked",
+   "stat": "1,768 stocks ranked",
    "lines": [
-    "#1 INSW at conviction 77",
+    "#1 INSW at conviction 78",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 19.7
+   "secs": 6.0
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "833 avoided \u00b7 354 limited upside",
+   "stat": "839 avoided \u00b7 291 limited upside",
    "lines": [
-    "283 on hold until the chart turns up or earnings pass",
-    "8 ran up too fast (don't chase)",
+    "345 on hold until the chart turns up or earnings pass",
+    "3 ran up too fast (don't chase)",
     "2 report earnings inside the trade window"
    ],
    "status": "done",
@@ -84,7 +84,7 @@
    "stat": "3 top ideas \u00b7 0 high-upside",
    "lines": [
     "top: INSW, QNST, CXW",
-    "high-upside waiting: RELY, PAM, HPE",
+    "high-upside waiting: RELY, HPE, PAM",
     "12 on the watchlist"
    ],
    "status": "done",
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "0 new ideas logged \u00b7 7 running",
+   "stat": "1 new ideas logged \u00b7 7 running",
    "lines": [
-    "87 ideas tracked since 2026-10-16",
+    "88 ideas tracked since 2026-10-16",
     "7 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 99 stocks, 25 system picks"
+    "price feed for paper trades: 100 stocks, 25 system picks"
    ],
    "status": "done",
    "secs": null
