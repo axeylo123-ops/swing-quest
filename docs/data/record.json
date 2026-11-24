@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-24T06:39:39+00:00",
+ "generated_at": "2026-11-24T22:10:01+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 8,
@@ -19,21 +19,21 @@
   "time_exit": 0.1429
  },
  "watch_summary": {
-  "n": 38,
-  "n_trades": 34,
+  "n": 40,
+  "n_trades": 36,
   "enough_data": true,
   "label": null,
-  "avg_ret_5": -0.03276,
-  "avg_ret_10": -0.03459,
-  "avg_ret_15": -0.03182,
-  "avg_excess_15": 0.0029,
-  "beat_spy_rate": 0.4737,
-  "win_rate": 0.1765,
-  "avg_trade_return": -0.03508,
-  "avg_r": -0.47429,
+  "avg_ret_5": -0.03162,
+  "avg_ret_10": -0.03383,
+  "avg_ret_15": -0.0331,
+  "avg_excess_15": 0.00278,
+  "beat_spy_rate": 0.475,
+  "win_rate": 0.1667,
+  "avg_trade_return": -0.03769,
+  "avg_r": -0.50436,
   "target_first": 0.0,
-  "stop_first": 0.6765,
-  "time_exit": 0.3235
+  "stop_first": 0.6944,
+  "time_exit": 0.3056
  },
  "high_summary": {
   "n": 4,
@@ -60,7 +60,7 @@
    "entry_date": "2026-11-18",
    "entry": 18.84,
    "conviction": 72.6,
-   "return_now": -0.03185,
+   "return_now": -0.02017,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +72,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.06954,
+   "return_now": 0.08077,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.1238,
    "conviction": 70.6,
-   "return_now": -0.02255,
+   "return_now": -0.0141,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +108,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": 0.00155,
+   "return_now": -0.02322,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": -0.00132
@@ -120,7 +120,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.12035,
+   "return_now": 0.14408,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.12794
@@ -132,7 +132,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.17568,
+   "return_now": 0.21499,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.29234
@@ -146,7 +146,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.16206,
+   "return_now": -0.18972,
    "exit_reason": "stop",
    "trade_return": -0.10277,
    "excess_15": null
@@ -158,7 +158,7 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.17345,
+   "return_now": -0.1277,
    "exit_reason": "stop",
    "trade_return": -0.12569,
    "excess_15": null
@@ -182,7 +182,7 @@
    "entry_date": "2026-11-06",
    "entry": 10.09,
    "conviction": 69.6,
-   "return_now": -0.07433,
+   "return_now": -0.03667,
    "exit_reason": "stop",
    "trade_return": -0.00198,
    "excess_15": null
@@ -338,7 +338,7 @@
    "entry_date": "2026-11-13",
    "entry": 83.88,
    "conviction": 53.8,
-   "return_now": -0.04435,
+   "return_now": -0.10527,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -350,7 +350,7 @@
    "entry_date": "2026-11-16",
    "entry": 18.37,
    "conviction": 54.2,
-   "return_now": -0.06097,
+   "return_now": -0.03865,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -362,7 +362,7 @@
    "entry_date": "2026-11-23",
    "entry": 19.24,
    "conviction": 53.2,
-   "return_now": -0.03015,
+   "return_now": -0.05457,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
