@@ -1,39 +1,39 @@
 {
- "generated_at": "2026-11-25T05:21:01+00:00",
+ "generated_at": "2026-11-25T21:15:07+00:00",
  "started": "2026-10-16",
  "summary": {
-  "n": 8,
-  "n_trades": 7,
+  "n": 9,
+  "n_trades": 8,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": 0.0191,
-  "avg_ret_10": 0.00883,
-  "avg_ret_15": -0.01664,
-  "avg_excess_15": 0.01467,
-  "beat_spy_rate": 0.5,
-  "win_rate": 0.2857,
-  "avg_trade_return": 0.00431,
-  "avg_r": 0.56414,
-  "target_first": 0.2857,
-  "stop_first": 0.5714,
-  "time_exit": 0.1429
+  "avg_ret_5": 0.00522,
+  "avg_ret_10": -0.00645,
+  "avg_ret_15": -0.02926,
+  "avg_excess_15": 0.00564,
+  "beat_spy_rate": 0.4444,
+  "win_rate": 0.25,
+  "avg_trade_return": -0.01194,
+  "avg_r": 0.36862,
+  "target_first": 0.25,
+  "stop_first": 0.625,
+  "time_exit": 0.125
  },
  "watch_summary": {
-  "n": 40,
-  "n_trades": 36,
+  "n": 44,
+  "n_trades": 37,
   "enough_data": true,
   "label": null,
-  "avg_ret_5": -0.03162,
-  "avg_ret_10": -0.03383,
-  "avg_ret_15": -0.0331,
-  "avg_excess_15": 0.00278,
-  "beat_spy_rate": 0.475,
-  "win_rate": 0.1667,
-  "avg_trade_return": -0.03769,
-  "avg_r": -0.50436,
+  "avg_ret_5": -0.02967,
+  "avg_ret_10": -0.03587,
+  "avg_ret_15": -0.03624,
+  "avg_excess_15": 0.00216,
+  "beat_spy_rate": 0.4773,
+  "win_rate": 0.1622,
+  "avg_trade_return": -0.03843,
+  "avg_r": -0.51776,
   "target_first": 0.0,
-  "stop_first": 0.6944,
-  "time_exit": 0.3056
+  "stop_first": 0.7027,
+  "time_exit": 0.2973
  },
  "high_summary": {
   "n": 4,
@@ -60,7 +60,7 @@
    "entry_date": "2026-11-18",
    "entry": 18.84,
    "conviction": 72.6,
-   "return_now": -0.02017,
+   "return_now": -0.01645,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -72,7 +72,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.08077,
+   "return_now": 0.10793,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +84,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.1238,
    "conviction": 70.6,
-   "return_now": -0.0141,
+   "return_now": 0.02168,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -108,7 +108,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": -0.02322,
+   "return_now": -0.02245,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": -0.00132
@@ -120,7 +120,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.84,
    "conviction": 63.4,
-   "return_now": 0.14408,
+   "return_now": 0.16579,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.12794
@@ -132,7 +132,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.21499,
+   "return_now": 0.2973,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.29234
@@ -146,7 +146,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.18972,
+   "return_now": -0.16337,
    "exit_reason": "stop",
    "trade_return": -0.10277,
    "excess_15": null
@@ -158,10 +158,10 @@
    "entry_date": "2026-11-05",
    "entry": 39.78,
    "conviction": 68.7,
-   "return_now": -0.1277,
+   "return_now": -0.13022,
    "exit_reason": "stop",
    "trade_return": -0.12569,
-   "excess_15": null
+   "excess_15": -0.06665
   },
   {
    "ticker": "PNFP",
@@ -182,7 +182,7 @@
    "entry_date": "2026-11-06",
    "entry": 10.09,
    "conviction": 69.6,
-   "return_now": -0.03667,
+   "return_now": -0.01388,
    "exit_reason": "stop",
    "trade_return": -0.00198,
    "excess_15": null
@@ -338,7 +338,7 @@
    "entry_date": "2026-11-13",
    "entry": 83.88,
    "conviction": 53.8,
-   "return_now": -0.10527,
+   "return_now": -0.09955,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -350,7 +350,7 @@
    "entry_date": "2026-11-16",
    "entry": 18.37,
    "conviction": 54.2,
-   "return_now": -0.03865,
+   "return_now": -0.05444,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -362,11 +362,11 @@
    "entry_date": "2026-11-23",
    "entry": 19.24,
    "conviction": 53.2,
-   "return_now": -0.05457,
+   "return_now": -0.03898,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 92
+ "logged": 93
 }
