@@ -1,6 +1,6 @@
 {
- "started": "2026-11-25T20:53:38+00:00",
- "finished": "2026-11-25T21:15:07+00:00",
+ "started": "2026-11-26T04:17:26+00:00",
+ "finished": "2026-11-26T04:38:15+00:00",
  "as_of": "2026-11-25",
  "mode": "live",
  "agents": [
@@ -8,49 +8,49 @@
    "id": "scout",
    "name": "Scout",
    "job": "Reads SEC insider filings and builds the stock list",
-   "stat": "2,044 insider buys in 60 days",
+   "stat": "2,101 insider buys in 60 days",
    "lines": [
-    "793 companies with insider buying",
-    "2,332 stocks to scan (2,113 US, 219 Canada)"
+    "812 companies with insider buying",
+    "2,345 stocks to scan (2,126 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.3
+   "secs": 0.2
   },
   {
    "id": "feed",
    "name": "Feed",
    "job": "Downloads prices and company fundamentals",
-   "stat": "2,323 price histories",
+   "stat": "2,336 price histories",
    "lines": [
     "350 company profiles refreshed",
-    "2,580 company profiles on file"
+    "2,588 company profiles on file"
    ],
    "status": "done",
-   "secs": 1272.5
+   "secs": 1174.0
   },
   {
    "id": "insider",
    "name": "Insider analyst",
    "job": "Separates real conviction buys from plans and noise",
-   "stat": "731 stocks with genuine insider buying",
+   "stat": "749 stocks with genuine insider buying",
    "lines": [
-    "288 buys thrown out (10b5-1 plans, company plans, odd prices)",
+    "292 buys thrown out (10b5-1 plans, company plans, odd prices)",
     "strongest: RAPP (insider score 100)"
    ],
    "status": "done",
-   "secs": 0.1
+   "secs": 0.2
   },
   {
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "12 estimate sets refreshed",
+   "stat": "91 estimate sets refreshed",
    "lines": [
-    "1,045 companies where analysts are raising estimates",
-    "2,296 companies with analyst coverage"
+    "1,048 companies where analysts are raising estimates",
+    "2,303 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 8.5
+   "secs": 56.1
   },
   {
    "id": "ranker",
@@ -58,19 +58,19 @@
    "job": "Scores every stock on six pillars into one Conviction",
    "stat": "1,778 stocks ranked",
    "lines": [
-    "#1 QNST at conviction 75",
+    "#1 RUS.TO at conviction 76",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 7.1
+   "secs": 17.6
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "858 avoided \u00b7 374 limited upside",
+   "stat": "858 avoided \u00b7 370 limited upside",
    "lines": [
-    "258 on hold until the chart turns up or earnings pass",
+    "260 on hold until the chart turns up or earnings pass",
     "3 ran up too fast (don't chase)",
     "0 report earnings inside the trade window"
    ],
@@ -83,7 +83,7 @@
    "job": "Builds entry, stop, target and exit date for each idea",
    "stat": "3 top ideas \u00b7 0 high-upside",
    "lines": [
-    "top: QNST, FLOC, CXW",
+    "top: QNST, INSW, CXW",
     "high-upside waiting: ARLO, PAM, OMCL",
     "12 on the watchlist"
    ],
@@ -94,11 +94,11 @@
    "id": "keeper",
    "name": "Record keeper",
    "job": "Logs every idea and grades it against its own plan",
-   "stat": "1 new ideas logged \u00b7 7 running",
+   "stat": "0 new ideas logged \u00b7 8 running",
    "lines": [
     "93 ideas tracked since 2026-10-16",
     "9 finished top ideas graded (fewer than 30: too early to judge)",
-    "price feed for paper trades: 103 stocks, 26 system picks"
+    "price feed for paper trades: 103 stocks, 27 system picks"
    ],
    "status": "done",
    "secs": null
