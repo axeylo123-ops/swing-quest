@@ -1,6 +1,6 @@
 {
- "started": "2026-11-26T04:17:26+00:00",
- "finished": "2026-11-26T04:38:15+00:00",
+ "started": "2026-11-26T20:43:24+00:00",
+ "finished": "2026-11-26T21:03:37+00:00",
  "as_of": "2026-11-25",
  "mode": "live",
  "agents": [
@@ -14,7 +14,7 @@
     "2,345 stocks to scan (2,126 US, 219 Canada)"
    ],
    "status": "done",
-   "secs": 0.2
+   "secs": 0.1
   },
   {
    "id": "feed",
@@ -22,11 +22,11 @@
    "job": "Downloads prices and company fundamentals",
    "stat": "2,336 price histories",
    "lines": [
-    "350 company profiles refreshed",
+    "348 company profiles refreshed",
     "2,588 company profiles on file"
    ],
    "status": "done",
-   "secs": 1174.0
+   "secs": 1200.7
   },
   {
    "id": "insider",
@@ -44,13 +44,13 @@
    "id": "analyst",
    "name": "Analyst desk",
    "job": "Tracks analyst targets, estimate changes and earnings beats",
-   "stat": "91 estimate sets refreshed",
+   "stat": "0 estimate sets refreshed",
    "lines": [
     "1,048 companies where analysts are raising estimates",
     "2,303 companies with analyst coverage"
    ],
    "status": "done",
-   "secs": 56.1
+   "secs": 0.1
   },
   {
    "id": "ranker",
@@ -58,19 +58,19 @@
    "job": "Scores every stock on six pillars into one Conviction",
    "stat": "1,778 stocks ranked",
    "lines": [
-    "#1 RUS.TO at conviction 76",
+    "#1 QNST at conviction 75",
     "weights: upside 25 \u00b7 analysts 15 \u00b7 insiders 15 \u00b7 quality 15 \u00b7 momentum 15 \u00b7 value 10"
    ],
    "status": "done",
-   "secs": 17.6
+   "secs": 12.2
   },
   {
    "id": "risk",
    "name": "Risk officer",
    "job": "Vetoes weak businesses, wild swings, estimate cuts and bad timing",
-   "stat": "858 avoided \u00b7 370 limited upside",
+   "stat": "855 avoided \u00b7 374 limited upside",
    "lines": [
-    "260 on hold until the chart turns up or earnings pass",
+    "254 on hold until the chart turns up or earnings pass",
     "3 ran up too fast (don't chase)",
     "0 report earnings inside the trade window"
    ],
@@ -83,7 +83,7 @@
    "job": "Builds entry, stop, target and exit date for each idea",
    "stat": "3 top ideas \u00b7 0 high-upside",
    "lines": [
-    "top: QNST, INSW, CXW",
+    "top: QNST, RUS.TO, INSW",
     "high-upside waiting: ARLO, PAM, OMCL",
     "12 on the watchlist"
    ],

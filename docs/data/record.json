@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-26T04:38:15+00:00",
+ "generated_at": "2026-11-26T21:03:37+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 9,
@@ -19,21 +19,21 @@
   "time_exit": 0.125
  },
  "watch_summary": {
-  "n": 44,
-  "n_trades": 37,
+  "n": 45,
+  "n_trades": 38,
   "enough_data": true,
   "label": null,
-  "avg_ret_5": -0.02967,
-  "avg_ret_10": -0.03587,
-  "avg_ret_15": -0.03624,
+  "avg_ret_5": -0.02846,
+  "avg_ret_10": -0.03585,
+  "avg_ret_15": -0.03677,
   "avg_excess_15": 0.00216,
   "beat_spy_rate": 0.4773,
-  "win_rate": 0.1622,
-  "avg_trade_return": -0.03843,
-  "avg_r": -0.51776,
+  "win_rate": 0.1579,
+  "avg_trade_return": -0.039,
+  "avg_r": -0.53045,
   "target_first": 0.0,
-  "stop_first": 0.7027,
-  "time_exit": 0.2973
+  "stop_first": 0.7105,
+  "time_exit": 0.2895
  },
  "high_summary": {
   "n": 4,
@@ -158,7 +158,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.16337,
+   "return_now": -0.14822,
    "exit_reason": "stop",
    "trade_return": -0.10277,
    "excess_15": null
