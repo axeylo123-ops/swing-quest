@@ -1,39 +1,39 @@
 {
- "generated_at": "2026-11-27T04:47:37+00:00",
+ "generated_at": "2026-11-27T20:48:09+00:00",
  "started": "2026-10-16",
  "summary": {
-  "n": 9,
-  "n_trades": 8,
+  "n": 10,
+  "n_trades": 9,
   "enough_data": false,
   "label": "not enough data",
-  "avg_ret_5": 0.00522,
-  "avg_ret_10": -0.00645,
-  "avg_ret_15": -0.02926,
-  "avg_excess_15": 0.00564,
-  "beat_spy_rate": 0.4444,
-  "win_rate": 0.25,
-  "avg_trade_return": -0.01194,
-  "avg_r": 0.36862,
-  "target_first": 0.25,
-  "stop_first": 0.625,
-  "time_exit": 0.125
+  "avg_ret_5": 0.01124,
+  "avg_ret_10": -0.01017,
+  "avg_ret_15": -0.02663,
+  "avg_excess_15": 0.00566,
+  "beat_spy_rate": 0.5,
+  "win_rate": 0.2222,
+  "avg_trade_return": -0.01084,
+  "avg_r": 0.21656,
+  "target_first": 0.2222,
+  "stop_first": 0.6667,
+  "time_exit": 0.1111
  },
  "watch_summary": {
-  "n": 45,
-  "n_trades": 38,
+  "n": 46,
+  "n_trades": 39,
   "enough_data": true,
   "label": null,
-  "avg_ret_5": -0.02846,
-  "avg_ret_10": -0.03585,
-  "avg_ret_15": -0.03677,
-  "avg_excess_15": 0.00216,
-  "beat_spy_rate": 0.4773,
-  "win_rate": 0.1579,
-  "avg_trade_return": -0.039,
-  "avg_r": -0.53045,
+  "avg_ret_5": -0.02695,
+  "avg_ret_10": -0.03694,
+  "avg_ret_15": -0.03847,
+  "avg_excess_15": -0.00025,
+  "beat_spy_rate": 0.4667,
+  "win_rate": 0.1538,
+  "avg_trade_return": -0.04014,
+  "avg_r": -0.54249,
   "target_first": 0.0,
-  "stop_first": 0.7105,
-  "time_exit": 0.2895
+  "stop_first": 0.7179,
+  "time_exit": 0.2821
  },
  "high_summary": {
   "n": 4,
@@ -54,12 +54,36 @@
  },
  "open": [
   {
-   "ticker": "INSW",
+   "ticker": "RUS.TO",
    "kind": "top",
-   "signal_date": "2026-11-25",
+   "signal_date": "2026-11-27",
    "entry_date": null,
    "entry": null,
-   "conviction": 74.4,
+   "conviction": 75.2,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "ARLO",
+   "kind": "high",
+   "signal_date": "2026-11-27",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 69.8,
+   "return_now": null,
+   "exit_reason": "open",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
+   "ticker": "OMCL",
+   "kind": "high",
+   "signal_date": "2026-11-27",
+   "entry_date": null,
+   "entry": null,
+   "conviction": 67.1,
    "return_now": null,
    "exit_reason": "open",
    "trade_return": null,
@@ -72,7 +96,7 @@
    "entry_date": "2026-11-18",
    "entry": 18.84,
    "conviction": 72.6,
-   "return_now": -0.01645,
+   "return_now": 0.01115,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -84,7 +108,7 @@
    "entry_date": "2026-11-10",
    "entry": 27.61,
    "conviction": 67.2,
-   "return_now": 0.10793,
+   "return_now": 0.11481,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -96,7 +120,7 @@
    "entry_date": "2026-11-09",
    "entry": 20.1238,
    "conviction": 70.6,
-   "return_now": 0.02168,
+   "return_now": 0.0828,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": null
@@ -120,7 +144,7 @@
    "entry_date": "2026-10-28",
    "entry": 12.92,
    "conviction": 59.5,
-   "return_now": -0.02554,
+   "return_now": -0.00232,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": -0.00132
@@ -132,7 +156,7 @@
    "entry_date": "2026-10-23",
    "entry": 83.5516,
    "conviction": 63.4,
-   "return_now": 0.17029,
+   "return_now": 0.16599,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.12794
@@ -144,7 +168,7 @@
    "entry_date": "2026-10-22",
    "entry": 8.14,
    "conviction": 57.0,
-   "return_now": 0.2973,
+   "return_now": 0.31818,
    "exit_reason": "open",
    "trade_return": null,
    "excess_15": 0.29234
@@ -158,7 +182,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.14756,
+   "return_now": -0.08959,
    "exit_reason": "stop",
    "trade_return": -0.10277,
    "excess_15": null
@@ -194,10 +218,10 @@
    "entry_date": "2026-11-06",
    "entry": 10.09,
    "conviction": 69.6,
-   "return_now": -0.01487,
+   "return_now": -0.00297,
    "exit_reason": "stop",
    "trade_return": -0.00198,
-   "excess_15": null
+   "excess_15": 0.00587
   },
   {
    "ticker": "CRGY",
@@ -344,13 +368,25 @@
    "excess_15": 0.00329
   },
   {
+   "ticker": "INSW",
+   "kind": "top",
+   "signal_date": "2026-11-25",
+   "entry_date": "2026-11-27",
+   "entry": 104.79,
+   "conviction": 74.4,
+   "return_now": -0.02128,
+   "exit_reason": "skipped",
+   "trade_return": null,
+   "excess_15": null
+  },
+  {
    "ticker": "AAON",
    "kind": "high",
    "signal_date": "2026-11-12",
    "entry_date": "2026-11-13",
    "entry": 83.7682,
    "conviction": 53.8,
-   "return_now": -0.09596,
+   "return_now": -0.09393,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -362,7 +398,7 @@
    "entry_date": "2026-11-16",
    "entry": 18.37,
    "conviction": 54.2,
-   "return_now": -0.05444,
+   "return_now": -0.0626,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
@@ -374,11 +410,11 @@
    "entry_date": "2026-11-23",
    "entry": 19.24,
    "conviction": 53.2,
-   "return_now": -0.03898,
+   "return_now": 0.04886,
    "exit_reason": "skipped",
    "trade_return": null,
    "excess_15": null
   }
  ],
- "logged": 93
+ "logged": 98
 }
