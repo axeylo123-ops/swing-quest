@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-27T20:48:09+00:00",
+ "generated_at": "2026-11-28T04:27:13+00:00",
  "started": "2026-10-16",
  "summary": {
   "n": 10,
@@ -182,7 +182,7 @@
    "entry_date": "2026-11-11",
    "entry": 7.59,
    "conviction": 71.3,
-   "return_now": -0.08959,
+   "return_now": -0.083,
    "exit_reason": "stop",
    "trade_return": -0.10277,
    "excess_15": null
